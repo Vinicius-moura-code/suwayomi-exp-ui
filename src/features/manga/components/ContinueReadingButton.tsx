@@ -8,7 +8,7 @@
 
 import Button from '@mui/material/Button';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { MUIUtil } from '@/lib/mui/MUI.util.ts';
 import type {

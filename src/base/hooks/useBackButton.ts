@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from '@/lib/router';
 import { useCallback } from 'react';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
 import { useAppPageHistoryContext } from '@/base/contexts/AppPageHistoryContext.tsx';

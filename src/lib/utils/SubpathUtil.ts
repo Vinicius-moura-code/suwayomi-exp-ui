@@ -8,7 +8,7 @@
 
 export class SubpathUtil {
     public static getSubpath(): string {
-        const envSubpath = import.meta.env.VITE_SUBPATH;
+        const envSubpath = process.env.NEXT_PUBLIC_SUBPATH || process.env.VITE_SUBPATH;
         if (envSubpath && envSubpath !== '/') {
             return envSubpath;
         }

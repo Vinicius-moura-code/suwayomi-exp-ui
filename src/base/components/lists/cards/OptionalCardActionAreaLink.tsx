@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import CardActionArea from '@mui/material/CardActionArea';
 import type { ComponentProps } from 'react';
 

@@ -10,7 +10,7 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import Typography from '@mui/material/Typography';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from '@/lib/router';
 import { StringParam, useQueryParam } from 'use-query-params';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';

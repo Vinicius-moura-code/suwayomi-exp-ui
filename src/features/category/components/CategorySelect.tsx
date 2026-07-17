@@ -13,7 +13,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
 import FormGroup from '@mui/material/FormGroup';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import Stack from '@mui/material/Stack';
 import type { AwaitableComponentProps } from 'awaitable-component';
 import { useLingui } from '@lingui/react/macro';

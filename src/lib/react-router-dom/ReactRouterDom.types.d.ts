@@ -6,12 +6,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import type { Location } from 'react-router-dom';
+import type { Location } from '@/lib/router';
 
-type GenericLocation<State = any> = Omit<Location, 'state'> & { state?: State };
-
-declare module 'react-router-dom' {
-    export function useParams<Params extends { [K in keyof Params]: string } = Record<string, string>>(): Params;
-
-    export function useLocation<State = any>(): GenericLocation<State>;
-}
+export type GenericLocation<State = unknown> = Omit<Location, 'state'> & { state: State };

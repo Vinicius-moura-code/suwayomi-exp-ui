@@ -115,7 +115,7 @@ export class RestClient
     }
 
     private createClient(): void {
-        this.client = fetch.bind(window);
+        this.client = typeof window !== 'undefined' ? fetch.bind(window) : fetch;
     }
 
     public updateConfig(config: RequestInit): void {

@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import { useQueryParam, StringParam } from 'use-query-params';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@/lib/router';
 import { useTheme } from '@mui/material/styles';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useLingui } from '@lingui/react/macro';

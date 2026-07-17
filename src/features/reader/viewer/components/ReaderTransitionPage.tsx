@@ -9,7 +9,7 @@
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import type { ComponentProps } from 'react';
 import { memo, useMemo } from 'react';
 import { useTheme } from '@mui/material/styles';

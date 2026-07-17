@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/lib/router';
 import Box from '@mui/material/Box';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import DialogContent from '@mui/material/DialogContent';

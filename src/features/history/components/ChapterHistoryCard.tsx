@@ -9,7 +9,7 @@
 import Box from '@mui/material/Box';
 import CardActionArea from '@mui/material/CardActionArea';
 import Card from '@mui/material/Card';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import { memo } from 'react';
 import { DownloadStateIndicator } from '@/base/components/downloads/DownloadStateIndicator.tsx';
 import type { ChapterHistoryListFieldsFragment } from '@/lib/graphql/generated/graphql.ts';

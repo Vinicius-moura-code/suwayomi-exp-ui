@@ -8,7 +8,7 @@
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@/lib/router';
 import { useMemo } from 'react';
 import { useLingui } from '@lingui/react/macro';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';

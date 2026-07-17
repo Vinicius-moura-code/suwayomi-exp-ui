@@ -22,7 +22,7 @@ import { AppRoutes } from '@/base/AppRoute.constants.ts';
 import { useMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
 import { makeToast } from '@/base/utils/Toast.ts';
 import { t } from '@lingui/core/macro';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@/lib/router';
 import { ReactRouter } from '@/lib/react-router/ReactRouter.ts';
 import { MigrationOptionsDialog } from '@/features/migration/components/MigrationOptionsDialog.tsx';
 import { AwaitableComponent } from 'awaitable-component';

@@ -10,7 +10,7 @@ import type { ForwardedRef } from 'react';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@/lib/router';
 import { useMergedRef } from '@mantine/hooks';
 import type { RouteStateReader } from '@/features/reader/Reader.types.ts';
 import { PageInViewportType, ReaderResumeMode, ReadingDirection, ReadingMode } from '@/features/reader/Reader.types.ts';

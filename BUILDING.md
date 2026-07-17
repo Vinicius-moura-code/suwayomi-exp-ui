@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Getting Started with Suwayomi-WebUI
 
-This project is built with [Vite](https://vitejs.dev/)
+This project is built with [Next.js](https://nextjs.org/) (App Router, static export).
 
 ## Available Scripts
 
@@ -8,17 +8,13 @@ In the project directory, you can run:
 
 ### `pnpm dev`
 
-This command runs the app in development mode.\
+Runs the app in development mode with Turbopack.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page reloads when you make edits.\
-Lint errors also appear in the console.
 
 ### `pnpm preview`
 
-This command runs the app in a local preview production build.
+Serves the static production build from the `build` folder.
 
 ### `pnpm build`
 
-This command creates an optimized production build of the app and places it in the `build` folder.
-See this section about [Building for Production](https://vitejs.dev/guide/build.html) for more information.
+Creates an optimized static export in the `build` folder (`output: 'export'`), compatible with Suwayomi-Server.

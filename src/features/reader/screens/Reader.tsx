@@ -8,7 +8,7 @@
 
 import Box from '@mui/material/Box';
 import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@/lib/router';
 import { useLingui } from '@lingui/react/macro';
 import { useDefaultReaderSettings } from '@/features/reader/settings/ReaderSettingsMetadata.ts';
 import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';

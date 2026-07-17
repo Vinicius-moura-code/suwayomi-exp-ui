@@ -12,7 +12,7 @@ import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import { TypographyMaxLines } from '@/base/components/texts/TypographyMaxLines.tsx';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@/lib/router';
 import { useTheme } from '@mui/material/styles';
 import type { ComponentProps } from 'react';
 import { useMemo } from 'react';

@@ -204,7 +204,9 @@ export class GraphQLClient extends BaseClient<ApolloClient, ApolloClient.Options
     constructor(handleRefreshToken: (refreshToken: string) => AbortableApolloMutationResponse<UserRefreshMutation>) {
         super(handleRefreshToken);
 
-        this.createClient();
+        if (typeof window !== 'undefined') {
+            this.createClient();
+        }
     }
 
     public override getBaseUrl(): string {

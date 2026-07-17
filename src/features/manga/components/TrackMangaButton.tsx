@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/lib/router';
 import SyncIcon from '@mui/icons-material/Sync';
 import PopupState, { bindDialog, bindTrigger } from 'material-ui-popup-state';
 import Dialog from '@mui/material/Dialog';

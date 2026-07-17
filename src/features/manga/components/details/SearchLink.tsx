@@ -8,7 +8,7 @@
 
 import type { ReactNode } from 'react';
 import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@/lib/router';
 import type { MangaLocationState } from '@/features/manga/Manga.types.ts';
 import type { SourceIdInfo } from '@/features/source/Source.types.ts';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';

@@ -1,6 +1,7 @@
 saveExact: true
 minimumReleaseAge: 10080 # 7 days
 allowBuilds:
-    '@swc/core': true
-    core-js: true
-    esbuild: true
+  '@swc/core': true
+  core-js: true
+  esbuild: true
+  sharp: set this to true or false
