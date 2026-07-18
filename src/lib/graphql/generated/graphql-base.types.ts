@@ -225,6 +225,8 @@ export type ChapterEdge = Edge & {
 export type ChapterFilterInput = {
     and?: InputMaybe<Array<ChapterFilterInput>>;
     chapterNumber?: InputMaybe<DoubleFilterInput>;
+    excludeHiddenFromHistory?: InputMaybe<Scalars['Boolean']['input']>;
+    excludeHiddenFromUpdates?: InputMaybe<Scalars['Boolean']['input']>;
     fetchedAt?: InputMaybe<LongFilterInput>;
     id?: InputMaybe<IntFilterInput>;
     inLibrary?: InputMaybe<BooleanFilterInput>;
@@ -1352,6 +1354,8 @@ export type MangaType = {
     firstUnreadChapter?: Maybe<ChapterType>;
     genre: Array<Scalars['String']['output']>;
     hasDuplicateChapters: Scalars['Boolean']['output'];
+    hideFromHistory: Scalars['Boolean']['output'];
+    hideFromUpdates: Scalars['Boolean']['output'];
     highestNumberedChapter?: Maybe<ChapterType>;
     id: Scalars['Int']['output'];
     inLibrary: Scalars['Boolean']['output'];
@@ -1514,6 +1518,7 @@ export type Mutation = {
     updateLibraryManga?: Maybe<UpdateLibraryMangaPayload>;
     updateManga?: Maybe<UpdateMangaPayload>;
     updateMangaCategories?: Maybe<UpdateMangaCategoriesPayload>;
+    updateMangaVisibility?: Maybe<UpdateMangaVisibilityPayload>;
     updateMangas?: Maybe<UpdateMangasPayload>;
     updateMangasCategories?: Maybe<UpdateMangasCategoriesPayload>;
     updateSourcePreference?: Maybe<UpdateSourcePreferencePayload>;
@@ -1812,6 +1817,10 @@ export type MutationUpdateMangaArgs = {
 
 export type MutationUpdateMangaCategoriesArgs = {
     input: UpdateMangaCategoriesInput;
+};
+
+export type MutationUpdateMangaVisibilityArgs = {
+    input: UpdateMangaVisibilityInput;
 };
 
 export type MutationUpdateMangasArgs = {
@@ -3456,6 +3465,19 @@ export type UpdateMangaPayload = {
     manga: MangaType;
 };
 
+export type UpdateMangaVisibilityInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    hideFromHistory?: InputMaybe<Scalars['Boolean']['input']>;
+    hideFromUpdates?: InputMaybe<Scalars['Boolean']['input']>;
+    mangaId: Scalars['Int']['input'];
+};
+
+export type UpdateMangaVisibilityPayload = {
+    __typename?: 'UpdateMangaVisibilityPayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    manga: MangaType;
+};
+
 export type UpdateMangasCategoriesInput = {
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
     ids: Array<Scalars['Int']['input']>;
@@ -3605,6 +3627,7 @@ export enum WebUiChannel {
 
 export enum WebUiFlavor {
     Custom = 'CUSTOM',
+    Expui = 'EXPUUI',
     Vui = 'VUI',
     Webui = 'WEBUI',
 }

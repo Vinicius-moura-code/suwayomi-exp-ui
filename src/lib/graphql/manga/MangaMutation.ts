@@ -209,3 +209,15 @@ export const UPDATE_MANGA_METADATA = gql`
         }
     }
 `;
+
+export const UPDATE_MANGA_VISIBILITY = gql`
+    mutation UPDATE_MANGA_VISIBILITY($input: UpdateMangaVisibilityInput!) {
+        updateMangaVisibility(input: $input) {
+            manga {
+                id
+                hideFromHistory
+                hideFromUpdates
+            }
+        }
+    }
+`;

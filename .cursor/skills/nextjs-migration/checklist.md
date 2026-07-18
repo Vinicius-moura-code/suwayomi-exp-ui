@@ -32,3 +32,15 @@
 ## Reader shell
 
 - [x] `/manga/[mangaId]/chapter/[chapterSourceOrder]`
+
+## Cutover
+
+- [x] Vite removido; `pnpm dev` / `build` / `preview` no Next
+- [x] BUILDING.md apontando para Next
+
+## Open polish (pós-cutover)
+
+- [ ] Header back button → rota anterior (não HOME); ver `useHistory` / `useBackButton` / shim `src/lib/router`
+- [ ] Reader overlay/menu clicável em chapter route
+- [ ] Browse: evitar `setState` durante render ao setar tab default
+- [ ] Validar deep links dinâmicos com Server servindo `build/` estático

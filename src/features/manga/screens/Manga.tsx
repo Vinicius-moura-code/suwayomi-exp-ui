@@ -33,7 +33,7 @@ import type { MangaLocationState } from '@/features/manga/Manga.types.ts';
 export const Manga: React.FC = () => {
     const { t } = useLingui();
     const { mangaId, id: legacyId } = useParams<{ mangaId?: string; id?: string }>();
-    const id = mangaId ?? legacyId;
+    const id = mangaId ?? legacyId ?? '';
     const { mode } = useLocation<MangaLocationState>().state ?? STABLE_EMPTY_OBJECT;
 
     const autofetchedRef = useRef(false);

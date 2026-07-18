@@ -1,107 +1,56 @@
-# AGENTS.md - Suwayomi-WebUI (Migração para Next.js)
+# AGENTS.md — suwayomi-exp-ui
 
 ## Objetivo
-Migrar completamente o Suwayomi-WebUI de **Vite + React 19** para **Next.js 15 (App Router)**, seguindo as **melhores práticas de performance** do Next.js.
 
-### Stack Atual
+Cliente web experimental do Suwayomi (`suwayomi-exp-ui`). Stack: **Next.js 15 (App Router) + static export** (`output: 'export'` → `build/`), React 19, MUI/Emotion, Apollo, Lingui, PWA.
+
+Reescrito a partir do WebUI upstream com foco em **performance** e melhorias futuras. Não recomeçar migração Vite→Next do zero.
+
+Hub: `F:\workspace\suwayomi-exp\CONTEXT.md`.
+Skill: `.cursor/skills/nextjs-migration`.
+
+## Stack
+
+- Next.js 15 App Router, `distDir: 'build'`, `images.unoptimized`
 - React 19 + TypeScript
-- Vite
-- React Router DOM
-- MUI 9 + Emotion
-- Apollo Client + GraphQL
-- Lingui.js (internacionalização)
-- Zustand + Immer
-- React Virtuoso, @dnd-kit, etc.
-- PWA (VitePWA + Workbox)
+- MUI 9 + Emotion (Theme Registry)
+- Apollo Client + GraphQL (**sempre client-side**)
+- Lingui (macros via `babel-loader` no Windows)
+- PWA: `@ducanh2912/next-pwa`
+- Shim de router: `src/lib/router`
 
-### Stack Alvo
-- **Next.js 15** (App Router + Turbopack)
-- React 19
-- TypeScript (strict mode)
-- MUI 9 + Emotion (bem configurado)
-- Apollo Client
-- Melhores práticas de performance do Next.js
+## Restrição crítica
 
----
+`output: 'export'` → sem Node em runtime. Build estático para o Server (`suwayomi-exp-server`).
 
-## Regras e Melhores Práticas (obrigatórias)
+- Server Components: layouts, shells, UI estática
+- Telas com dados: `"use client"` ou wrappers finos
+- **Não** introduzir Apollo RSC para dados do Server
 
-### 1. Performance (Next.js Best Practices)
-- Usar **Server Components** por padrão
-- Marcar como `"use client"` apenas componentes interativos
-- Utilizar **React Server Components** onde possível (especialmente em páginas de listagem)
-- Implementar **Streaming** e **Suspense** boundaries
-- Usar `next/image` para todas as imagens (quando viável)
-- Otimizar bundle splitting automaticamente (Next.js faz isso bem)
-- Manter o Reader o mais leve e performático possível
+## Regras
 
-### 2. Estrutura de Pastas Recomendada
-```bash
-src/
-├── app/                    # App Router
-│   ├── (main)/             # Route Group (sem afetar URL)
-│   │   ├── layout.tsx
-│   │   ├── page.tsx        # Library/Home
-│   │   ├── manga/
-│   │   └── reader/
-│   ├── globals.css
-│   ├── layout.tsx          # Root layout
-│   └── loading.tsx
-├── components/             # Componentes reutilizáveis
-├── features/               # Feature-based (opcional mas recomendado)
-├── lib/
-│   ├── apollo/
-│   ├── theme/
-│   └── utils/
-├── hooks/
-├── graphql/                # Codegen
-└── styles/
-```
-
-### 3. Configurações Importantes
-
-- **next.config.mjs** → `output: 'export'` (para manter compatibilidade com Suwayomi-Server)
-- Configurar Emotion corretamente com Theme Registry
-- Manter alias `@/*`
-- Configurar `transpilePackages` se necessário
-
-### 4. Pontos Críticos
-
-- O **Reader** é a parte mais sensível para performance → deve continuar extremamente otimizado
-- Manter PWA funcional
-- Preservar integração GraphQL com o Suwayomi-Server
-- Manter os scripts de build (`build-zip`, `build-md5`, etc.)
-
----
-
-## Prioridade da Migração
-
-1. Configuração inicial (`next.config`, Emotion, Theme, Apollo)
-2. Root Layout + Global Styles
-3. Migração de rotas (App Router)
-4. Componentes principais (Library, Manga, Reader)
-5. PWA + Internacionalização (Lingui)
-6. Build e scripts de produção
-
----
+1. Preferir Server Components; `"use client"` só para interatividade/GraphQL
+2. Reutilizar `src/features/**` quando fizer sentido
+3. Manter saída `build/` para zip/md5 e o Server
+4. Reader é crítico de performance
+5. Features do roadmap (Fase 4): **primeiro APIs no Server**, depois UI aqui
 
 ## Comandos
 
 ```bash
-pnpm dev          # Desenvolvimento (Next.js)
-pnpm build        # Build para produção (deve gerar pasta build/)
-pnpm preview      # Preview do build
+pnpm dev       # http://localhost:3000
+pnpm build     # → build/
+pnpm preview
 ```
 
----
+Porta **3000** colide com Grafana do Server — não subir os dois juntos.
 
-## Instruções para o Agente (Cursor)
+## Fase 4
 
-- Sempre priorize **performance** e **Server Components**
-- Use **Suspense** e **loading states** adequados
-- Evite Client Components desnecessários
-- Mantenha a compatibilidade com o Suwayomi-Server (build estático)
-- Quando migrar um componente, avalie se ele pode ser Server Component
-- Mantenha o mesmo comportamento visual e funcionalidade atual
+- [x] Corte A: ocultar Histórico/Updates (filtros + toggles na manga screen)
+- Cortes B/C: aguardam API no Server
 
-**Este arquivo é a fonte de verdade para toda a migração.**
+## Para o agent
+
+- Rotas/Next: skill `nextjs-migration`
+- Features de produto: confirme contrato GraphQL no Server + `CONTEXT.md`

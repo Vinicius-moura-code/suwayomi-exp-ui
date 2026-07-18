@@ -1679,6 +1679,10 @@ msgstr "Exit to manga page"
 msgid "Exit to previous page"
 msgstr "Exit to previous page"
 
+#: src/features/settings/Settings.constants.ts
+msgid "ExpUI"
+msgstr "ExpUI"
+
 #: src/features/browse/screens/Browse.tsx
 msgid "Extension"
 msgstr "Extension"
@@ -1925,6 +1929,14 @@ msgstr "Hidden"
 #: src/features/browse/screens/BrowseSettings.tsx
 msgid "Hide entries already in library"
 msgstr "Hide entries already in library"
+
+#: src/features/manga/components/MangaToolbarMenu.tsx
+msgid "Hide from History"
+msgstr "Hide from History"
+
+#: src/features/manga/components/MangaToolbarMenu.tsx
+msgid "Hide from Updates"
+msgstr "Hide from Updates"
 
 #: src/features/history/screens/HistorySettings.tsx
 msgid "Hide history"
@@ -2700,6 +2712,10 @@ msgstr "Obsolete"
 msgid "OEL"
 msgstr "OEL"
 
+#: src/features/settings/Settings.constants.ts
+msgid "Official UI for suwayomi-exp. Served from the server webUI data folder (install via scripts/dev/install-ui)."
+msgstr "Official UI for suwayomi-exp. Served from the server webUI data folder (install via scripts/dev/install-ui)."
+
 #: src/features/reader/overlay/navigation/desktop/quick-settings/components/ReaderNavBarDesktopOffsetDoubleSpread.tsx
 #: src/features/reader/settings/behaviour/ReaderBehaviourSettings.tsx
 msgid "Offset double spreads"
@@ -3363,9 +3379,17 @@ msgstr "Show entry"
 msgid "Show icon in system tray"
 msgstr "Show icon in system tray"
 
+#: src/features/manga/components/MangaToolbarMenu.tsx
+msgid "Show in History"
+msgstr "Show in History"
+
 #: src/features/browse/screens/BrowseSettings.tsx
 msgid "Show in sources and extensions lists"
 msgstr "Show in sources and extensions lists"
+
+#: src/features/manga/components/MangaToolbarMenu.tsx
+msgid "Show in Updates"
+msgstr "Show in Updates"
 
 #: src/base/components/feedback/EmptyView.tsx
 #: src/features/tracker/components/cards/TrackerMangaCard.tsx
