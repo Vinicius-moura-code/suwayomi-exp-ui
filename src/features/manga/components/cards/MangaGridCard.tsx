@@ -103,6 +103,7 @@ export const MangaGridCard = memo(
                         }}
                     >
                         <CardActionArea
+                            component="div"
                             sx={{
                                 position: 'relative',
                                 height: '100%',

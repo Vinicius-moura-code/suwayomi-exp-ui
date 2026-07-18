@@ -8,6 +8,7 @@
 
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
+import '@/lib/runtimeSetup.ts';
 import { AppProviders } from '@/lib/providers/AppProviders.tsx';
 import { ClientBootstrap } from '@/lib/providers/ClientBootstrap.tsx';
 import './globals.css';

@@ -164,7 +164,7 @@ export default dynamic(() => import('./RealPage'), {
     }
 }
 
-writeDynamic('src/app/(main)/manga/[id]', '@/features/manga/screens/Manga.tsx', 'Manga', "[{ id: '_' }]");
+writeDynamic('src/app/(main)/manga/[mangaId]', '@/features/manga/screens/Manga.tsx', 'Manga', "[{ mangaId: '_' }]");
 writeDynamic(
     'src/app/(main)/sources/[sourceId]',
     '@/features/source/browse/screens/SourceMangas.tsx',

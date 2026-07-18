@@ -17,7 +17,7 @@
 - [x] `/library`
 - [x] `/auth/login`
 - [x] `/browse`
-- [x] `/manga/[id]`
+- [x] `/manga/[mangaId]`
 - [x] `/updates`
 - [x] `/history`
 - [x] `/downloads`

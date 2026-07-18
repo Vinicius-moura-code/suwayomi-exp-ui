@@ -8,6 +8,7 @@
 
 'use client';
 
+import '@/lib/runtimeSetup.ts';
 import { StyledEngineProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import React, { useEffect, useLayoutEffect, useState, type PropsWithChildren } from 'react';
@@ -22,8 +23,7 @@ import { ActiveDeviceContextProvider } from '@/features/device/DeviceContext.tsx
 import { AppHotkeysProvider } from '@/features/hotkeys/AppHotkeysProvider.tsx';
 import { SnackbarWithDescription } from '@/base/components/feedback/SnackbarWithDescription.tsx';
 import { AppPageHistoryContextProvider } from '@/base/contexts/AppPageHistoryContext.tsx';
-import { AppThemeContextProvider } from '@/features/theme/AppThemeContext.tsx';
-import { NavBarContextProvider } from '@/features/navigation-bar/NavbarContext.tsx';
+import { AppThemeContextProvider } from '@/features/theme/AppThemeContext.tsx';import { NavBarContextProvider } from '@/features/navigation-bar/NavbarContext.tsx';
 import { i18n } from '@/i18n';
 import { ThemeRegistry } from '@/lib/theme/ThemeRegistry.tsx';
 import { RouterProvider, Navigate, useNavigate, usePathname } from '@/lib/router';

@@ -8,6 +8,7 @@
 
 import type { MessageDescriptor } from '@lingui/core';
 import { useEffect, useRef } from 'react';
+import '@/lib/runtimeSetup.ts';
 import { d } from 'koration';
 import { useLingui } from '@lingui/react/macro';
 import type { IReaderSettings, IReaderSettingsWithDefaultFlag } from '@/features/reader/Reader.types.ts';

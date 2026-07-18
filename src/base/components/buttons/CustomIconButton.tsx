@@ -11,16 +11,24 @@ import Button from '@mui/material/Button';
 
 export const CustomIconButton = <C extends React.ElementType>({
     children,
+    component,
+    nativeButton,
     ...props
-}: ButtonProps<C, { component?: C }>) => (
-    <Button
-        {...props}
-        sx={{
-            minWidth: 'unset',
-            px: '10px',
-            ...props.sx,
-        }}
-    >
-        {children}
-    </Button>
-);
+}: ButtonProps<C, { component?: C }>) => {
+    const resolvesToNativeButton = component == null || component === 'button';
+
+    return (
+        <Button
+            {...props}
+            component={component}
+            nativeButton={nativeButton ?? (resolvesToNativeButton ? undefined : false)}
+            sx={{
+                minWidth: 'unset',
+                px: '10px',
+                ...props.sx,
+            }}
+        >
+            {children}
+        </Button>
+    );
+};

@@ -48,48 +48,51 @@ export const ChapterUpdateCard = memo(
 
         return (
             <Card>
-                <CardActionArea
-                    component={Link}
-                    to={AppRoutes.reader.path(chapter.manga.id, chapter.sourceOrder)}
-                    state={Chapters.getReaderOpenChapterLocationState(chapter)}
-                    sx={{
-                        color: theme.palette.text[chapter.isRead ? 'disabled' : 'primary'],
-                    }}
-                >
-                    <ListCardContent sx={{ justifyContent: 'space-between' }}>
-                        <Box sx={{ display: 'flex', flexGrow: 1, gap: 1 }}>
-                            <ChapterCardThumbnail
-                                mangaId={manga.id}
-                                sourceId={manga.sourceId}
-                                mangaTitle={manga.title}
-                                thumbnailUrl={manga.thumbnailUrl}
-                                thumbnailUrlLastFetched={manga.thumbnailUrlLastFetched}
-                                slots={
-                                    isGroup
-                                        ? {
-                                              listCardAvatar: {
-                                                  slots: {
-                                                      spinnerImageProps: {
-                                                          spinnerStyle: {
-                                                              height: 74,
-                                                              aspectRatio: '3 / 4',
-                                                          },
-                                                          imgStyle: {
-                                                              height: 74,
-                                                              aspectRatio: '3 / 4',
-                                                          },
+                <ListCardContent sx={{ justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', flexGrow: 1, gap: 1, minWidth: 0 }}>
+                        <ChapterCardThumbnail
+                            mangaId={manga.id}
+                            sourceId={manga.sourceId}
+                            mangaTitle={manga.title}
+                            thumbnailUrl={manga.thumbnailUrl}
+                            thumbnailUrlLastFetched={manga.thumbnailUrlLastFetched}
+                            slots={
+                                isGroup
+                                    ? {
+                                          listCardAvatar: {
+                                              slots: {
+                                                  spinnerImageProps: {
+                                                      spinnerStyle: {
+                                                          height: 74,
+                                                          aspectRatio: '3 / 4',
                                                       },
-                                                      avatarProps: {
-                                                          sx: {
-                                                              height: 74,
-                                                          },
+                                                      imgStyle: {
+                                                          height: 74,
+                                                          aspectRatio: '3 / 4',
+                                                      },
+                                                  },
+                                                  avatarProps: {
+                                                      sx: {
+                                                          height: 74,
                                                       },
                                                   },
                                               },
-                                          }
-                                        : undefined
-                                }
-                            />
+                                          },
+                                      }
+                                    : undefined
+                            }
+                        />
+                        <CardActionArea
+                            component={Link}
+                            to={AppRoutes.reader.path(chapter.manga.id, chapter.sourceOrder)}
+                            state={Chapters.getReaderOpenChapterLocationState(chapter)}
+                            sx={{
+                                color: theme.palette.text[chapter.isRead ? 'disabled' : 'primary'],
+                                flexGrow: 1,
+                                minWidth: 0,
+                                alignItems: 'stretch',
+                            }}
+                        >
                             <Stack>
                                 <ChapterCardMetadata title={manga.title} secondaryText={chapter.name} />
                                 {isGroup && (
@@ -111,12 +114,12 @@ export const ChapterUpdateCard = memo(
                                     </Button>
                                 )}
                             </Stack>
-                        </Box>
-                        <DownloadStateIndicator chapterId={chapter.id} />
-                        <ChapterDownloadRetryButton chapterId={chapter.id} />
-                        <ChapterDownloadButton chapterId={chapter.id} isDownloaded={chapter.isDownloaded} />
-                    </ListCardContent>
-                </CardActionArea>
+                        </CardActionArea>
+                    </Box>
+                    <DownloadStateIndicator chapterId={chapter.id} />
+                    <ChapterDownloadRetryButton chapterId={chapter.id} />
+                    <ChapterDownloadButton chapterId={chapter.id} isDownloaded={chapter.isDownloaded} />
+                </ListCardContent>
                 {isGroup && (
                     <Collapse in={isExpanded} unmountOnExit>
                         {otherChapters.map((otherChapter) => (

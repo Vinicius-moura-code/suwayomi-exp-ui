@@ -6,7 +6,8 @@
     "scripts": {
         "setup-env-files": "tsx tools/scripts/setupEnvFiles.ts",
         "setup": "pnpm i --frozen-lockfile && pnpm setup-env-files",
-        "dev": "pnpm setup && next dev --turbopack",
+        "dev": "pnpm setup && next dev",
+        "dev:turbo": "pnpm setup && next dev --turbopack",
         "preview": "pnpm setup && npx --yes serve build",
         "build": "pnpm setup && next build",
         "test": "node -e \"console.log('imagine')\"",

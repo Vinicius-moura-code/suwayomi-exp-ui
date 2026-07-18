@@ -9,7 +9,7 @@
 import RealPageLoader from './RealPageLoader';
 
 export function generateStaticParams() {
-    return [{ id: '_' }];
+    return [{ mangaId: '_' }];
 }
 
 export default function Page() {

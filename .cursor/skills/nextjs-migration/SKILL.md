@@ -34,7 +34,7 @@ Source of truth: [AGENTS.md](../../../AGENTS.md).
 | `react-router-dom` | App Router + `src/lib/router` helpers |
 | `import.meta.env.VITE_*` | `process.env.NEXT_PUBLIC_*` |
 | `import.meta.env.DEV/PROD` | `process.env.NODE_ENV` |
-| `@lingui/vite-plugin` | Babel macros via `babel-loader` on `src/` (SWC plugin fails on Windows + Next 15) |
+| `@lingui/vite-plugin` | Babel macros via `babel-loader` on `src/` + `@lingui/loader` for `.po` (use `pnpm dev` / webpack; Turbopack has `.po` rule but macros need Babel) |
 | `vite-plugin-pwa` | `@ducanh2912/next-pwa` (static export compatible) |
 | `use-query-params` + RR adapter | `WindowHistoryAdapter` or `nuqs` |
 | `BrowserRouter` / basename | `basePath` + `SubpathUtil` |
@@ -55,7 +55,7 @@ Track progress in [checklist.md](checklist.md).
 1. Add `src/app/.../page.tsx` that imports the existing screen.
 2. Mark page or screen `"use client"` if it uses hooks/GraphQL.
 3. Replace `react-router-dom` imports with `@/lib/router` (or `next/navigation` / `next/link`).
-4. For dynamic segments under static export, provide `generateStaticParams` (placeholder ok) and ensure `404.html` SPA fallback works.
+4. For dynamic segments under static export, provide `generateStaticParams` (placeholder ok). **`next dev` omits `output: 'export'`** so unknown IDs (e.g. `/manga/8`) work; production builds still export placeholders only — soft-nav to unlisted IDs needs host SPA fallback / future Cache Components support.
 5. Verify nav, auth guard, and theme still work.
 
 ## Do not

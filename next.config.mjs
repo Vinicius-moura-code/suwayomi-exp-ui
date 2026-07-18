@@ -94,7 +94,10 @@ function pathnameMatches(pathname, pattern) {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'export',
+    // Static export cannot serve unknown dynamic params (e.g. /manga/8) — only paths
+    // returned by generateStaticParams. Keep export for production builds (Suwayomi zip);
+    // omit it in `next dev` so client navigation to real IDs works.
+    ...(process.env.NODE_ENV === 'production' ? { output: 'export' } : {}),
     distDir: 'build',
     trailingSlash: true,
     images: {
@@ -102,6 +105,15 @@ const nextConfig = {
     },
     reactStrictMode: true,
     transpilePackages: ['@mui/material', '@mui/system', '@mui/icons-material', '@mui/x-date-pickers'],
+    // Turbopack does not use webpack() rules — register Lingui .po loading here too.
+    turbopack: {
+        rules: {
+            '*.po': {
+                loaders: ['@lingui/loader'],
+                as: '*.js',
+            },
+        },
+    },
     webpack: (config, { isServer }) => {
         // Client Components are still SSR'd at build time. Omit the `react-server` export
         // condition so packages like @mantine/hooks can resolve `useEffectEvent` from React.

@@ -21,6 +21,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { useElementSize } from '@mantine/hooks';
 import IconButton from '@mui/material/IconButton';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import '@/lib/runtimeSetup.ts';
 import { d } from 'koration';
 import { useLingui } from '@lingui/react/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';

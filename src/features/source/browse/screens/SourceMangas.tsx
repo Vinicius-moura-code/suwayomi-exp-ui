@@ -426,7 +426,7 @@ export function SourceMangas() {
             <CustomTooltip title={t`Open in WebView`} disabled={!source?.homeUrl}>
                 <IconButton
                     disabled={!source?.homeUrl}
-                    href={source?.homeUrl ? requestManager.getWebviewUrl(source?.homeUrl) : ''}
+                    href={source?.homeUrl ? requestManager.getWebviewUrl(source.homeUrl) : undefined}
                     rel="noreferrer"
                     target="_blank"
                     color="inherit"

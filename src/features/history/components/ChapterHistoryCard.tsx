@@ -27,33 +27,36 @@ export const ChapterHistoryCard = memo(({ chapter }: { chapter: ChapterHistoryLi
 
     return (
         <Card>
-            <CardActionArea
-                component={Link}
-                to={AppRoutes.reader.path(chapter.manga.id, chapter.sourceOrder)}
-                state={Chapters.getReaderOpenChapterLocationState(chapter)}
-                sx={{
-                    color: (theme) => theme.palette.text[chapter.isRead ? 'disabled' : 'primary'],
-                }}
-            >
-                <ListCardContent sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', flexGrow: 1, gap: 1 }}>
-                        <ChapterCardThumbnail
-                            mangaId={manga.id}
-                            sourceId={manga.sourceId}
-                            mangaTitle={manga.title}
-                            thumbnailUrl={manga.thumbnailUrl}
-                            thumbnailUrlLastFetched={manga.thumbnailUrlLastFetched}
-                        />
+            <ListCardContent sx={{ justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', flexGrow: 1, gap: 1, minWidth: 0 }}>
+                    <ChapterCardThumbnail
+                        mangaId={manga.id}
+                        sourceId={manga.sourceId}
+                        mangaTitle={manga.title}
+                        thumbnailUrl={manga.thumbnailUrl}
+                        thumbnailUrlLastFetched={manga.thumbnailUrlLastFetched}
+                    />
+                    <CardActionArea
+                        component={Link}
+                        to={AppRoutes.reader.path(chapter.manga.id, chapter.sourceOrder)}
+                        state={Chapters.getReaderOpenChapterLocationState(chapter)}
+                        sx={{
+                            color: (theme) => theme.palette.text[chapter.isRead ? 'disabled' : 'primary'],
+                            flexGrow: 1,
+                            minWidth: 0,
+                            alignItems: 'stretch',
+                        }}
+                    >
                         <ChapterCardMetadata
                             title={manga.title}
                             secondaryText={`${chapter.name} — ${timeFormatter.format(epochToDate(Number(chapter.lastReadAt)).valueOf())}`}
                         />
-                    </Box>
-                    <DownloadStateIndicator chapterId={chapter.id} />
-                    <ChapterDownloadRetryButton chapterId={chapter.id} />
-                    <ChapterDownloadButton chapterId={chapter.id} isDownloaded={chapter.isDownloaded} />
-                </ListCardContent>
-            </CardActionArea>
+                    </CardActionArea>
+                </Box>
+                <DownloadStateIndicator chapterId={chapter.id} />
+                <ChapterDownloadRetryButton chapterId={chapter.id} />
+                <ChapterDownloadButton chapterId={chapter.id} isDownloaded={chapter.isDownloaded} />
+            </ListCardContent>
         </Card>
     );
 });
