@@ -1,20 +1,17 @@
-# Getting Started with Suwayomi-WebUI
+# Building ExpUI
 
-This project is built with [Next.js](https://nextjs.org/) (App Router, static export).
+This project uses [Next.js](https://nextjs.org/) (App Router, static export).
 
-## Available Scripts
-
-In the project directory, you can run:
+## Scripts
 
 ### `pnpm dev`
 
-Runs the app in development mode with Turbopack.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-### `pnpm preview`
-
-Serves the static production build from the `build` folder.
+Dev server at [http://localhost:3000](http://localhost:3000). Requires a running Exp Server (default `http://localhost:4567`).
 
 ### `pnpm build`
 
-Creates an optimized static export in the `build` folder (`output: 'export'`), compatible with Suwayomi-Server.
+Static export to `build/` (for embedding in the server `webUI/` folder via `scripts/dev/install-ui`).
+
+### `pnpm preview`
+
+Serves the contents of `build/`.
