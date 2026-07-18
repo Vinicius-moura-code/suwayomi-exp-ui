@@ -76,6 +76,8 @@ const RouterHistoryContext = createContext<{
     pushHistory: (entry: HistoryEntry) => void;
     navigationType: NavigationType;
     setNavigationType: (type: NavigationType) => void;
+    locationKey: string;
+    bumpLocationKey: () => void;
 } | null>(null);
 
 const pathFromTo = (to: To): string => {
@@ -126,13 +128,21 @@ export const RouterProvider = ({ children }: { children: ReactNode }) => {
     const search = searchParams?.toString() ? `?${searchParams.toString()}` : '';
     const [locationState, setLocationState] = useState<unknown>(() => readStoredState(pathname, search));
     const [navigationType, setNavigationType] = useState<NavigationType>(NavigationType.Push);
+    const [locationKey, setLocationKey] = useState('default');
+
+    const bumpLocationKey = useCallback(() => {
+        setLocationKey(String(Date.now()));
+    }, []);
 
     useEffect(() => {
         setLocationState(readStoredState(pathname, search));
     }, [pathname, search]);
 
     useEffect(() => {
-        const onPopState = () => setNavigationType(NavigationType.Pop);
+        const onPopState = () => {
+            setNavigationType(NavigationType.Pop);
+            setLocationKey(String(Date.now()));
+        };
         window.addEventListener('popstate', onPopState);
         return () => window.removeEventListener('popstate', onPopState);
     }, []);
@@ -149,8 +159,10 @@ export const RouterProvider = ({ children }: { children: ReactNode }) => {
             pushHistory,
             navigationType,
             setNavigationType,
+            locationKey,
+            bumpLocationKey,
         }),
-        [locationState, navigationType, pushHistory],
+        [locationState, navigationType, locationKey, pushHistory, bumpLocationKey],
     );
 
     return <RouterHistoryContext.Provider value={value}>{children}</RouterHistoryContext.Provider>;
@@ -168,10 +180,8 @@ export const useNavigate = (): NavigateFunction => {
     return useCallback(
         (toOrDelta: To | number, options?: NavigateOptions) => {
             if (typeof toOrDelta === 'number') {
-                if (toOrDelta < 0) {
-                    router.back();
-                } else if (toOrDelta > 0) {
-                    router.forward();
+                if (toOrDelta !== 0) {
+                    window.history.go(toOrDelta);
                 }
                 return;
             }
@@ -191,6 +201,7 @@ export const useNavigate = (): NavigateFunction => {
             }
 
             history?.setNavigationType(options?.replace ? NavigationType.Replace : NavigationType.Push);
+            history?.bumpLocationKey();
 
             const nextOptions = { scroll: true } satisfies Partial<NextNavigateOptions>;
             if (options?.replace) {
@@ -218,7 +229,7 @@ export const useLocation = <State = unknown,>(): Location<State> => {
         search,
         hash,
         state: (history?.locationState as State | null) ?? null,
-        key: 'default',
+        key: history?.locationKey ?? 'default',
     };
 };
 
@@ -285,6 +296,9 @@ export const Link = forwardRef(function RouterLink(
     const href = pathFromTo(to);
 
     const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+        history?.setNavigationType(replace ? NavigationType.Replace : NavigationType.Push);
+        history?.bumpLocationKey();
+
         if (state !== undefined) {
             const [pathPart] = href.split('#');
             const [nextPathname, nextSearch = ''] = pathPart.split('?');

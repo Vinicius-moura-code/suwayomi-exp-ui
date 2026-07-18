@@ -45,7 +45,13 @@ export const MainShell = ({ children }: PropsWithChildren) => {
 
 export const ReaderShell = ({ children }: PropsWithChildren) => (
     <RequireAuth>
-        <ErrorBoundary>{children}</ErrorBoundary>
+        {/* DefaultNavBar must stay mounted: Reader injects overlay/hotkeys via NavbarContext override */}
+        <Box sx={{ display: 'flex' }}>
+            <Box sx={{ flexShrink: 0, position: 'relative', height: '100vh' }}>
+                <DefaultNavBar />
+            </Box>
+            <ErrorBoundary>{children}</ErrorBoundary>
+        </Box>
     </RequireAuth>
 );
 

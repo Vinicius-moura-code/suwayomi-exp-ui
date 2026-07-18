@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from '@/lib/router';
 import { useCallback } from 'react';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
 import { useAppPageHistoryContext } from '@/base/contexts/AppPageHistoryContext.tsx';
+import { normalizeHistoryPath } from '@/base/hooks/useHistory.ts';
 
 const READER_REGEX = /\/manga\/[0-9]+\/chapter\/[0-9]+/g;
 const PAGES_TO_IGNORE: readonly RegExp[] = [READER_REGEX];
@@ -18,6 +19,7 @@ export const useBackButton = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { history, onBack } = useAppPageHistoryContext();
+    const currentPath = normalizeHistoryPath(location.pathname + location.search);
 
     return useCallback(async () => {
         const getDelta = (historyToCheck: string[] = history, delta: number = 0) => {
@@ -27,15 +29,16 @@ export const useBackButton = () => {
             }
 
             const isLastPageInHistoryCurrentPage =
-                historyToCheck.length === 1 && historyToCheck[0] === location.pathname;
+                historyToCheck.length === 1 && normalizeHistoryPath(historyToCheck[0]) === currentPath;
             if (isLastPageInHistoryCurrentPage) {
                 return 0;
             }
 
             const [previousPage] = historyToCheck.slice(-2);
+            const normalizedPreviousPage = normalizeHistoryPath(previousPage);
 
-            const isPreviousPageCurrentPage = previousPage === location.pathname;
-            const ignorePreviousPage = PAGES_TO_IGNORE.some((page) => !!previousPage.match(page));
+            const isPreviousPageCurrentPage = normalizedPreviousPage === currentPath;
+            const ignorePreviousPage = PAGES_TO_IGNORE.some((page) => !!normalizedPreviousPage.match(page));
 
             const skipPreviousPage = isPreviousPageCurrentPage || ignorePreviousPage;
             if (!skipPreviousPage) {
@@ -59,5 +62,5 @@ export const useBackButton = () => {
         }
 
         navigate(backDelta);
-    }, [history, onBack, location.pathname]);
+    }, [history, onBack, currentPath, navigate]);
 };
