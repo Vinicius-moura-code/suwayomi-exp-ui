@@ -106,11 +106,22 @@ export abstract class BaseClient<Client, ClientConfig, Fetcher> {
     }
 
     private static getBaseUrl(): string {
+        if (typeof window === 'undefined') {
+            return (
+                process.env.NEXT_PUBLIC_SERVER_URL_DEFAULT ||
+                process.env.VITE_SERVER_URL_DEFAULT ||
+                'http://localhost:4567'
+            );
+        }
+
         const { hostname, port, protocol } = window.location;
 
-        const defaultUrl = import.meta.env.DEV
-            ? import.meta.env.VITE_SERVER_URL_DEFAULT
-            : `${protocol}//${hostname}:${port}`;
+        const defaultUrl =
+            process.env.NODE_ENV === 'development'
+                ? process.env.NEXT_PUBLIC_SERVER_URL_DEFAULT ||
+                  process.env.VITE_SERVER_URL_DEFAULT ||
+                  `${protocol}//${hostname}:${port}`
+                : `${protocol}//${hostname}:${port}`;
 
         const serverBaseURL = AppStorage.local.getItemParsed(BaseClient.BASE_URL_KEY, defaultUrl);
 

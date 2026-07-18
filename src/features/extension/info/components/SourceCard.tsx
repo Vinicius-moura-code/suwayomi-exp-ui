@@ -7,7 +7,7 @@
  */
 
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import SettingsIcon from '@mui/icons-material/Settings';

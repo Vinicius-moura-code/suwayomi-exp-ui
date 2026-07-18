@@ -178,6 +178,8 @@ import type {
     UpdateMangaMetadataMutationVariables,
     UpdateMangaMutation,
     UpdateMangaMutationVariables,
+    UpdateMangaVisibilityMutation,
+    UpdateMangaVisibilityMutationVariables,
     UpdateMangasCategoriesMutation,
     UpdateMangasCategoriesMutationVariables,
     UpdateMangasMutation,
@@ -256,6 +258,7 @@ import {
     UPDATE_MANGA,
     UPDATE_MANGA_CATEGORIES,
     UPDATE_MANGA_METADATA,
+    UPDATE_MANGA_VISIBILITY,
     UPDATE_MANGAS,
     UPDATE_MANGAS_CATEGORIES,
 } from '@/lib/graphql/manga/MangaMutation.ts';
@@ -2646,6 +2649,57 @@ export class RequestManager {
         );
     }
 
+    public updateMangaVisibility(
+        mangaId: number,
+        patch: { hideFromHistory?: boolean; hideFromUpdates?: boolean },
+        options?: MutationOptions<UpdateMangaVisibilityMutation, UpdateMangaVisibilityMutationVariables>,
+    ): AbortableApolloMutationResponse<UpdateMangaVisibilityMutation> {
+        return this.doRequest<UpdateMangaVisibilityMutation, UpdateMangaVisibilityMutationVariables>(
+            GQLMethod.MUTATION,
+            UPDATE_MANGA_VISIBILITY,
+            {
+                input: {
+                    mangaId,
+                    hideFromHistory: patch.hideFromHistory,
+                    hideFromUpdates: patch.hideFromUpdates,
+                },
+            },
+            {
+                optimisticResponse: {
+                    __typename: 'Mutation',
+                    updateMangaVisibility: {
+                        __typename: 'UpdateMangaVisibilityPayload',
+                        manga: {
+                            __typename: 'MangaType',
+                            id: mangaId,
+                            hideFromHistory: patch.hideFromHistory ?? false,
+                            hideFromUpdates: patch.hideFromUpdates ?? false,
+                        },
+                    },
+                },
+                update: (cache, { data }) => {
+                    const manga = data?.updateMangaVisibility?.manga;
+                    if (!manga) {
+                        return;
+                    }
+                    cache.modify({
+                        id: cache.identify({ __typename: 'MangaType', id: mangaId }),
+                        fields: {
+                            hideFromHistory() {
+                                return manga.hideFromHistory;
+                            },
+                            hideFromUpdates() {
+                                return manga.hideFromUpdates;
+                            },
+                        },
+                    });
+                    cache.evict({ fieldName: 'chapters' });
+                },
+                ...options,
+            },
+        );
+    }
+
     public useGetChapters<Data, Variables extends OperationVariables>(
         document: DocumentNode | TypedDocumentNode<Data, Variables>,
         variables: Variables,
@@ -3455,7 +3509,7 @@ export class RequestManager {
         const result = this.useGetChapters<GetChaptersUpdatesQuery, GetChaptersUpdatesQueryVariables>(
             GET_CHAPTERS_UPDATES,
             {
-                filter: { inLibrary: { equalTo: true } },
+                filter: { inLibrary: { equalTo: true }, excludeHiddenFromUpdates: true },
                 order: [
                     { by: ChapterOrderBy.FetchedAt, byType: SortOrder.Desc },
                     { by: ChapterOrderBy.SourceOrder, byType: SortOrder.Desc },
@@ -3503,7 +3557,10 @@ export class RequestManager {
         const result = this.useGetChapters<GetChaptersHistoryQuery, GetChaptersHistoryQueryVariables>(
             GET_CHAPTERS_HISTORY,
             {
-                filter: { lastReadAt: { isNull: false, notEqualToAll: ['0'] } },
+                filter: {
+                    lastReadAt: { isNull: false, notEqualToAll: ['0'] },
+                    excludeHiddenFromHistory: true,
+                },
                 order: [
                     { by: ChapterOrderBy.LastReadAt, byType: SortOrder.Desc },
                     { by: ChapterOrderBy.SourceOrder, byType: SortOrder.Desc },

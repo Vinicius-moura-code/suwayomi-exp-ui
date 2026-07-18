@@ -8,7 +8,7 @@
 
 import type { ErrorInfo, ReactNode } from 'react';
 import { Component, useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@/lib/router';
 import { t } from '@lingui/core/macro';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { EmptyView } from '@/base/components/feedback/EmptyView.tsx';

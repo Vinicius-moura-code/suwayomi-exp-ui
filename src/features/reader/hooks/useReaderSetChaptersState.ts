@@ -7,7 +7,7 @@
  */
 
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from '@/lib/router';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import type { requestManager } from '@/lib/requests/RequestManager.ts';
 import type { GetChaptersReaderQuery } from '@/lib/graphql/generated/graphql.ts';

@@ -7,7 +7,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@/lib/router';
 import { useSessionStorage } from '@/base/hooks/useStorage.tsx';
 import { AppStorage } from '@/lib/storage/AppStorage.ts';
 

@@ -182,6 +182,9 @@ export const MANGA_SCREEN_FIELDS = gql`
         status
         realUrl
 
+        hideFromHistory
+        hideFromUpdates
+
         meta {
             ...MANGA_META_FIELDS
         }

@@ -8,7 +8,7 @@
 
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 
-// !!! IMPORTANT !!! - Update along with vite.config.ts workbox config
+// !!! IMPORTANT !!! - Update along with next.config.mjs workbox config
 export enum ImageCacheKey {
     OTHER = 'image-cache-other',
     EXTENSION_ICONS = 'image-cache-extension-icons',
@@ -18,12 +18,12 @@ export enum ImageCacheKey {
 
 const IMAGE_CACHE_KEYS = Object.values(ImageCacheKey);
 
-if (window.caches) {
+if (typeof window !== 'undefined' && window.caches) {
     caches.delete('image-cache').catch(defaultPromiseErrorHandler('ImageCache: delete removed "image-cache"'));
 }
 
 export class ImageCache {
-    // !!! IMPORTANT !!! - Update along with vite.config.ts workbox config
+    // !!! IMPORTANT !!! - Update along with next.config.mjs workbox config
     static getKeyFor(url: string): ImageCacheKey {
         if (url.match(/\/chapter\/[0-9]+\/page\/[0-9]+/g)) {
             return ImageCacheKey.CHAPTER_PAGES;

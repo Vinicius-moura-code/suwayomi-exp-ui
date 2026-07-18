@@ -13,7 +13,7 @@ import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/ho
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@/lib/router';
 import Slide from '@mui/material/Slide';
 import type { Ref } from 'react';
 import { memo } from 'react';

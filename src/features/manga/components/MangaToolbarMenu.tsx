@@ -9,13 +9,15 @@
 import Label from '@mui/icons-material/Label';
 import MoreHoriz from '@mui/icons-material/MoreHoriz';
 import Refresh from '@mui/icons-material/Refresh';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -33,9 +35,16 @@ import type {
     MangaSourceIdInfo,
     MangaTitleInfo,
 } from '@/features/manga/Manga.types.ts';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+
+type MangaVisibilityInfo = {
+    hideFromHistory?: boolean;
+    hideFromUpdates?: boolean;
+};
 
 interface IProps {
-    manga: MangaIdInfo & MangaInLibraryInfo & MangaSourceIdInfo & MangaTitleInfo;
+    manga: MangaIdInfo & MangaInLibraryInfo & MangaSourceIdInfo & MangaTitleInfo & MangaVisibilityInfo;
     onRefresh: () => any;
     refreshing: boolean;
 }
@@ -64,6 +73,36 @@ export const MangaToolbarMenu = ({ manga, onRefresh, refreshing }: IProps) => {
         });
     };
 
+    const hideFromHistory = manga.hideFromHistory ?? false;
+    const hideFromUpdates = manga.hideFromUpdates ?? false;
+
+    const toggleVisibility = (field: keyof MangaVisibilityInfo) => {
+        requestManager
+            .updateMangaVisibility(manga.id, {
+                hideFromHistory: field === 'hideFromHistory' ? !hideFromHistory : hideFromHistory,
+                hideFromUpdates: field === 'hideFromUpdates' ? !hideFromUpdates : hideFromUpdates,
+            })
+            .response.catch(defaultPromiseErrorHandler('MangaToolbarMenu::updateMangaVisibility'));
+        handleClose();
+    };
+
+    const visibilityMenuItems = manga.inLibrary
+        ? [
+              <MenuItem key="hide-history" onClick={() => toggleVisibility('hideFromHistory')}>
+                  <ListItemIcon>
+                      {hideFromHistory ? <Visibility fontSize="small" /> : <VisibilityOff fontSize="small" />}
+                  </ListItemIcon>
+                  <ListItemText>{hideFromHistory ? t`Show in History` : t`Hide from History`}</ListItemText>
+              </MenuItem>,
+              <MenuItem key="hide-updates" onClick={() => toggleVisibility('hideFromUpdates')}>
+                  <ListItemIcon>
+                      {hideFromUpdates ? <Visibility fontSize="small" /> : <VisibilityOff fontSize="small" />}
+                  </ListItemIcon>
+                  <ListItemText>{hideFromUpdates ? t`Show in Updates` : t`Hide from Updates`}</ListItemText>
+              </MenuItem>,
+          ]
+        : [];
+
     return (
         <>
             {isLargeScreen && (
@@ -88,6 +127,16 @@ export const MangaToolbarMenu = ({ manga, onRefresh, refreshing }: IProps) => {
                     )}
                     {manga.inLibrary && (
                         <>
+                            <CustomTooltip title={hideFromHistory ? t`Show in History` : t`Hide from History`}>
+                                <IconButton onClick={() => toggleVisibility('hideFromHistory')} color="inherit">
+                                    {hideFromHistory ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </CustomTooltip>
+                            <CustomTooltip title={hideFromUpdates ? t`Show in Updates` : t`Hide from Updates`}>
+                                <IconButton onClick={() => toggleVisibility('hideFromUpdates')} color="inherit">
+                                    {hideFromUpdates ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </CustomTooltip>
                             <CustomTooltip title={t`Migrate`}>
                                 <Link
                                     to={AppRoutes.migrate.children.singleMangaSearch.path(
@@ -163,6 +212,7 @@ export const MangaToolbarMenu = ({ manga, onRefresh, refreshing }: IProps) => {
                                 <ListItemText>{t`Save dynamic color theme`}</ListItemText>
                             </MenuItem>
                         )}
+                        {visibilityMenuItems}
                         {manga.inLibrary && [
                             <MenuItem
                                 key="migrate"

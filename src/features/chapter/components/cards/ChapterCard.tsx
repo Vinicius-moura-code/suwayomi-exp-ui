@@ -16,7 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import type { MouseEvent, TouchEvent } from 'react';
 import React, { memo, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
 import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';

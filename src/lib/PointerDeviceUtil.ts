@@ -32,6 +32,10 @@ class PointerDeviceUtilClass {
     private detectedTrackPadLike: boolean | undefined = undefined;
 
     constructor() {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
         window.addEventListener('wheel', this.record.bind(this), { passive: true });
 
         setInterval(() => {

@@ -7,7 +7,7 @@
  */
 
 import { createElement } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@/lib/router';
 import List from '@mui/material/List';
 import { useLingui } from '@lingui/react/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';

@@ -13,7 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import type { AwaitableComponentProps } from 'awaitable-component';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@/lib/router';
 import { useLingui } from '@lingui/react/macro';
 import type { ReactNode } from 'react';
 

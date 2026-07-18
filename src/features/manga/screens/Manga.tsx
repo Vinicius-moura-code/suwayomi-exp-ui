@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import React, { useEffect, useRef } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from '@/lib/router';
 import { isNetworkRequestInFlight } from '@apollo/client/utilities';
 import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
@@ -32,7 +32,8 @@ import type { MangaLocationState } from '@/features/manga/Manga.types.ts';
 
 export const Manga: React.FC = () => {
     const { t } = useLingui();
-    const { id } = useParams<{ id: string }>();
+    const { mangaId, id: legacyId } = useParams<{ mangaId?: string; id?: string }>();
+    const id = mangaId ?? legacyId ?? '';
     const { mode } = useLocation<MangaLocationState>().state ?? STABLE_EMPTY_OBJECT;
 
     const autofetchedRef = useRef(false);

@@ -8,7 +8,7 @@
 
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from '@/lib/router';
 import type { MigrationProgress } from '@/features/migration/Migration.types.ts';
 import { MigrationPhase } from '@/features/migration/Migration.types.ts';
 import { MigrationManager } from '@/features/migration/MigrationManager.ts';

@@ -13,7 +13,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { memo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import { ChapterDownloadRetryButton } from '@/features/chapter/components/buttons/ChapterDownloadRetryButton.tsx';

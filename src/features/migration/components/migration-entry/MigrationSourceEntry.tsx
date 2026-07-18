@@ -19,7 +19,7 @@ import Typography from '@mui/material/Typography';
 import { useLingui } from '@lingui/react/macro';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@/lib/router';
 import { memo } from 'react';
 
 export const MigrationSourceEntry = memo((entry: TMigrationEntry) => {

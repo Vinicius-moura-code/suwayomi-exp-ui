@@ -8,7 +8,7 @@
 
 import Button from '@mui/material/Button';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { Link } from 'react-router-dom';
+import { useNavigate } from '@/lib/router';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { MUIUtil } from '@/lib/mui/MUI.util.ts';
 import type {
@@ -31,6 +31,8 @@ export const ContinueReadingButton = ({
         | null;
     mangaLinkTo: string;
 }) => {
+    const navigate = useNavigate();
+
     if (!showContinueReadingButton || !chapter) {
         return null;
     }
@@ -49,10 +51,13 @@ export const ContinueReadingButton = ({
                 variant="contained"
                 size="small"
                 sx={{ minWidth: 'unset', py: 0.5, px: 0.75 }}
-                component={Link}
-                to={`${mangaLinkTo}/chapter/${sourceOrder}`}
-                state={Chapters.getReaderOpenChapterLocationState(chapter)}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigate(`${mangaLinkTo}/chapter/${sourceOrder}`, {
+                        state: Chapters.getReaderOpenChapterLocationState(chapter),
+                    });
+                }}
             >
                 <PlayArrowIcon />
             </Button>

@@ -1788,6 +1788,8 @@ export type MangaScreenFieldsFragment = {
     description: string | null;
     status: Types.MangaStatus;
     realUrl: string | null;
+    hideFromHistory: boolean;
+    hideFromUpdates: boolean;
     sourceId: string;
     genre: Array<string>;
     lastFetchedAt: string | null;
@@ -1868,6 +1870,8 @@ export type RefreshMangaMutation = {
             description: string | null;
             status: Types.MangaStatus;
             realUrl: string | null;
+            hideFromHistory: boolean;
+            hideFromUpdates: boolean;
             sourceId: string;
             genre: Array<string>;
             lastFetchedAt: string | null;
@@ -2124,6 +2128,18 @@ export type UpdateMangaMetadataMutation = {
     } | null;
 };
 
+export type UpdateMangaVisibilityMutationVariables = Exact<{
+    input: Types.UpdateMangaVisibilityInput;
+}>;
+
+export type UpdateMangaVisibilityMutation = {
+    __typename: 'Mutation';
+    updateMangaVisibility?: {
+        __typename: 'UpdateMangaVisibilityPayload';
+        manga: { __typename: 'MangaType'; id: number; hideFromHistory: boolean; hideFromUpdates: boolean };
+    } | null;
+};
+
 export type GetMangaMetaQueryVariables = Exact<{
     id: number;
 }>;
@@ -2150,6 +2166,8 @@ export type GetMangaScreenQuery = {
         description: string | null;
         status: Types.MangaStatus;
         realUrl: string | null;
+        hideFromHistory: boolean;
+        hideFromUpdates: boolean;
         sourceId: string;
         genre: Array<string>;
         lastFetchedAt: string | null;

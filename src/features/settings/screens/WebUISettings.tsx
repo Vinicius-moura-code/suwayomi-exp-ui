@@ -99,7 +99,9 @@ export const WebUISettings = () => {
     }
 
     const webUISettings = data!.settings;
-    const isCustomWebUI = webUISettings.webUIFlavor === WebUiFlavor.Custom;
+    // ExpUI / Custom: local webUI folder only — no GitHub channel or auto-update
+    const isLocalManagedWebUI =
+        webUISettings.webUIFlavor === WebUiFlavor.Custom || webUISettings.webUIFlavor === WebUiFlavor.Expui;
 
     return (
         <List sx={{ pt: 0 }}>
@@ -135,10 +137,10 @@ export const WebUISettings = () => {
                 value={webUISettings.webUIChannel}
                 values={WEB_UI_CHANNEL_SELECT_VALUES}
                 handleChange={(channel) => updateSetting('webUIChannel', channel)}
-                disabled={isCustomWebUI}
+                disabled={isLocalManagedWebUI}
             />
             <WebUIUpdateIntervalSetting
-                disabled={isCustomWebUI}
+                disabled={isLocalManagedWebUI}
                 updateCheckInterval={webUISettings.webUIUpdateCheckInterval}
             />
             <ListItem>

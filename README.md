@@ -1,86 +1,67 @@
-# Suwayomi-WebUI
+# ExpUI
 
-This is the repository of the default client of [Suwayomi-Server](https://github.com/Suwayomi/Suwayomi-Server).
+Open-source web client for **[Suwayomi Exp Server](https://github.com/Vinicius-moura-code/suwayomi-exp-server)** — a personal hard fork of [Suwayomi-WebUI](https://github.com/Suwayomi/Suwayomi-WebUI), rewritten on **Next.js** (App Router, static export) with a focus on performance and independent evolution.
 
-The server has this web app bundled by default and is able to automatically update to the latest versions.
-Thus, there is no need to manually download any builds unless you want to host the app yourself instead of having it hosted by the Suwayomi-Server.
+Default server flavor name: **`ExpUI`**. Not affiliated with the upstream Suwayomi project.
+
+## Credits
+
+This project is based on work by many people. Thank you.
+
+| Project                                                        | Role                                                          |
+| -------------------------------------------------------------- | ------------------------------------------------------------- |
+| [Suwayomi-WebUI](https://github.com/Suwayomi/Suwayomi-WebUI)   | Upstream client this fork started from                        |
+| [Suwayomi-Server](https://github.com/Suwayomi/Suwayomi-Server) | Server / GraphQL API the original WebUI targeted              |
+| Contributors to the Suwayomi project                           | Features, UX, and translations that still shape this codebase |
 
 ## Features
 
-- Library management
-    - Library page - manga management
-        - Filter/Sort/Search your manga
-        - Use categories to categorize your manga
-        - Select manga in your library and perform actions (e.g. download, change categories, mark as read, ...) on one or multiple manga
-    - Manga page - chapter management
-        - Filter/Sort the chapter list
-        - Select chapters and perform actions (e.g. download, bookmark, mark as read, ...) on one or multiple manga
-    - Select a range of manga/chapters by using shift + left click or long press
-    - Overview of duplicated manga in your library (settings > library)
-- Reader
-    - Desktop and Mobile UI
-    - Default settings per reading mode
-    - Settings per manga
-    - Reading modes (Single/Double Page, Continuous Vertical/Horizontal, Webtoon)
-    - Page scale modes (limit by width/height/screen, scale small pages, custom reader width)
-    - Image filters
-    - Customizable keybinds
-    - Auto scrolling
-    - Infinite chapter scrolling
-    - Option to ignore duplicated chapters while reading
-    - Option to automatically download next chapters while reading
-    - Option to automatically delete downloaded chapters after reading them
-    - ...
-- Download queue
-- Reading history (**rudimentary**)
-- Settings per device (e.g. different reader settings for pc, phone and tablet)
-- Sources
-    - Migration of manga between sources
-    - Hide in library manga while browsing sources
-    - Save source searches to easily reuse them
-    - Duplication check when adding a new manga to your library
-    - Quick add/remove a manga to your library in the source browse (hover with mouse on pc or long press on touch devices)
-- App updates
-    - Inform about available WebUI and Server updates
-    - Inform about successful WebUI and Server updates since the last time the app was used
-- Themes
-    - Use predefined themes
-    - Create your own themes
-    - Dynamic theme on manga pages
+Core reader and library experience from Suwayomi-WebUI (library, sources, reader modes, downloads, themes, …), with Exp-oriented direction:
 
-## Preview
+- Next.js 15 static export (embeddable in the server `webUI/` directory)
+- Performance-first client work
+- First-class pairing with Suwayomi Exp Server (e.g. History / Updates visibility)
 
-An ongoing changelog of all relevant changes since the last stable release can be found [here](https://github.com/Suwayomi/Suwayomi-WebUI/blob/master/CHANGELOG.md)
+## Related
 
-To use the preview version you can select the PREVIEW channel in the settings of your Suwayomi-Server.
-The server is then able to download and also keep the version automatically up-to-date.
+| Repo                                                                              | What                            |
+| --------------------------------------------------------------------------------- | ------------------------------- |
+| [suwayomi-exp-server](https://github.com/Vinicius-moura-code/suwayomi-exp-server) | Exp Server — pairs with this UI |
+| [Suwayomi-WebUI](https://github.com/Suwayomi/Suwayomi-WebUI)                      | Upstream (reference)            |
 
-Keep in mind that the preview version might need a newer version than the stable server.
-In case your server is outdated, it will automatically downgrade to the latest compatible WebUI version.
+## Development
 
-Minified builds of WebUI can be found here [Suwayomi-WebUI-preview](https://github.com/Suwayomi/Suwayomi-WebUI-preview).
+Requirements: **Node.js 24+**, [pnpm](https://pnpm.io/). A running Exp Server (default http://localhost:4567) for GraphQL.
 
-Additionally, there is an online build of the WebUI preview version that is available [here](https://suwayomi-webui-preview.github.io/).
-_Make sure to set your Suwayomi-Server hostname in Settings or you'll get infinite loading._ Also note that its the **latest** revision of WebUI and might not work correctly if you connect to a stable build of Suwayomi-Server.
+```bash
+pnpm install
+pnpm dev          # http://localhost:3000
+pnpm build        # static export → build/
+```
 
-## Contributing and Technical info
+Embed into the server data directory (Windows / Git Bash):
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+```bash
+# from suwayomi-exp-server
+scripts/dev/install-ui.sh
+# or: scripts/dev/install-ui.bat
+```
 
-## Translation
-
-Feel free to translate the project on [Weblate](https://hosted.weblate.org/projects/suwayomi/suwayomi-webui/)
-
-<details><summary>Translation Progress</summary>
-<a href="https://hosted.weblate.org/engage/suwayomi-webui/">
-<img src="https://hosted.weblate.org/widgets/suwayomi/-/suwayomi-webui/multi-auto.svg" alt="Translation status" />
-</a>
-</details>
+Then open http://localhost:4567 with server flavor `ExpUI`.
 
 ## License
 
-    Copyright (C) Contributors to the Suwayomi project
+```
+Copyright (C) Contributors to the Suwayomi project
+Copyright (C) Contributors to Suwayomi Exp
 
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+```
+
+Full text: [`LICENSE`](./LICENSE).
+
+## Disclaimer
+
+This software is not affiliated with any content providers or with the upstream Suwayomi organization. You are responsible for how you use it and for complying with applicable laws.

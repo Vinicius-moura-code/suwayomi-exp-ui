@@ -8,7 +8,7 @@
 
 import type { MessageDescriptor } from '@lingui/core';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from '@/lib/router';
 import IconButton from '@mui/material/IconButton';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { StringParam, useQueryParam } from 'use-query-params';
@@ -216,14 +216,14 @@ export function SourceMangas() {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
-    const location = useLocation();
+    const location = useLocation<RouteStateSourceBrowse>();
     const { key: locationKey, state: locationState } = location;
     const {
         contentType: initialContentType = SourceContentType.POPULAR,
         clearCache = false,
         mode = 'source',
         mangaId,
-    } = useLocation<RouteStateSourceBrowse>().state ?? STABLE_EMPTY_OBJECT;
+    } = location.state ?? STABLE_EMPTY_OBJECT;
 
     const {
         settings: { hideLibraryEntries },
@@ -365,7 +365,7 @@ export function SourceMangas() {
                     },
                     {
                         state: {
-                            ...locationState,
+                            ...(locationState ?? {}),
                             ...AppRoutes.sources.children.browse.state({ contentType: newContentType }),
                         },
                     },
@@ -425,8 +425,9 @@ export function SourceMangas() {
             <SourceGridLayout />
             <CustomTooltip title={t`Open in WebView`} disabled={!source?.homeUrl}>
                 <IconButton
+                    component={Link}
                     disabled={!source?.homeUrl}
-                    href={source?.homeUrl ? requestManager.getWebviewUrl(source?.homeUrl) : ''}
+                    href={source?.homeUrl ? requestManager.getWebviewUrl(source.homeUrl) : undefined}
                     rel="noreferrer"
                     target="_blank"
                     color="inherit"

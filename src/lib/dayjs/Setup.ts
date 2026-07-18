@@ -27,7 +27,7 @@ dayjs.extend(duration);
 // dayjs.extend(localizedFormat);
 // dayjs.extend(updateLocale);
 
-importDayJsLocale(navigator.language).then((dayjsLocale) => {
+importDayJsLocale(typeof navigator !== 'undefined' ? navigator.language : 'en').then((dayjsLocale) => {
     dayjs.locale(dayjsLocale);
     // dayjs.updateLocale(navigator.language, {
     //     calendar: {

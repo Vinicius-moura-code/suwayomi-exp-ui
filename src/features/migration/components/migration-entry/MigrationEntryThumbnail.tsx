@@ -12,7 +12,7 @@ import { ListCardAvatar } from '@/base/components/lists/cards/ListCardAvatar.tsx
 import { Mangas } from '@/features/manga/services/Mangas.ts';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@/lib/router';
 import type { MigrationMatch } from '@/features/migration/Migration.types.ts';
 import type { Theme } from '@mui/material/styles';
 import { useLingui } from '@lingui/react/macro';

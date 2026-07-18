@@ -14,7 +14,7 @@ import { StringParam, useQueryParam } from 'use-query-params';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import { useWindowEvent } from '@mantine/hooks';
 import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';

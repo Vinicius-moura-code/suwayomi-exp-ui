@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
 import { Mangas } from '@/features/manga/services/Mangas.ts';
 import type { MangaIdInfo, MangaThumbnailInfo, MangaTitleInfo } from '@/features/manga/Manga.types.ts';

@@ -9,7 +9,7 @@
 export const defaultPromiseErrorHandler =
     (name: string, allowProd: boolean = false) =>
     (error: any) => {
-        if (!allowProd && import.meta.env.PROD) {
+        if (!allowProd && process.env.NODE_ENV === 'production') {
             return;
         }
 

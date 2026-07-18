@@ -7,7 +7,7 @@
  */
 
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/lib/router';
 import type { Direction } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { t } from '@lingui/core/macro';

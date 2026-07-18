@@ -24,7 +24,7 @@ import type { MetadataMigrationSettings, MigrateOptions } from '@/features/migra
 import type { AwaitableComponentProps } from 'awaitable-component';
 import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import { applyStyles } from '@/base/utils/ApplyStyles.ts';
 
 export const MigrationOptionsDialog = ({

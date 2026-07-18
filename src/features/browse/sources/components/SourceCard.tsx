@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import Stack from '@mui/material/Stack';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
@@ -62,15 +62,22 @@ export const SourceCard: React.FC<IProps> = (props: IProps) => {
 
     return (
         <Card>
-            <CardActionArea
-                component={Link}
-                to={AppRoutes.sources.children.browse.path(id)}
-                state={AppRoutes.sources.children.browse.state({
-                    contentType: SourceContentType.POPULAR,
-                    clearCache: true,
-                })}
-            >
-                <ListCardContent>
+            <ListCardContent>
+                <CardActionArea
+                    component={Link}
+                    to={AppRoutes.sources.children.browse.path(id)}
+                    state={AppRoutes.sources.children.browse.state({
+                        contentType: SourceContentType.POPULAR,
+                        clearCache: true,
+                    })}
+                    sx={{
+                        display: 'flex',
+                        flexGrow: 1,
+                        minWidth: 0,
+                        alignItems: 'center',
+                        gap: 'inherit',
+                    }}
+                >
                     <ListCardAvatar
                         iconUrl={requestManager.getValidImgUrlFor(iconUrl)}
                         alt={sourceName}
@@ -103,34 +110,33 @@ export const SourceCard: React.FC<IProps> = (props: IProps) => {
                             <Typography variant="caption">{extensionStore.name}</Typography>
                         )}
                     </Stack>
-                    {supportsLatest && (
-                        <Button
-                            {...MUIUtil.preventRippleProp()}
-                            variant="outlined"
-                            component={Link}
-                            to={AppRoutes.sources.children.browse.path(id)}
-                            state={AppRoutes.sources.children.browse.state({
-                                contentType: SourceContentType.LATEST,
-                                clearCache: true,
-                            })}
-                        >
-                            {t`Latest`}
-                        </Button>
-                    )}
-                    <CustomTooltip title={isPinned ? t`Unpin source` : t`Pin source`}>
-                        <IconButton
-                            {...MUIUtil.preventRippleProp()}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                updateSetting('isPinned', !isPinned);
-                            }}
-                            color={isPinned ? 'primary' : 'inherit'}
-                        >
-                            {isPinned ? <PushPinIcon /> : <PushPinOutlinedIcon />}
-                        </IconButton>
-                    </CustomTooltip>
-                </ListCardContent>
-            </CardActionArea>
+                </CardActionArea>
+                {supportsLatest && (
+                    <Button
+                        {...MUIUtil.preventRippleProp()}
+                        variant="outlined"
+                        component={Link}
+                        to={AppRoutes.sources.children.browse.path(id)}
+                        state={AppRoutes.sources.children.browse.state({
+                            contentType: SourceContentType.LATEST,
+                            clearCache: true,
+                        })}
+                    >
+                        {t`Latest`}
+                    </Button>
+                )}
+                <CustomTooltip title={isPinned ? t`Unpin source` : t`Pin source`}>
+                    <IconButton
+                        {...MUIUtil.preventRippleProp()}
+                        onClick={() => {
+                            updateSetting('isPinned', !isPinned);
+                        }}
+                        color={isPinned ? 'primary' : 'inherit'}
+                    >
+                        {isPinned ? <PushPinIcon /> : <PushPinOutlinedIcon />}
+                    </IconButton>
+                </CustomTooltip>
+            </ListCardContent>
         </Card>
     );
 };

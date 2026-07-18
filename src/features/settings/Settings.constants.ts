@@ -8,6 +8,7 @@
 
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
+import '@/lib/runtimeSetup.ts';
 import { d } from 'koration';
 import { DEFAULT_DEVICE } from '@/features/device/services/Device.ts';
 import { DEFAULT_SORT_SETTINGS } from '@/features/migration/Migration.constants.ts';
@@ -128,6 +129,10 @@ export const AUTH_MODES_SELECT_VALUES: SelectSettingValue<AuthMode>[] = AUTH_MOD
 
 const WEB_UI_FLAVORS = Object.values(WebUiFlavor);
 const WEB_UI_FLAVOR_TO_TRANSLATION: { [flavor in WebUiFlavor]: SelectSettingValueDisplayInfo } = {
+    [WebUiFlavor.Expui]: {
+        text: msg`ExpUI`,
+        description: msg`Official UI for suwayomi-exp. Served from the server webUI data folder (install via scripts/dev/install-ui).`,
+    },
     [WebUiFlavor.Webui]: {
         text: msg`WebUI`,
         description: msg`Use the default WebUI`,

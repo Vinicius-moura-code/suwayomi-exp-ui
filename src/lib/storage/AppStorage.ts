@@ -9,8 +9,36 @@
 /* oxlint-disable max-classes-per-file */
 import { jsonSaveParse } from '@/lib/HelperFunctions.ts';
 
+type WebStorage = Pick<globalThis.Storage, 'getItem' | 'setItem' | 'removeItem' | 'clear' | 'key' | 'length'>;
+
+const createMemoryStorage = (): WebStorage => {
+    const data = new Map<string, string>();
+    return {
+        get length() {
+            return data.size;
+        },
+        clear: () => data.clear(),
+        getItem: (key: string) => data.get(key) ?? null,
+        key: (index: number) => [...data.keys()][index] ?? null,
+        removeItem: (key: string) => {
+            data.delete(key);
+        },
+        setItem: (key: string, value: string) => {
+            data.set(key, value);
+        },
+    };
+};
+
+const getBrowserStorage = (type: 'local' | 'session'): WebStorage => {
+    if (typeof window === 'undefined') {
+        return createMemoryStorage();
+    }
+
+    return type === 'local' ? window.localStorage : window.sessionStorage;
+};
+
 export class Storage {
-    constructor(private readonly storage: typeof window.localStorage) {}
+    constructor(private readonly storage: WebStorage) {}
 
     parseValue<T>(value: string | null, defaultValue: T): T {
         if (value === null) {
@@ -38,7 +66,7 @@ export class Storage {
         const currentValue = this.getItem(key);
 
         const fireEvent = (valueToStore: string | undefined) => {
-            if (!emitEvent) {
+            if (!emitEvent || typeof window === 'undefined') {
                 return;
             }
 
@@ -72,7 +100,7 @@ export class Storage {
 }
 
 export class AppStorage {
-    static readonly local: Storage = new Storage(window.localStorage);
+    static readonly local: Storage = new Storage(getBrowserStorage('local'));
 
-    static readonly session: Storage = new Storage(window.sessionStorage);
+    static readonly session: Storage = new Storage(getBrowserStorage('session'));
 }

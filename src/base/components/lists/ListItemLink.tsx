@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import type { ListItemButtonProps } from '@mui/material/ListItemButton';
 import ListItemButton from '@mui/material/ListItemButton';
 

@@ -9,7 +9,7 @@
 import { useCallback, useMemo } from 'react';
 import IconButton from '@mui/material/IconButton';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/lib/router';
 import Typography from '@mui/material/Typography';
 import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';

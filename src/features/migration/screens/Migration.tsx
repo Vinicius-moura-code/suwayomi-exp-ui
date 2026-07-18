@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Navigate } from 'react-router-dom';
+import { Navigate } from '@/lib/router';
 import { MigrationPhase } from '@/features/migration/Migration.types.ts';
 import { MigrationManager } from '@/features/migration/MigrationManager.ts';
 import { MigrationSelectSource } from '@/features/migration/screens/MigrationSelectSource.tsx';

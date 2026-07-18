@@ -9,7 +9,7 @@
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@/lib/router';
 import { memo } from 'react';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import { TypographyMaxLines } from '@/base/components/texts/TypographyMaxLines.tsx';

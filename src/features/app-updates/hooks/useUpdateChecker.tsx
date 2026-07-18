@@ -7,6 +7,7 @@
  */
 
 import { useCallback, useEffect, useMemo } from 'react';
+import '@/lib/runtimeSetup.ts';
 import { d } from 'koration';
 import { useLocalStorage } from '@/base/hooks/useStorage.tsx';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';

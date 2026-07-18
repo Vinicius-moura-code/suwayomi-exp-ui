@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import { useLingui } from '@lingui/react/macro';
 import { StyledFab } from '@/base/components/buttons/StyledFab.tsx';

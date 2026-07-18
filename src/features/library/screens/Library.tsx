@@ -13,7 +13,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import { useCallback, useMemo, useState } from 'react';
 import { useQueryParam, NumberParam, StringParam } from 'use-query-params';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router';
 import Box from '@mui/material/Box';
 import { useLingui } from '@lingui/react/macro';
 import { plural } from '@lingui/core/macro';
