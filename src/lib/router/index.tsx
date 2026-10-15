@@ -9,7 +9,12 @@
 'use client';
 
 import NextLink from 'next/link';
-import { usePathname, useRouter, useParams as useNextParams, useSearchParams as useNextSearchParams } from 'next/navigation';
+import {
+    usePathname,
+    useRouter,
+    useParams as useNextParams,
+    useSearchParams as useNextSearchParams,
+} from 'next/navigation';
 import type { NavigateOptions as NextNavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import {
     createContext,
@@ -18,6 +23,7 @@ import {
     useContext,
     useEffect,
     useMemo,
+    useRef,
     useState,
     type ForwardedRef,
     type MouseEvent,
@@ -174,8 +180,14 @@ export const useNavigationType = (): NavigationType =>
 export const useNavigate = (): NavigateFunction => {
     const router = useRouter();
     const pathname = usePathname() ?? '/';
-    const searchParams = useNextSearchParams();
     const history = useContext(RouterHistoryContext);
+
+    // navigate() updates the history context; reading it through refs keeps this function's identity stable,
+    // otherwise effects depending on `navigate` re-run on every navigation and loop forever.
+    const historyRef = useRef(history);
+    historyRef.current = history;
+    const pathnameRef = useRef(pathname);
+    pathnameRef.current = pathname;
 
     return useCallback(
         (toOrDelta: To | number, options?: NavigateOptions) => {
@@ -186,22 +198,23 @@ export const useNavigate = (): NavigateFunction => {
                 return;
             }
 
+            const currentHistory = historyRef.current;
             const href = pathFromTo(toOrDelta);
-            const [pathPart, hashPart] = href.split('#');
+            const [pathPart] = href.split('#');
             const [nextPathname, nextSearch = ''] = pathPart.split('?');
             const search = nextSearch ? `?${nextSearch}` : '';
 
             if (options?.state !== undefined) {
-                history?.pushHistory({
-                    pathname: nextPathname || pathname,
+                currentHistory?.pushHistory({
+                    pathname: nextPathname || pathnameRef.current,
                     search,
                     state: options.state,
                     key: String(Date.now()),
                 });
             }
 
-            history?.setNavigationType(options?.replace ? NavigationType.Replace : NavigationType.Push);
-            history?.bumpLocationKey();
+            currentHistory?.setNavigationType(options?.replace ? NavigationType.Replace : NavigationType.Push);
+            currentHistory?.bumpLocationKey();
 
             const nextOptions = { scroll: true } satisfies Partial<NextNavigateOptions>;
             if (options?.replace) {
@@ -209,11 +222,8 @@ export const useNavigate = (): NavigateFunction => {
             } else {
                 router.push(href, nextOptions);
             }
-
-            void hashPart;
-            void searchParams;
         },
-        [history, pathname, router, searchParams],
+        [router],
     ) as NavigateFunction;
 };
 
@@ -318,10 +328,13 @@ export const Link = forwardRef(function RouterLink(
 
 export const Navigate = ({ to, replace = false, state }: { to: To; replace?: boolean; state?: unknown }) => {
     const navigate = useNavigate();
+    const href = pathFromTo(to);
+    const stateRef = useRef(state);
+    stateRef.current = state;
 
     useEffect(() => {
-        navigate(to, { replace, state });
-    }, [navigate, replace, state, to]);
+        navigate(href, { replace, state: stateRef.current });
+    }, [navigate, href, replace]);
 
     return null;
 };
