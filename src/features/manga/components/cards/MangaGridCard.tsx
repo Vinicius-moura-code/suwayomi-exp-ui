@@ -104,6 +104,7 @@ export const MangaGridCard = memo(
                     >
                         <CardActionArea
                             component="div"
+                            nativeButton={false}
                             sx={{
                                 position: 'relative',
                                 height: '100%',

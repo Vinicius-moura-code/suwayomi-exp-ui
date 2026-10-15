@@ -207,6 +207,7 @@ const BaseReaderTransitionPage = ({
                         <Button
                             sx={{ flexGrow: 1 }}
                             component={Link}
+                            nativeButton={false}
                             onClick={(e) => {
                                 e.stopPropagation();
                             }}

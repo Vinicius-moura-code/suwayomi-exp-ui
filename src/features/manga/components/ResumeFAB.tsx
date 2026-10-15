@@ -45,6 +45,7 @@ export function ResumeFab({
         >
             <StyledFab
                 component={Link}
+                nativeButton={false}
                 variant="extended"
                 color="primary"
                 to={Chapters.getReaderUrl(chapter)}

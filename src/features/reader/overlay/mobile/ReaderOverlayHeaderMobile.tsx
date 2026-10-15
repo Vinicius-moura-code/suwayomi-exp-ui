@@ -97,6 +97,7 @@ const BaseReaderOverlayHeaderMobile = ({ isVisible, ref }: MobileHeaderProps & {
                 <Menu {...bindMenu(popupState)}>
                     <MenuItem
                         component={Link}
+                        nativeButton={false}
                         disabled={!realUrl}
                         href={realUrl ?? ''}
                         rel="noreferrer"
@@ -106,6 +107,7 @@ const BaseReaderOverlayHeaderMobile = ({ isVisible, ref }: MobileHeaderProps & {
                     </MenuItem>
                     <MenuItem
                         component={Link}
+                        nativeButton={false}
                         disabled={!realUrl}
                         href={realUrl ? requestManager.getWebviewUrl(realUrl) : ''}
                         rel="noreferrer"

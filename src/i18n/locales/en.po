@@ -147,6 +147,11 @@ msgstr "{availableUpdates, plural, one {# update available} other {# updates ava
 msgid "{categoryCount, plural, one {# category} other {# categories}}"
 msgstr "{categoryCount, plural, one {# category} other {# categories}}"
 
+#: src/features/category/components/CategorySelect.tsx
+#: src/features/category/screens/CategorySettings.tsx
+msgid "{concealedCategoryCount, plural, one {# private category is hidden} other {# private categories are hidden}}"
+msgstr "{concealedCategoryCount, plural, one {# private category is hidden} other {# private categories are hidden}}"
+
 #: src/features/manga/Manga.constants.ts
 msgid "{count, plural, one {Changed categories of manga} other {Changed categories of # manga}}"
 msgstr "{count, plural, one {Changed categories of manga} other {Changed categories of # manga}}"
@@ -310,6 +315,10 @@ msgstr "{extensionStoreCount, plural, one {# extension store} other {# extension
 #: src/features/extension/store/screens/ExtensionStores.tsx
 msgid "{installedExtensionCount, plural, one {# installed} other {# installed}}"
 msgstr "{installedExtensionCount, plural, one {# installed} other {# installed}}"
+
+#: src/features/category/components/PrivateCategoriesSettings.tsx
+msgid "{lockTimeoutMinutes, plural, one {After # minute} other {After # minutes}}"
+msgstr "{lockTimeoutMinutes, plural, one {After # minute} other {After # minutes}}"
 
 #: src/features/chapter/components/ChapterList.tsx
 #: src/features/chapter/components/MissingChaptersInfoSeparator.tsx
@@ -746,6 +755,8 @@ msgstr "Can't migrate an entry to itself"
 #: src/features/category/components/CategoriesInclusionSetting.tsx
 #: src/features/category/components/CategorySelect.tsx
 #: src/features/category/components/CreateOrEditCategoryDialog.tsx
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+#: src/features/category/components/PrivateCategoriesUnlockDialog.tsx
 #: src/features/migration/components/MigrationBulkSearchOptionsDialog.tsx
 #: src/features/migration/components/MigrationOptionsDialog.tsx
 #: src/features/reader/hotkeys/settings/components/RecordHotkey.tsx
@@ -795,6 +806,14 @@ msgstr "Change categories"
 #: src/features/manga/Manga.constants.ts
 msgid "Change categories of selected"
 msgstr "Change categories of selected"
+
+#: src/features/category/components/PrivateCategoriesSettings.tsx
+msgid "Change or remove the password"
+msgstr "Change or remove the password"
+
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "Change password"
+msgstr "Change password"
 
 #: src/features/app-updates/components/ServerUpdateChecker.tsx
 #: src/features/app-updates/components/VersionUpdateInfoDialog.tsx
@@ -938,6 +957,10 @@ msgstr "Completed"
 #: src/features/settings/components/images/Processing.tsx
 msgid "Compression level"
 msgstr "Compression level"
+
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "Confirm new password"
+msgstr "Confirm new password"
 
 #: src/features/settings/components/images/Processing.tsx
 msgid "Connect timeout"
@@ -1157,6 +1180,10 @@ msgstr "Could not save changes"
 msgid "Could not save the default search settings to the server"
 msgstr "Could not save the default search settings to the server"
 
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "Could not save the password"
+msgstr "Could not save the password"
+
 #: src/features/reader/services/ReaderService.ts
 msgid "Could not save the reader settings to the server"
 msgstr "Could not save the reader settings to the server"
@@ -1194,6 +1221,11 @@ msgstr "Could not update WebUI"
 msgid "Could not validate backup"
 msgstr "Could not validate backup"
 
+#: src/features/category/components/PrivateCategoriesUnlockDialog.tsx
+#: src/features/library/screens/Library.tsx
+msgid "Could not verify the password"
+msgstr "Could not verify the password"
+
 #: src/features/category/components/CategorySelect.tsx
 #: src/features/device/screens/DeviceSetting.tsx
 #: src/features/reader/hotkeys/settings/components/RecordHotkey.tsx
@@ -1228,6 +1260,10 @@ msgstr "Creating theme…"
 #: src/features/theme/Themes.ts
 msgid "Crimson"
 msgstr "Crimson"
+
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "Current password"
+msgstr "Current password"
 
 #: src/features/migration/components/MigrationDestinationSourceList.tsx
 msgid "Current source"
@@ -2326,6 +2362,14 @@ msgstr "Local source guide"
 msgid "Local source location"
 msgstr "Local source location"
 
+#: src/features/category/components/PrivateCategoriesSettings.tsx
+msgid "Lock automatically"
+msgstr "Lock automatically"
+
+#: src/features/library/screens/Library.tsx
+msgid "Lock private categories"
+msgstr "Lock private categories"
+
 #: src/features/settings/screens/ServerSettings.tsx
 msgid "Log file cleanup"
 msgstr "Log file cleanup"
@@ -2543,6 +2587,10 @@ msgstr "MIME-Type"
 msgid "MIME-Type target"
 msgstr "MIME-Type target"
 
+#: src/features/category/components/PrivateCategoriesSettings.tsx
+msgid "min"
+msgstr "min"
+
 #: src/features/theme/Themes.ts
 msgid "Minty Miracles"
 msgstr "Minty Miracles"
@@ -2600,6 +2648,10 @@ msgstr "Never"
 msgid "New category"
 msgstr "New category"
 
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "New password"
+msgstr "New password"
+
 #: src/features/reader/tap-zones/ReaderTapZone.constants.ts
 msgid "Next"
 msgstr "Next"
@@ -2649,6 +2701,10 @@ msgstr "No match found"
 #: src/features/reader/viewer/ReaderChapterViewer.tsx
 msgid "No pages found"
 msgstr "No pages found"
+
+#: src/features/category/components/PrivateCategoriesSettings.tsx
+msgid "No password set"
+msgstr "No password set"
 
 #: src/features/migration/components/MigrationDestinationSourceList.tsx
 msgid "No sources available to migrate to"
@@ -2756,6 +2812,10 @@ msgstr "Ongoing"
 msgid "Only outdated matches found"
 msgstr "Only outdated matches found"
 
+#: src/features/category/components/PrivateCategoriesSettings.tsx
+msgid "Only when the app is closed or reloaded"
+msgstr "Only when the app is closed or reloaded"
+
 #: src/features/downloads/components/DownloadAheadSetting.tsx
 msgid "Only works if the current chapter plus the next chapter are already downloaded."
 msgstr "Only works if the current chapter plus the next chapter are already downloaded."
@@ -2840,9 +2900,23 @@ msgid "Parallel source requests"
 msgstr "Parallel source requests"
 
 #: src/base/components/inputs/PasswordTextField.tsx
+#: src/features/category/components/PrivateCategoriesSettings.tsx
+#: src/features/category/components/PrivateCategoriesUnlockDialog.tsx
 #: src/features/settings/screens/ServerSettings.tsx
 msgid "Password"
 msgstr "Password"
+
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "Password removed"
+msgstr "Password removed"
+
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "Password saved"
+msgstr "Password saved"
+
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "Passwords do not match"
+msgstr "Passwords do not match"
 
 #: src/features/navigation-bar/NavigationBar.constants.ts
 msgid "Paused — {count} remaining"
@@ -2912,6 +2986,19 @@ msgstr "Previous page"
 #: src/features/reader/viewer/components/ReaderTransitionPage.tsx
 msgid "Previous:"
 msgstr "Previous:"
+
+#: src/features/category/components/PrivateCategoriesSettings.tsx
+#: src/features/category/components/PrivateCategoriesUnlockDialog.tsx
+msgid "Private categories"
+msgstr "Private categories"
+
+#: src/features/category/components/PrivateCategoriesSettings.tsx
+msgid "Private categories lock again after this period of inactivity. Set to 0 to keep them unlocked until the app is closed or reloaded."
+msgstr "Private categories lock again after this period of inactivity. Set to 0 to keep them unlocked until the app is closed or reloaded."
+
+#: src/features/category/components/CreateOrEditCategoryDialog.tsx
+msgid "Private category (password protected, hidden from History and Updates)"
+msgstr "Private category (password protected, hidden from History and Updates)"
 
 #: src/features/reader/overlay/progress-bar/settings/components/ReaderSettingProgressBarPosition.tsx
 msgid "Progress bar position"
@@ -3043,6 +3130,10 @@ msgstr "Remove manga from categories when removing them from the library"
 msgid "Remove non library manga from categories"
 msgstr "Remove non library manga from categories"
 
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "Remove password"
+msgstr "Remove password"
+
 #: src/features/manga/Manga.constants.ts
 msgid "Remove selected from the library"
 msgstr "Remove selected from the library"
@@ -3118,6 +3209,7 @@ msgstr "Right to left"
 msgid "Rosegold"
 msgstr "Rosegold"
 
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
 #: src/features/settings/screens/ImageProcessingSetting.tsx
 #: src/features/theme/components/CreateThemeDialog.tsx
 msgid "Save"
@@ -3331,6 +3423,10 @@ msgstr "Set as active theme"
 msgid "Set categories"
 msgstr "Set categories"
 
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+msgid "Set password"
+msgstr "Set password"
+
 #: src/features/settings/screens/Appearance.tsx
 msgid "Sets the manga thumbnail as the background image on the manga page"
 msgstr "Sets the manga thumbnail as the background image on the manga page"
@@ -3427,6 +3523,10 @@ msgstr "Show tap zones overlay"
 #: src/features/library/screens/LibrarySettings.tsx
 msgid "Show the category selection dialog when adding a manga to the library"
 msgstr "Show the category selection dialog when adding a manga to the library"
+
+#: src/features/category/components/CreateOrEditCategoryDialog.tsx
+msgid "Show the tab in the library while locked"
+msgstr "Show the tab in the library while locked"
 
 #: src/features/reader/settings/behaviour/ReaderBehaviourSettings.tsx
 msgid "Show transition page"
@@ -3809,6 +3909,10 @@ msgstr "These options are slow and dangerous and may lead to restrictions from s
 msgid "Third to last read chapter"
 msgstr "Third to last read chapter"
 
+#: src/features/library/screens/Library.tsx
+msgid "This category is private"
+msgstr "This category is private"
+
 #: src/features/browse/screens/BrowseSettings.tsx
 msgid "This does not prevent unofficial or potentially incorrectly flagged extensions from surfacing NSFW (18+) content within the app."
 msgstr "This does not prevent unofficial or potentially incorrectly flagged extensions from surfacing NSFW (18+) content within the app."
@@ -3986,6 +4090,17 @@ msgstr "Unknown"
 #: src/features/migration/MigrationManager.ts
 msgid "Unknown source"
 msgstr "Unknown source"
+
+#: src/features/category/components/CategorySelect.tsx
+#: src/features/category/components/PrivateCategoriesUnlockDialog.tsx
+#: src/features/category/screens/CategorySettings.tsx
+#: src/features/library/screens/Library.tsx
+msgid "Unlock"
+msgstr "Unlock"
+
+#: src/features/library/screens/Library.tsx
+msgid "Unlock private categories"
+msgstr "Unlock private categories"
 
 #: src/features/browse/sources/components/SourceCard.tsx
 msgid "Unpin source"
@@ -4206,6 +4321,11 @@ msgstr "With \"Completed\" status"
 #: src/features/settings/Settings.constants.ts
 msgid "With unread chapter(s)"
 msgstr "With unread chapter(s)"
+
+#: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
+#: src/features/category/components/PrivateCategoriesUnlockDialog.tsx
+msgid "Wrong password"
+msgstr "Wrong password"
 
 #: src/base/utils/DateHelper.ts
 msgid "Yesterday"

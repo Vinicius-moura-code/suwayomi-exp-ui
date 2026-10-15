@@ -425,7 +425,8 @@ export function SourceMangas() {
             <SourceGridLayout />
             <CustomTooltip title={t`Open in WebView`} disabled={!source?.homeUrl}>
                 <IconButton
-                    component={Link}
+                    component="a"
+                    nativeButton={false}
                     disabled={!source?.homeUrl}
                     href={source?.homeUrl ? requestManager.getWebviewUrl(source.homeUrl) : undefined}
                     rel="noreferrer"

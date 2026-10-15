@@ -275,6 +275,7 @@ export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
                 <Typography>{t`You have to add a extension store to be able to install extensions`}</Typography>
                 <Button
                     component={Link}
+                    nativeButton={false}
                     variant="contained"
                     to={AppRoutes.settings.children.browse.children.extensionStores.path}
                 >

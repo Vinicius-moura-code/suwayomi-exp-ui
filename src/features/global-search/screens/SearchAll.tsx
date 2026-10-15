@@ -196,6 +196,7 @@ const SourceSearchPreview = React.memo(
                 <Card sx={{ mb: 1 }}>
                     <CardActionArea
                         component={Link}
+                        nativeButton={false}
                         to={AppRoutes.sources.children.browse.path(id, searchString)}
                         state={AppRoutes.sources.children.browse.state({
                             mode,

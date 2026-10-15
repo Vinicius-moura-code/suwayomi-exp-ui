@@ -131,6 +131,7 @@ export const ChapterCard = memo((props: IProps) => {
                     >
                         <CardActionArea
                             component={Link}
+                            nativeButton={false}
                             to={Chapters.getReaderUrl(chapter)}
                             onContextMenu={preventMobileContextMenu}
                             sx={MediaQuery.preventMobileContextMenuSx()}

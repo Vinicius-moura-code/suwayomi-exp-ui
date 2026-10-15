@@ -56,6 +56,7 @@ export const MangaBadges = ({
                 <Button
                     className="source-manga-library-state-button"
                     component="div"
+                    nativeButton={false}
                     variant="contained"
                     size="small"
                     {...MUIUtil.preventRippleProp()}

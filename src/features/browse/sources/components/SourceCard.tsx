@@ -65,6 +65,7 @@ export const SourceCard: React.FC<IProps> = (props: IProps) => {
             <ListCardContent>
                 <CardActionArea
                     component={Link}
+                    nativeButton={false}
                     to={AppRoutes.sources.children.browse.path(id)}
                     state={AppRoutes.sources.children.browse.state({
                         contentType: SourceContentType.POPULAR,
@@ -116,6 +117,7 @@ export const SourceCard: React.FC<IProps> = (props: IProps) => {
                         {...MUIUtil.preventRippleProp()}
                         variant="outlined"
                         component={Link}
+                        nativeButton={false}
                         to={AppRoutes.sources.children.browse.path(id)}
                         state={AppRoutes.sources.children.browse.state({
                             contentType: SourceContentType.LATEST,

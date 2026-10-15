@@ -20,7 +20,7 @@ export const OptionalCardActionAreaLink = ({
     }
 
     return (
-        <CardActionArea component={Link} {...props}>
+        <CardActionArea component={Link} nativeButton={false} {...props}>
             {children}
         </CardActionArea>
     );

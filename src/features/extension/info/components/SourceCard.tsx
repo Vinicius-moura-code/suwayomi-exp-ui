@@ -48,6 +48,7 @@ export const SourceCard = (source: SourceIdInfo & SourceLanguageInfo & SourceCon
                             <CustomTooltip title={t`Settings`}>
                                 <IconButton
                                     component={Link}
+                                    nativeButton={false}
                                     to={AppRoutes.sources.children.configure.path(id)}
                                     color="inherit"
                                     onClick={(e) => e.stopPropagation()}

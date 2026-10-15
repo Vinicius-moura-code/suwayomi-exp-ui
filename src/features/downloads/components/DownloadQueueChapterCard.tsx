@@ -72,6 +72,7 @@ export const DownloadQueueChapterCard = memo(
                 <Card>
                     <CardActionArea
                         component={Link}
+                        nativeButton={false}
                         to={AppRoutes.manga.path(item.manga.id)}
                         onContextMenu={preventMobileContextMenu}
                         sx={MediaQuery.preventMobileContextMenuSx()}

@@ -79,6 +79,7 @@ const TrackerMangaCardSummary = ({ summary }: { summary: string }) => {
             {summary.length && showSummaryExpandButton && (
                 <Button
                     component="div"
+                    nativeButton={false}
                     {...MUIUtil.preventRippleProp()}
                     onClick={(e) => {
                         e.stopPropagation();

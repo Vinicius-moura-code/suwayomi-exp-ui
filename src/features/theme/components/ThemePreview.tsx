@@ -142,6 +142,7 @@ export const ThemePreview = ({ appTheme, onDelete }: { appTheme: AppTheme; onDel
                                                     onDelete();
                                                 }}
                                                 component="div"
+                                                nativeButton={false}
                                                 size="small"
                                                 sx={{ mt: -0.5 }}
                                             >
@@ -162,6 +163,7 @@ export const ThemePreview = ({ appTheme, onDelete }: { appTheme: AppTheme; onDel
                                                     });
                                                 }}
                                                 component="div"
+                                                nativeButton={false}
                                                 size="small"
                                             >
                                                 <CustomTooltip title={t`Edit`} placement="auto">

@@ -110,6 +110,7 @@ export const MigrationOptionsDialog = ({
                         <Button
                             disabled={isMigrating}
                             component={Link}
+                            nativeButton={false}
                             to={AppRoutes.manga.path(mangaIdToMigrateTo)}
                             onClick={() => onDismiss('show entry')}
                         >

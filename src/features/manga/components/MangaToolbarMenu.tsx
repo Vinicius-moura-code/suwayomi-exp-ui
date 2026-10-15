@@ -217,6 +217,7 @@ export const MangaToolbarMenu = ({ manga, onRefresh, refreshing }: IProps) => {
                             <MenuItem
                                 key="migrate"
                                 component={Link}
+                                nativeButton={false}
                                 to={AppRoutes.migrate.children.singleMangaSearch.path(
                                     manga.sourceId,
                                     manga.id,

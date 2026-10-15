@@ -156,6 +156,7 @@ const OpenSourceButton = ({ url }: { url?: string | null }) => {
                     size="medium"
                     disabled={!url}
                     component={Link}
+                    nativeButton={false}
                     href={url ?? undefined}
                     target="_blank"
                     rel="noreferrer"
@@ -169,6 +170,7 @@ const OpenSourceButton = ({ url }: { url?: string | null }) => {
                     size="medium"
                     disabled={!url}
                     component={Link}
+                    nativeButton={false}
                     href={url ? requestManager.getWebviewUrl(url) : undefined}
                     target="_blank"
                     rel="noreferrer"

@@ -71,6 +71,7 @@ export const BackupValidationDialog = ({
                         <Button
                             onClick={onDismiss}
                             component={Link}
+                            nativeButton={false}
                             to={AppRoutes.browse.path(BrowseTab.EXTENSIONS)}
                             autoFocus={!!validationResult?.missingSources.length}
                             variant={validationResult?.missingSources.length ? 'contained' : 'text'}
@@ -82,6 +83,7 @@ export const BackupValidationDialog = ({
                         <Button
                             onClick={onDismiss}
                             component={Link}
+                            nativeButton={false}
                             to={AppRoutes.settings.children.tracking.path}
                             autoFocus={!!validationResult?.missingTrackers.length}
                             variant={validationResult?.missingTrackers.length ? 'contained' : 'text'}

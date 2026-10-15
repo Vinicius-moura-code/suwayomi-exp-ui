@@ -84,6 +84,7 @@ export const ChapterUpdateCard = memo(
                         />
                         <CardActionArea
                             component={Link}
+                            nativeButton={false}
                             to={AppRoutes.reader.path(chapter.manga.id, chapter.sourceOrder)}
                             state={Chapters.getReaderOpenChapterLocationState(chapter)}
                             sx={{
