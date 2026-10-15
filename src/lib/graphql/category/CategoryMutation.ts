@@ -117,3 +117,32 @@ export const UPDATE_CATEGORY_METADATA = gql`
         }
     }
 `;
+
+export const UPDATE_CATEGORY_PRIVACY = gql`
+    mutation UPDATE_CATEGORY_PRIVACY($input: UpdateCategoryPrivacyInput!) {
+        updateCategoryPrivacy(input: $input) {
+            category {
+                id
+                isPrivate
+                showWhenLocked
+            }
+        }
+    }
+`;
+
+export const VERIFY_PRIVATE_CATEGORIES_PASSWORD = gql`
+    mutation VERIFY_PRIVATE_CATEGORIES_PASSWORD($input: VerifyPrivateCategoriesPasswordInput!) {
+        verifyPrivateCategoriesPassword(input: $input) {
+            unlocked
+        }
+    }
+`;
+
+export const SET_PRIVATE_CATEGORIES_PASSWORD = gql`
+    mutation SET_PRIVATE_CATEGORIES_PASSWORD($input: SetPrivateCategoriesPasswordInput!) {
+        setPrivateCategoriesPassword(input: $input) {
+            success
+            hasPassword
+        }
+    }
+`;

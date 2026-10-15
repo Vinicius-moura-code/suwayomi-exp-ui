@@ -179,10 +179,12 @@ export type CategoryType = {
     id: Scalars['Int']['output'];
     includeInDownload: IncludeOrExclude;
     includeInUpdate: IncludeOrExclude;
+    isPrivate: Scalars['Boolean']['output'];
     mangas: MangaNodeList;
     meta: Array<CategoryMetaType>;
     name: Scalars['String']['output'];
     order: Scalars['Int']['output'];
+    showWhenLocked: Scalars['Boolean']['output'];
 };
 
 export type CategoryUpdateType = {
@@ -355,6 +357,16 @@ export type ClearDownloaderPayload = {
     downloadStatus: DownloadStatus;
 };
 
+export type ClearErrorIncidentsInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ClearErrorIncidentsPayload = {
+    __typename?: 'ClearErrorIncidentsPayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    deletedCount: Scalars['Int']['output'];
+};
+
 export type ConnectKoSyncAccountInput = {
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
     password: Scalars['String']['input'];
@@ -511,6 +523,17 @@ export type DeleteDownloadedChaptersPayload = {
     __typename?: 'DeleteDownloadedChaptersPayload';
     chapters: Array<ChapterType>;
     clientMutationId?: Maybe<Scalars['String']['output']>;
+};
+
+export type DeleteErrorIncidentInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    id: Scalars['Int']['input'];
+};
+
+export type DeleteErrorIncidentPayload = {
+    __typename?: 'DeleteErrorIncidentPayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    errorIncident?: Maybe<ErrorIncidentType>;
 };
 
 export type DeleteGlobalMetaInput = {
@@ -755,6 +778,26 @@ export type EnqueueChapterDownloadsPayload = {
     downloadStatus: DownloadStatus;
 };
 
+export enum ErrorIncidentSource {
+    Graphql = 'GRAPHQL',
+    Javalin = 'JAVALIN',
+    Other = 'OTHER',
+}
+
+export type ErrorIncidentType = {
+    __typename?: 'ErrorIncidentType';
+    context: Scalars['String']['output'];
+    exceptionClass: Scalars['String']['output'];
+    fingerprint: Scalars['String']['output'];
+    firstSeenAt: Scalars['LongString']['output'];
+    id: Scalars['Int']['output'];
+    lastSeenAt: Scalars['LongString']['output'];
+    message: Scalars['String']['output'];
+    occurrenceCount: Scalars['Int']['output'];
+    source: ErrorIncidentSource;
+    stackTrace: Scalars['String']['output'];
+};
+
 export type ExtensionConditionInput = {
     apkName?: InputMaybe<Scalars['String']['input']>;
     apkUrl?: InputMaybe<Scalars['String']['input']>;
@@ -764,6 +807,7 @@ export type ExtensionConditionInput = {
     iconUrl?: InputMaybe<Scalars['String']['input']>;
     isInstalled?: InputMaybe<Scalars['Boolean']['input']>;
     isObsolete?: InputMaybe<Scalars['Boolean']['input']>;
+    jarUrl?: InputMaybe<Scalars['String']['input']>;
     lang?: InputMaybe<Scalars['String']['input']>;
     name?: InputMaybe<Scalars['String']['input']>;
     pkgName?: InputMaybe<Scalars['String']['input']>;
@@ -789,6 +833,7 @@ export type ExtensionFilterInput = {
     iconUrl?: InputMaybe<StringFilterInput>;
     isInstalled?: InputMaybe<BooleanFilterInput>;
     isObsolete?: InputMaybe<BooleanFilterInput>;
+    jarUrl?: InputMaybe<StringFilterInput>;
     lang?: InputMaybe<StringFilterInput>;
     name?: InputMaybe<StringFilterInput>;
     not?: InputMaybe<ExtensionFilterInput>;
@@ -884,6 +929,7 @@ export type ExtensionType = {
     /** @deprecated Removed in extension api v1.6, replace with contentWarning */
     isNsfw: Scalars['Boolean']['output'];
     isObsolete: Scalars['Boolean']['output'];
+    jarUrl?: Maybe<Scalars['String']['output']>;
     lang: Scalars['String']['output'];
     name: Scalars['String']['output'];
     pkgName: Scalars['String']['output'];
@@ -1447,6 +1493,7 @@ export type Mutation = {
     bindTrackRecord?: Maybe<BindTrackRecordPayload>;
     clearCachedImages: ClearCachedImagesPayload;
     clearDownloader?: Maybe<ClearDownloaderPayload>;
+    clearErrorIncidents: ClearErrorIncidentsPayload;
     connectKoSyncAccount: KoSyncConnectPayload;
     createBackup: CreateBackupPayload;
     createCategory?: Maybe<CreateCategoryPayload>;
@@ -1457,6 +1504,7 @@ export type Mutation = {
     deleteChapterMetas?: Maybe<DeleteChapterMetasPayload>;
     deleteDownloadedChapter?: Maybe<DeleteDownloadedChapterPayload>;
     deleteDownloadedChapters?: Maybe<DeleteDownloadedChaptersPayload>;
+    deleteErrorIncident: DeleteErrorIncidentPayload;
     deleteGlobalMeta?: Maybe<DeleteGlobalMetaPayload>;
     deleteGlobalMetas?: Maybe<DeleteGlobalMetasPayload>;
     deleteMangaMeta?: Maybe<DeleteMangaMetaPayload>;
@@ -1498,6 +1546,7 @@ export type Mutation = {
     setGlobalMetas?: Maybe<SetGlobalMetasPayload>;
     setMangaMeta?: Maybe<SetMangaMetaPayload>;
     setMangaMetas?: Maybe<SetMangaMetasPayload>;
+    setPrivateCategoriesPassword?: Maybe<SetPrivateCategoriesPasswordPayload>;
     setSettings: SetSettingsPayload;
     setSourceMeta?: Maybe<SetSourceMetaPayload>;
     setSourceMetas?: Maybe<SetSourceMetasPayload>;
@@ -1510,6 +1559,7 @@ export type Mutation = {
     updateCategory?: Maybe<UpdateCategoryPayload>;
     updateCategoryManga?: Maybe<UpdateCategoryMangaPayload>;
     updateCategoryOrder?: Maybe<UpdateCategoryOrderPayload>;
+    updateCategoryPrivacy?: Maybe<UpdateCategoryPrivacyPayload>;
     updateChapter?: Maybe<UpdateChapterPayload>;
     updateChapters?: Maybe<UpdateChaptersPayload>;
     updateExtension?: Maybe<UpdateExtensionPayload>;
@@ -1525,6 +1575,7 @@ export type Mutation = {
     updateStop: UpdateStopPayload;
     updateTrack: UpdateTrackPayload;
     updateWebUI?: Maybe<WebUiUpdatePayload>;
+    verifyPrivateCategoriesPassword?: Maybe<VerifyPrivateCategoriesPasswordPayload>;
 };
 
 export type MutationAddExtensionStoreArgs = {
@@ -1545,6 +1596,10 @@ export type MutationClearCachedImagesArgs = {
 
 export type MutationClearDownloaderArgs = {
     input: ClearDownloaderInput;
+};
+
+export type MutationClearErrorIncidentsArgs = {
+    input: ClearErrorIncidentsInput;
 };
 
 export type MutationConnectKoSyncAccountArgs = {
@@ -1585,6 +1640,10 @@ export type MutationDeleteDownloadedChapterArgs = {
 
 export type MutationDeleteDownloadedChaptersArgs = {
     input: DeleteDownloadedChaptersInput;
+};
+
+export type MutationDeleteErrorIncidentArgs = {
+    input: DeleteErrorIncidentInput;
 };
 
 export type MutationDeleteGlobalMetaArgs = {
@@ -1739,6 +1798,10 @@ export type MutationSetMangaMetasArgs = {
     input: SetMangaMetasInput;
 };
 
+export type MutationSetPrivateCategoriesPasswordArgs = {
+    input: SetPrivateCategoriesPasswordInput;
+};
+
 export type MutationSetSettingsArgs = {
     input: SetSettingsInput;
 };
@@ -1785,6 +1848,10 @@ export type MutationUpdateCategoryMangaArgs = {
 
 export type MutationUpdateCategoryOrderArgs = {
     input: UpdateCategoryOrderInput;
+};
+
+export type MutationUpdateCategoryPrivacyArgs = {
+    input: UpdateCategoryPrivacyInput;
 };
 
 export type MutationUpdateChapterArgs = {
@@ -1847,6 +1914,10 @@ export type MutationUpdateWebUiArgs = {
     input: WebUiUpdateInput;
 };
 
+export type MutationVerifyPrivateCategoriesPasswordArgs = {
+    input: VerifyPrivateCategoriesPasswordInput;
+};
+
 export type Node =
     | CategoryMetaType
     | CategoryType
@@ -1854,6 +1925,7 @@ export type Node =
     | ChapterType
     | DownloadType
     | DownloadUpdate
+    | ErrorIncidentType
     | ExtensionStoreType
     | ExtensionType
     | GlobalMetaType
@@ -1876,6 +1948,12 @@ export type NodeList = {
     /** The count of all nodes you could get from the connection. */
     totalCount: Scalars['Int']['output'];
 };
+
+export enum OrderBy {
+    FirstSeenAt = 'FIRST_SEEN_AT',
+    LastSeenAt = 'LAST_SEEN_AT',
+    OccurrenceCount = 'OCCURRENCE_COUNT',
+}
 
 export type PageInfo = {
     __typename?: 'PageInfo';
@@ -2140,11 +2218,14 @@ export type Query = {
     checkForServerUpdates: Array<CheckForServerUpdatesPayload>;
     checkForWebUIUpdate: WebUiUpdateCheck;
     downloadStatus: DownloadStatus;
+    errorIncident?: Maybe<ErrorIncidentType>;
+    errorIncidents: Array<ErrorIncidentType>;
     extension: ExtensionType;
     extensionStore: ExtensionStoreType;
     extensionStores: ExtensionStoreNodeList;
     extensions: ExtensionNodeList;
     getWebUIUpdateStatus: WebUiUpdateStatus;
+    hasPrivateCategoriesPassword: Scalars['Boolean']['output'];
     koSyncStatus: KoSyncStatusPayload;
     lastSyncStatus?: Maybe<SyncStatus>;
     lastUpdateTimestamp: LastUpdateTimestampPayload;
@@ -2153,6 +2234,7 @@ export type Query = {
     mangas: MangaNodeList;
     meta: GlobalMetaType;
     metas: GlobalMetaNodeList;
+    privateMangaIds: Array<Scalars['Int']['output']>;
     restoreStatus?: Maybe<BackupRestoreStatus>;
     searchTracker: SearchTrackerPayload;
     settings: SettingsType;
@@ -2195,6 +2277,17 @@ export type QueryChaptersArgs = {
     last?: InputMaybe<Scalars['Int']['input']>;
     offset?: InputMaybe<Scalars['Int']['input']>;
     order?: InputMaybe<Array<ChapterOrderInput>>;
+};
+
+export type QueryErrorIncidentArgs = {
+    id: Scalars['Int']['input'];
+};
+
+export type QueryErrorIncidentsArgs = {
+    ascending?: InputMaybe<Scalars['Boolean']['input']>;
+    limit?: InputMaybe<Scalars['Int']['input']>;
+    orderBy?: InputMaybe<OrderBy>;
+    source?: InputMaybe<ErrorIncidentSource>;
 };
 
 export type QueryExtensionArgs = {
@@ -2496,6 +2589,19 @@ export type SetMangaMetasPayload = {
     clientMutationId?: Maybe<Scalars['String']['output']>;
     mangas: Array<MangaType>;
     metas: Array<MangaMetaType>;
+};
+
+export type SetPrivateCategoriesPasswordInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    currentPassword?: InputMaybe<Scalars['String']['input']>;
+    newPassword?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SetPrivateCategoriesPasswordPayload = {
+    __typename?: 'SetPrivateCategoriesPasswordPayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    hasPassword: Scalars['Boolean']['output'];
+    success: Scalars['Boolean']['output'];
 };
 
 export type SetSettingsInput = {
@@ -3350,6 +3456,19 @@ export type UpdateCategoryPayload = {
     clientMutationId?: Maybe<Scalars['String']['output']>;
 };
 
+export type UpdateCategoryPrivacyInput = {
+    categoryId: Scalars['Int']['input'];
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
+    showWhenLocked?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type UpdateCategoryPrivacyPayload = {
+    __typename?: 'UpdateCategoryPrivacyPayload';
+    category: CategoryType;
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+};
+
 export type UpdateChapterInput = {
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
     id: Scalars['Int']['input'];
@@ -3619,6 +3738,17 @@ export type ValidateBackupTracker = {
     name: Scalars['String']['output'];
 };
 
+export type VerifyPrivateCategoriesPasswordInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    password: Scalars['String']['input'];
+};
+
+export type VerifyPrivateCategoriesPasswordPayload = {
+    __typename?: 'VerifyPrivateCategoriesPasswordPayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    unlocked: Scalars['Boolean']['output'];
+};
+
 export enum WebUiChannel {
     Bundled = 'BUNDLED',
     Preview = 'PREVIEW',
@@ -3627,7 +3757,7 @@ export enum WebUiChannel {
 
 export enum WebUiFlavor {
     Custom = 'CUSTOM',
-    Expui = 'EXPUUI',
+    Expuui = 'EXPUUI',
     Vui = 'VUI',
     Webui = 'WEBUI',
 }

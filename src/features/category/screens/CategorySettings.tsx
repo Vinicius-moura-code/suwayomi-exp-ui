@@ -11,10 +11,15 @@ import { useMemo, useState } from 'react';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import LockIcon from '@mui/icons-material/Lock';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { closestCenter, DndContext } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useLingui } from '@lingui/react/macro';
+import { plural } from '@lingui/core/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { DEFAULT_FULL_FAB_HEIGHT } from '@/base/components/buttons/StyledFab.tsx';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
@@ -34,6 +39,11 @@ import { DndOverlayItem } from '@/lib/dnd-kit/DndOverlayItem.tsx';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
 import { CREATE_NEW_CATEGORY_ID } from '@/features/category/Category.constants.ts';
 import { CreateOrEditCategoryDialog } from '@/features/category/components/CreateOrEditCategoryDialog.tsx';
+import { PrivateCategoriesUnlockDialog } from '@/features/category/components/PrivateCategoriesUnlockDialog.tsx';
+import {
+    isCategoryConcealed,
+    useArePrivateCategoriesUnlocked,
+} from '@/features/category/services/PrivateCategories.ts';
 
 export function CategorySettings() {
     const { t } = useLingui();
@@ -53,20 +63,28 @@ export function CategorySettings() {
         ComponentProps<typeof CategorySettingsCard>['category'] | null
     >(null);
 
-    const categories = useMemo(() => {
+    const arePrivateCategoriesUnlocked = useArePrivateCategoriesUnlocked();
+    const [isUnlockDialogOpen, setIsUnlockDialogOpen] = useState(false);
+
+    const allCategories = useMemo(() => {
         const res = [...(data?.categories.nodes ?? [])];
         if (res.length > 0 && res[0].name === 'Default') {
             res.shift();
         }
         return res;
     }, [data]);
+    const categories = useMemo(
+        () => allCategories.filter((category) => !isCategoryConcealed(category, !arePrivateCategoriesUnlocked)),
+        [allCategories, arePrivateCategoriesUnlocked],
+    );
+    const concealedCategoryCount = allCategories.length - categories.length;
 
     const categoryReorder = (list: CategoryIdInfo[], from: number, to: number) => {
         const reorderedCategory = list[from];
+        // concealed private categories are not part of the list, but still count for the position
+        const position = allCategories.findIndex((category) => category.id === list[to].id) + 1;
 
-        reorderCategory({ variables: { input: { id: reorderedCategory.id, position: to + 1 } } }).catch(() =>
-            revertReorder(),
-        );
+        reorderCategory({ variables: { input: { id: reorderedCategory.id, position } } }).catch(() => revertReorder());
     };
 
     const onDragEnd = (event: DragEndEvent) => {
@@ -121,6 +139,18 @@ export function CategorySettings() {
                 onDragAbort={() => setDndActiveCategory(null)}
             >
                 <Box sx={{ paddingBottom: DEFAULT_FULL_FAB_HEIGHT }}>
+                    {concealedCategoryCount > 0 && (
+                        <Stack sx={{ p: 2, flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                            <LockIcon />
+                            <Typography sx={{ flexGrow: 1 }} variant="body2" color="text.secondary">
+                                {plural(concealedCategoryCount, {
+                                    one: '# private category is hidden',
+                                    other: '# private categories are hidden',
+                                })}
+                            </Typography>
+                            <Button onClick={() => setIsUnlockDialogOpen(true)}>{t`Unlock`}</Button>
+                        </Stack>
+                    )}
                     <SortableContext items={categories} strategy={verticalListSortingStrategy}>
                         {categories.map((category, index) => (
                             <DndSortableItem
@@ -153,6 +183,7 @@ export function CategorySettings() {
             {dialogOpen && (
                 <CreateOrEditCategoryDialog category={categories[categoryToEdit]} onClose={handleDialogCancel} />
             )}
+            {isUnlockDialogOpen && <PrivateCategoriesUnlockDialog onClose={() => setIsUnlockDialogOpen(false)} />}
         </>
     );
 }

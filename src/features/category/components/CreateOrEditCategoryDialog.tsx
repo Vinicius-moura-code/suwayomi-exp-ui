@@ -17,7 +17,12 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useLingui } from '@lingui/react/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
-import type { CategoryDefaultInfo, CategoryIdInfo, CategoryNameInfo } from '@/features/category/Category.types.ts';
+import type {
+    CategoryDefaultInfo,
+    CategoryIdInfo,
+    CategoryNameInfo,
+    CategoryPrivacyInfo,
+} from '@/features/category/Category.types.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { makeToast } from '@/base/utils/Toast.ts';
 import { assertIsDefined } from '@/base/Asserts.ts';
@@ -26,7 +31,7 @@ export const CreateOrEditCategoryDialog = ({
     category,
     onClose,
 }: {
-    category: (CategoryIdInfo & CategoryNameInfo & CategoryDefaultInfo) | undefined;
+    category: (CategoryIdInfo & CategoryNameInfo & CategoryDefaultInfo & CategoryPrivacyInfo) | undefined;
     onClose: () => void;
 }) => {
     const isEditMode = !!category;
@@ -35,6 +40,8 @@ export const CreateOrEditCategoryDialog = ({
 
     const [dialogName, setDialogName] = useState(category?.name);
     const [dialogDefault, setDialogDefault] = useState(!!category?.default);
+    const [dialogPrivate, setDialogPrivate] = useState(!!category?.isPrivate);
+    const [dialogShowWhenLocked, setDialogShowWhenLocked] = useState(!!category?.showWhenLocked);
 
     const isInvalidName = dialogName !== undefined && !dialogName.trim().length;
     const canSubmit = dialogName !== undefined && !isInvalidName;
@@ -44,17 +51,33 @@ export const CreateOrEditCategoryDialog = ({
 
         onClose();
 
+        const privacyPatch = { isPrivate: dialogPrivate, showWhenLocked: dialogPrivate && dialogShowWhenLocked };
+        const hasPrivacyChanged =
+            dialogPrivate !== !!category?.isPrivate || privacyPatch.showWhenLocked !== !!category?.showWhenLocked;
+
         if (isEditMode) {
             requestManager
                 .updateCategory(category.id, { name: dialogName, default: dialogDefault })
-                .response.catch((e) => makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)));
+                .response.then(() =>
+                    hasPrivacyChanged
+                        ? requestManager.updateCategoryPrivacy(category.id, privacyPatch).response
+                        : undefined,
+                )
+                .catch((e) => makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)));
 
             return;
         }
 
         requestManager
             .createCategory({ name: dialogName, default: dialogDefault })
-            .response.catch((e) => makeToast(t`Could not create category`, 'error', getErrorMessage(e)));
+            .response.then((result) => {
+                const createdCategoryId = result.data?.createCategory?.category.id;
+
+                return hasPrivacyChanged && createdCategoryId !== undefined
+                    ? requestManager.updateCategoryPrivacy(createdCategoryId, privacyPatch).response
+                    : undefined;
+            })
+            .catch((e) => makeToast(t`Could not create category`, 'error', getErrorMessage(e)));
     };
 
     return (
@@ -68,7 +91,7 @@ export const CreateOrEditCategoryDialog = ({
                     label={t`Category Name`}
                     type="text"
                     fullWidth
-                    value={dialogName}
+                    value={dialogName ?? ''}
                     onChange={(e) => setDialogName(e.target.value.trim())}
                     error={isInvalidName}
                     helperText={isInvalidName ? t`Invalid input` : undefined}
@@ -77,6 +100,22 @@ export const CreateOrEditCategoryDialog = ({
                     control={<Checkbox checked={dialogDefault} onChange={(e) => setDialogDefault(e.target.checked)} />}
                     label={t`Default category when adding new manga to the library`}
                 />
+                <FormControlLabel
+                    control={<Checkbox checked={dialogPrivate} onChange={(e) => setDialogPrivate(e.target.checked)} />}
+                    label={t`Private category (password protected, hidden from History and Updates)`}
+                />
+                {dialogPrivate && (
+                    <FormControlLabel
+                        sx={{ ml: 2 }}
+                        control={
+                            <Checkbox
+                                checked={dialogShowWhenLocked}
+                                onChange={(e) => setDialogShowWhenLocked(e.target.checked)}
+                            />
+                        }
+                        label={t`Show the tab in the library while locked`}
+                    />
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary">

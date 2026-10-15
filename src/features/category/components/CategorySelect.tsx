@@ -15,13 +15,21 @@ import Dialog from '@mui/material/Dialog';
 import FormGroup from '@mui/material/FormGroup';
 import { Link } from '@/lib/router';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import LockIcon from '@mui/icons-material/Lock';
 import type { AwaitableComponentProps } from 'awaitable-component';
 import { useLingui } from '@lingui/react/macro';
+import { plural } from '@lingui/core/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { Mangas } from '@/features/manga/services/Mangas.ts';
 import { useSelectableCollection } from '@/base/collection/hooks/useSelectableCollection.ts';
 import { ThreeStateCheckboxInput } from '@/base/components/inputs/ThreeStateCheckboxInput.tsx';
 import { Categories } from '@/features/category/services/Categories.ts';
+import { PrivateCategoriesUnlockDialog } from '@/features/category/components/PrivateCategoriesUnlockDialog.tsx';
+import {
+    isCategoryConcealed,
+    useArePrivateCategoriesUnlocked,
+} from '@/features/category/services/PrivateCategories.ts';
 import { CheckboxInput } from '@/base/components/inputs/CheckboxInput.tsx';
 import { makeToast } from '@/base/utils/Toast.ts';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
@@ -115,7 +123,14 @@ export function CategorySelect(props: CategorySelectProps) {
     );
     const categoriesData = data?.categories.nodes ?? STABLE_EMPTY_ARRAY;
 
-    const allCategories = useMemo(() => Categories.getUserCreated(categoriesData), [categoriesData]);
+    const arePrivateCategoriesUnlocked = useArePrivateCategoriesUnlocked();
+    const [isUnlockDialogOpen, setIsUnlockDialogOpen] = useState(false);
+    const userCreatedCategories = useMemo(() => Categories.getUserCreated(categoriesData), [categoriesData]);
+    const allCategories = useMemo(
+        () => userCreatedCategories.filter((category) => !isCategoryConcealed(category, !arePrivateCategoriesUnlocked)),
+        [userCreatedCategories, arePrivateCategoriesUnlocked],
+    );
+    const concealedCategoryCount = userCreatedCategories.length - allCategories.length;
 
     const defaultCategoryIds = useMemo(
         () => (addToLibrary ? Categories.getIds(Categories.getDefaults(allCategories)) : []),
@@ -188,82 +203,104 @@ export function CategorySelect(props: CategorySelectProps) {
     };
 
     return (
-        <Dialog
-            sx={{
-                '.MuiDialog-paper': {
-                    maxHeight: 435,
-                    width: '80%',
-                },
-            }}
-            maxWidth="xs"
-            open={isVisible}
-            onTransitionExited={onExitComplete}
-            onClose={handleCancel}
-        >
-            <DialogTitle>{t`Set categories`}</DialogTitle>
-            <DialogContent dividers>
-                <FormGroup>
-                    {allCategories.length === 0 && <span>{t`You don't have any categories yet.`}</span>}
-                    {allCategories.map((category) => (
-                        <ThreeStateCheckboxInput
-                            checked={getCategoryCheckedState(
-                                category.id,
-                                categoriesToAdd,
-                                categoriesToRemove,
-                                isSingleSelectionMode,
-                            )}
-                            onChange={(checked) => {
-                                handleSelection(category.id, false, { key: 'categoriesToAdd' });
-                                handleSelection(category.id, false, { key: 'categoriesToRemove' });
+        <>
+            <Dialog
+                sx={{
+                    '.MuiDialog-paper': {
+                        maxHeight: 435,
+                        width: '80%',
+                    },
+                }}
+                maxWidth="xs"
+                open={isVisible}
+                onTransitionExited={onExitComplete}
+                onClose={handleCancel}
+            >
+                <DialogTitle>{t`Set categories`}</DialogTitle>
+                <DialogContent dividers>
+                    <FormGroup>
+                        {userCreatedCategories.length === 0 && <span>{t`You don't have any categories yet.`}</span>}
+                        {allCategories.map((category) => (
+                            <ThreeStateCheckboxInput
+                                checked={getCategoryCheckedState(
+                                    category.id,
+                                    categoriesToAdd,
+                                    categoriesToRemove,
+                                    isSingleSelectionMode,
+                                )}
+                                onChange={(checked) => {
+                                    handleSelection(category.id, false, { key: 'categoriesToAdd' });
+                                    handleSelection(category.id, false, { key: 'categoriesToRemove' });
 
-                                if (checked) {
-                                    handleSelection(category.id, true, { key: 'categoriesToAdd' });
-                                }
+                                    if (checked) {
+                                        handleSelection(category.id, true, { key: 'categoriesToAdd' });
+                                    }
 
-                                if (checked === false) {
-                                    handleSelection(category.id, true, { key: 'categoriesToRemove' });
-                                }
-                            }}
-                            label={category.name}
-                            key={category.id}
-                        />
-                    ))}
-                </FormGroup>
-            </DialogContent>
-            <DialogActions>
-                <Stack sx={{ width: '100%' }}>
-                    {addToLibrary && (
-                        <CheckboxInput
-                            sx={{ margin: 0 }}
-                            size="small"
-                            label={t`Don't show this dialog again`}
-                            onChange={(e) => setDoNotShowAddToLibraryDialogAgain(e.target.checked)}
-                        />
-                    )}
-                    <Stack
-                        direction="row"
-                        sx={{
-                            justifyContent: 'space-between',
-                            alignItems: 'end',
-                            width: '100%',
-                        }}
-                    >
-                        <Button component={Link} to={AppRoutes.settings.children.categories.path} onClick={onDismiss}>
-                            {allCategories.length ? t`Edit` : t`Create`}
-                        </Button>
-                        <Stack direction="row">
-                            <Button autoFocus onClick={handleCancel} color="primary">
-                                {t`Cancel`}
+                                    if (checked === false) {
+                                        handleSelection(category.id, true, { key: 'categoriesToRemove' });
+                                    }
+                                }}
+                                label={category.name}
+                                key={category.id}
+                            />
+                        ))}
+                    </FormGroup>
+                    {concealedCategoryCount > 0 && (
+                        <Stack sx={{ mt: 1, flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                            <LockIcon fontSize="small" />
+                            <Typography sx={{ flexGrow: 1 }} variant="body2" color="text.secondary">
+                                {plural(concealedCategoryCount, {
+                                    one: '# private category is hidden',
+                                    other: '# private categories are hidden',
+                                })}
+                            </Typography>
+                            <Button size="small" onClick={() => setIsUnlockDialogOpen(true)}>
+                                {t`Unlock`}
                             </Button>
-                            {!!allCategories.length && (
-                                <Button onClick={handleOk} color="primary">
-                                    {t`Ok`}
+                        </Stack>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Stack sx={{ width: '100%' }}>
+                        {addToLibrary && (
+                            <CheckboxInput
+                                sx={{ margin: 0 }}
+                                size="small"
+                                label={t`Don't show this dialog again`}
+                                onChange={(e) => setDoNotShowAddToLibraryDialogAgain(e.target.checked)}
+                            />
+                        )}
+                        <Stack
+                            direction="row"
+                            sx={{
+                                justifyContent: 'space-between',
+                                alignItems: 'end',
+                                width: '100%',
+                            }}
+                        >
+                            <Button
+                                component={Link}
+                                nativeButton={false}
+                                to={AppRoutes.settings.children.categories.path}
+                                onClick={onDismiss}
+                            >
+                                {allCategories.length ? t`Edit` : t`Create`}
+                            </Button>
+                            <Stack direction="row">
+                                <Button autoFocus onClick={handleCancel} color="primary">
+                                    {t`Cancel`}
                                 </Button>
-                            )}
+                                {!!allCategories.length && (
+                                    <Button onClick={handleOk} color="primary">
+                                        {t`Ok`}
+                                    </Button>
+                                )}
+                            </Stack>
                         </Stack>
                     </Stack>
-                </Stack>
-            </DialogActions>
-        </Dialog>
+                </DialogActions>
+            </Dialog>
+            {isUnlockDialogOpen && <PrivateCategoriesUnlockDialog onClose={() => setIsUnlockDialogOpen(false)} />}
+        </>
     );
 }

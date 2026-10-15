@@ -156,6 +156,16 @@ import type {
     UpdateCategoryMetadataMutationVariables,
     UpdateCategoryMutation,
     UpdateCategoryMutationVariables,
+    UpdateCategoryPrivacyMutation,
+    UpdateCategoryPrivacyMutationVariables,
+    VerifyPrivateCategoriesPasswordMutation,
+    VerifyPrivateCategoriesPasswordMutationVariables,
+    SetPrivateCategoriesPasswordMutation,
+    SetPrivateCategoriesPasswordMutationVariables,
+    GetPrivateMangaIdsQuery,
+    GetPrivateMangaIdsQueryVariables,
+    GetHasPrivateCategoriesPasswordQuery,
+    GetHasPrivateCategoriesPasswordQueryVariables,
     UpdateCategoryOrderMutation,
     UpdateCategoryOrderMutationVariables,
     UpdateChapterMetadataMutation,
@@ -268,6 +278,8 @@ import {
     GET_CATEGORIES_LIBRARY,
     GET_CATEGORIES_SETTINGS,
     GET_CATEGORY_MANGAS,
+    GET_HAS_PRIVATE_CATEGORIES_PASSWORD,
+    GET_PRIVATE_MANGA_IDS,
 } from '@/lib/graphql/category/CategoryQuery.ts';
 import {
     GET_SOURCE_MANGAS_FETCH,
@@ -301,9 +313,12 @@ import {
 import {
     CREATE_CATEGORY,
     DELETE_CATEGORY,
+    SET_PRIVATE_CATEGORIES_PASSWORD,
     UPDATE_CATEGORY,
     UPDATE_CATEGORY_METADATA,
     UPDATE_CATEGORY_ORDER,
+    UPDATE_CATEGORY_PRIVACY,
+    VERIFY_PRIVATE_CATEGORIES_PASSWORD,
 } from '@/lib/graphql/category/CategoryMutation.ts';
 import { STOP_UPDATER, UPDATE_LIBRARY } from '@/lib/graphql/updater/UpdaterMutation.ts';
 import { GET_LAST_UPDATE_TIMESTAMP, GET_UPDATE_STATUS } from '@/lib/graphql/updater/UpdaterQuery.ts';
@@ -3177,6 +3192,68 @@ export class RequestManager {
             },
             options,
         );
+    }
+
+    public updateCategoryPrivacy(
+        categoryId: number,
+        patch: { isPrivate?: boolean; showWhenLocked?: boolean },
+        options?: MutationOptions<UpdateCategoryPrivacyMutation, UpdateCategoryPrivacyMutationVariables>,
+    ): AbortableApolloMutationResponse<UpdateCategoryPrivacyMutation> {
+        return this.doRequest<UpdateCategoryPrivacyMutation, UpdateCategoryPrivacyMutationVariables>(
+            GQLMethod.MUTATION,
+            UPDATE_CATEGORY_PRIVACY,
+            { input: { categoryId, isPrivate: patch.isPrivate, showWhenLocked: patch.showWhenLocked } },
+            {
+                refetchQueries: [GET_CATEGORIES_BASE, GET_CATEGORIES_LIBRARY, GET_CATEGORIES_SETTINGS],
+                ...options,
+            },
+        );
+    }
+
+    public verifyPrivateCategoriesPassword(
+        password: string,
+        options?: MutationOptions<
+            VerifyPrivateCategoriesPasswordMutation,
+            VerifyPrivateCategoriesPasswordMutationVariables
+        >,
+    ): AbortableApolloMutationResponse<VerifyPrivateCategoriesPasswordMutation> {
+        return this.doRequest<
+            VerifyPrivateCategoriesPasswordMutation,
+            VerifyPrivateCategoriesPasswordMutationVariables
+        >(GQLMethod.MUTATION, VERIFY_PRIVATE_CATEGORIES_PASSWORD, { input: { password } }, options);
+    }
+
+    public setPrivateCategoriesPassword(
+        currentPassword: string | undefined,
+        newPassword: string | undefined,
+        options?: MutationOptions<SetPrivateCategoriesPasswordMutation, SetPrivateCategoriesPasswordMutationVariables>,
+    ): AbortableApolloMutationResponse<SetPrivateCategoriesPasswordMutation> {
+        return this.doRequest<SetPrivateCategoriesPasswordMutation, SetPrivateCategoriesPasswordMutationVariables>(
+            GQLMethod.MUTATION,
+            SET_PRIVATE_CATEGORIES_PASSWORD,
+            { input: { currentPassword, newPassword } },
+            { refetchQueries: [GET_HAS_PRIVATE_CATEGORIES_PASSWORD], ...options },
+        );
+    }
+
+    public useGetPrivateMangaIds(
+        options?: QueryHookOptions<GetPrivateMangaIdsQuery, GetPrivateMangaIdsQueryVariables>,
+    ): AbortableApolloUseQueryResponse<GetPrivateMangaIdsQuery, GetPrivateMangaIdsQueryVariables> {
+        return this.doRequest<GetPrivateMangaIdsQuery, GetPrivateMangaIdsQueryVariables>(
+            GQLMethod.USE_QUERY,
+            GET_PRIVATE_MANGA_IDS,
+            undefined,
+            { fetchPolicy: 'cache-and-network', ...options },
+        );
+    }
+
+    public useGetHasPrivateCategoriesPassword(
+        options?: QueryHookOptions<GetHasPrivateCategoriesPasswordQuery, GetHasPrivateCategoriesPasswordQueryVariables>,
+    ): AbortableApolloUseQueryResponse<
+        GetHasPrivateCategoriesPasswordQuery,
+        GetHasPrivateCategoriesPasswordQueryVariables
+    > {
+        return this.doRequest(GQLMethod.USE_QUERY, GET_HAS_PRIVATE_CATEGORIES_PASSWORD, undefined, options);
     }
 
     public updateCategoryMeta(

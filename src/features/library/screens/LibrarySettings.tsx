@@ -12,6 +12,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
 import ListSubheader from '@mui/material/ListSubheader';
+import { useMemo } from 'react';
 import { useLingui } from '@lingui/react/macro';
 import { plural, t as translate } from '@lingui/core/macro';
 import { GlobalUpdateSettings } from '@/features/settings/components/globalUpdate/GlobalUpdateSettings.tsx';
@@ -38,6 +39,11 @@ import type { MetadataLibrarySettings } from '@/features/library/Library.types.t
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import { PrivateCategoriesSettings } from '@/features/category/components/PrivateCategoriesSettings.tsx';
+import {
+    isCategoryConcealed,
+    useArePrivateCategoriesUnlocked,
+} from '@/features/category/services/PrivateCategories.ts';
 
 const removeNonLibraryMangasFromCategories = async (): Promise<void> => {
     try {
@@ -85,8 +91,17 @@ export function LibrarySettings() {
         makeToast(t`Could not save the default search settings to the server`, 'error', getErrorMessage(e)),
     );
 
+    const arePrivateCategoriesUnlocked = useArePrivateCategoriesUnlocked();
+    const visibleCategories = useMemo(
+        () =>
+            categories.data?.categories.nodes.filter(
+                (category) => !isCategoryConcealed(category, !arePrivateCategoriesUnlocked),
+            ) ?? [],
+        [categories.data?.categories.nodes, arePrivateCategoriesUnlocked],
+    );
+
     // -1 for the DEFAULT category
-    const categoryCount = (categories.data?.categories.nodes.length ?? 1) - 1;
+    const categoryCount = Math.max(visibleCategories.length - 1, 0);
 
     const loading = serverSettings.loading || areMetadataServerSettingsLoading || categories.loading;
     if (loading) {
@@ -180,10 +195,8 @@ export function LibrarySettings() {
                     />
                 </ListItem>
             </List>
-            <GlobalUpdateSettings
-                serverSettings={serverSettings.data!.settings}
-                categories={categories.data!.categories.nodes}
-            />
+            <PrivateCategoriesSettings />
+            <GlobalUpdateSettings serverSettings={serverSettings.data!.settings} categories={visibleCategories} />
             <List
                 subheader={
                     <ListSubheader component="div" id="library-advanced">

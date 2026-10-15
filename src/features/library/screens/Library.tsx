@@ -13,6 +13,10 @@ import { styled, useTheme } from '@mui/material/styles';
 import { useCallback, useMemo, useState } from 'react';
 import { useQueryParam, NumberParam, StringParam } from 'use-query-params';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import LockIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { Link } from '@/lib/router';
 import Box from '@mui/material/Box';
 import { useLingui } from '@lingui/react/macro';
@@ -32,6 +36,16 @@ import { SelectionFAB } from '@/base/collection/components/SelectionFAB.tsx';
 import { MangaActionMenuItems } from '@/features/manga/components/MangaActionMenuItems.tsx';
 import { TabsMenu } from '@/base/components/tabs/TabsMenu.tsx';
 import { TabsWrapper } from '@/base/components/tabs/TabsWrapper.tsx';
+import { PrivateCategoriesUnlockDialog } from '@/features/category/components/PrivateCategoriesUnlockDialog.tsx';
+import {
+    isCategoryConcealed,
+    isCategoryTabHidden,
+    lockPrivateCategories,
+    tryUnlockPrivateCategories,
+    useArePrivateCategoriesUnlocked,
+} from '@/features/category/services/PrivateCategories.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import { makeToast } from '@/base/utils/Toast.ts';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import type {
     GetCategoriesLibraryQuery,
@@ -77,8 +91,14 @@ export function Library() {
     } = requestManager.useGetCategories<GetCategoriesLibraryQuery, GetCategoriesLibraryQueryVariables>(
         GET_CATEGORIES_LIBRARY,
     );
+    const arePrivateCategoriesUnlocked = useArePrivateCategoriesUnlocked();
+    const [isUnlockDialogOpen, setIsUnlockDialogOpen] = useState(false);
+    const hasPrivateCategories = !!categoriesResponse?.categories.nodes.some((category) => category.isPrivate);
+
     const tabsData = categoriesResponse?.categories.nodes.filter(
-        (category) => category.id !== 0 || (category.id === 0 && category.mangas.totalCount),
+        (category) =>
+            (category.id !== 0 || (category.id === 0 && category.mangas.totalCount)) &&
+            !isCategoryTabHidden(category, !arePrivateCategoriesUnlocked),
     );
     const tabs = tabsData ?? STABLE_EMPTY_ARRAY;
 
@@ -94,13 +114,37 @@ export function Library() {
 
     const activeTab: (typeof tabs)[number] | undefined = tabs.find((tab) => tab.id === tabSearchParam) ?? tabs[0];
 
+    const isActiveTabLocked = !!activeTab && isCategoryConcealed(activeTab, !arePrivateCategoriesUnlocked);
+
     const {
         data: categoryMangaResponse,
         error: mangaError,
-        loading: mangaLoading,
+        loading: isCategoryMangaLoading,
         refetch: refetchCategoryMangas,
-    } = requestManager.useGetCategoryMangas(activeTab?.id, { skip: !activeTab });
-    const categoryMangas = categoryMangaResponse?.mangas.nodes ?? STABLE_EMPTY_ARRAY;
+    } = requestManager.useGetCategoryMangas(activeTab?.id, { skip: !activeTab || isActiveTabLocked });
+    const { data: privateMangaIdsResponse, loading: arePrivateMangaIdsLoading } = requestManager.useGetPrivateMangaIds({
+        skip: arePrivateCategoriesUnlocked || !hasPrivateCategories,
+    });
+    const privateMangaIds = useMemo(
+        () => new Set(privateMangaIdsResponse?.privateMangaIds ?? []),
+        [privateMangaIdsResponse?.privateMangaIds],
+    );
+    const isPrivacyFilterPending =
+        !arePrivateCategoriesUnlocked && hasPrivateCategories && !privateMangaIdsResponse && arePrivateMangaIdsLoading;
+    const mangaLoading = isCategoryMangaLoading || isPrivacyFilterPending;
+    const categoryMangas = useMemo(() => {
+        const allCategoryMangas = categoryMangaResponse?.mangas.nodes ?? STABLE_EMPTY_ARRAY;
+
+        if (isPrivacyFilterPending) {
+            return STABLE_EMPTY_ARRAY;
+        }
+
+        if (arePrivateCategoriesUnlocked || !privateMangaIds.size) {
+            return allCategoryMangas;
+        }
+
+        return allCategoryMangas.filter((manga) => !privateMangaIds.has(manga.id));
+    }, [categoryMangaResponse?.mangas.nodes, arePrivateCategoriesUnlocked, privateMangaIds, isPrivacyFilterPending]);
     const {
         visibleMangas: mangas,
         showFilteredOutMessage,
@@ -172,6 +216,37 @@ export function Library() {
         );
     }, [isSelectModeActive, selectedMangas]);
 
+    const handleToggleLock = () => {
+        if (arePrivateCategoriesUnlocked) {
+            lockPrivateCategories();
+            return;
+        }
+
+        // succeeds without a prompt when no password has been set
+        tryUnlockPrivateCategories('')
+            .then((unlocked) => !unlocked && setIsUnlockDialogOpen(true))
+            .catch((e) => makeToast(t`Could not verify the password`, 'error', getErrorMessage(e)));
+    };
+
+    const lockToggleButton = hasPrivateCategories && (
+        <IconButton
+            onClick={handleToggleLock}
+            title={arePrivateCategoriesUnlocked ? t`Lock private categories` : t`Unlock private categories`}
+        >
+            {arePrivateCategoriesUnlocked ? <LockOpenIcon /> : <LockIcon />}
+        </IconButton>
+    );
+
+    const lockedCategoryView = (
+        <Stack sx={{ alignItems: 'center', justifyContent: 'center', gap: 2, p: 4, minHeight: '50vh' }}>
+            <LockIcon fontSize="large" />
+            {t`This category is private`}
+            <Button variant="contained" onClick={() => setIsUnlockDialogOpen(true)}>
+                {t`Unlock`}
+            </Button>
+        </Stack>
+    );
+
     const triggerGlobalSearchButton = useMemo(
         () =>
             !!query && (
@@ -179,6 +254,7 @@ export function Library() {
                     <Button
                         size="large"
                         component={Link}
+                        nativeButton={false}
                         to={AppRoutes.sources.children.searchAll.path(query)}
                         sx={{ textTransform: 'none', width: '100%' }}
                     >
@@ -204,13 +280,14 @@ export function Library() {
     );
     useAppAction(
         <>
-            {!isSelectModeActive && activeTab && (
+            {!isSelectModeActive && activeTab && !isActiveTabLocked && (
                 <>
                     <AppbarSearch />
                     <LibraryToolbarMenu category={activeTab} />
                     <UpdateChecker categoryId={activeTab?.id} />
                 </>
             )}
+            {!isSelectModeActive && lockToggleButton}
             {!!mangas.length && (
                 <SelectableCollectionSelectMode
                     isActive={isSelectModeActive}
@@ -231,7 +308,16 @@ export function Library() {
                 />
             )}
         </>,
-        [isSelectModeActive, areNoItemsSelected, areAllItemsSelected, activeTab, mangas.length],
+        [
+            isSelectModeActive,
+            areNoItemsSelected,
+            areAllItemsSelected,
+            activeTab,
+            mangas.length,
+            isActiveTabLocked,
+            hasPrivateCategories,
+            arePrivateCategoriesUnlocked,
+        ],
     );
 
     const handleTabChange = (newTab: number) => {
@@ -260,8 +346,26 @@ export function Library() {
         return <LoadingPlaceholder />;
     }
 
+    const unlockDialog = isUnlockDialogOpen && (
+        <PrivateCategoriesUnlockDialog onClose={() => setIsUnlockDialogOpen(false)} />
+    );
+
     if (tabs.length === 0) {
-        return <EmptyViewAbsoluteCentered message={t`Your library is empty`} />;
+        return (
+            <>
+                <EmptyViewAbsoluteCentered message={t`Your library is empty`} />
+                {unlockDialog}
+            </>
+        );
+    }
+
+    if (tabs.length === 1 && isActiveTabLocked) {
+        return (
+            <>
+                {lockedCategoryView}
+                {unlockDialog}
+            </>
+        );
     }
 
     if (tabs.length === 1) {
@@ -282,6 +386,7 @@ export function Library() {
                     retry={mangaError && retryFetchCategoryMangas}
                 />
                 {selectionFab}
+                {unlockDialog}
             </>
         );
     }
@@ -296,7 +401,9 @@ export function Library() {
                         label={
                             <TitleWithSizeTag>
                                 {tab.name}
-                                {showTabSize ? <TitleSizeTag label={tab.mangas.totalCount} /> : null}
+                                {showTabSize && !isCategoryConcealed(tab, !arePrivateCategoriesUnlocked) ? (
+                                    <TitleSizeTag label={tab.mangas.totalCount} />
+                                ) : null}
                             </TitleWithSizeTag>
                         }
                         value={tab.id}
@@ -306,7 +413,8 @@ export function Library() {
             {triggerGlobalSearchButton}
             {tabs.map((tab) => (
                 <TabPanel key={tab.id} index={tab.id} currentIndex={activeTab.id}>
-                    {tab === activeTab && (
+                    {tab === activeTab && isActiveTabLocked && lockedCategoryView}
+                    {tab === activeTab && !isActiveTabLocked && (
                         <LibraryMangaGrid
                             // the key needs to include filters and query to force a re-render of the virtuoso grid to prevent https://github.com/petyosi/react-virtuoso/issues/1242
                             key={filterKey}
@@ -324,6 +432,7 @@ export function Library() {
                 </TabPanel>
             ))}
             {selectionFab}
+            {unlockDialog}
         </TabsWrapper>
     );
 }

@@ -72,6 +72,8 @@ export type CategoryBaseFieldsFragment = {
     name: string;
     default: boolean;
     order: number;
+    isPrivate: boolean;
+    showWhenLocked: boolean;
 };
 
 export type CategoryLibraryFieldsFragment = {
@@ -80,6 +82,8 @@ export type CategoryLibraryFieldsFragment = {
     name: string;
     default: boolean;
     order: number;
+    isPrivate: boolean;
+    showWhenLocked: boolean;
     meta: Array<{ __typename: 'CategoryMetaType'; categoryId: number; key: string; value: string }>;
     mangas: { __typename: 'MangaNodeList'; totalCount: number };
 };
@@ -92,6 +96,8 @@ export type CategorySettingFieldsFragment = {
     name: string;
     default: boolean;
     order: number;
+    isPrivate: boolean;
+    showWhenLocked: boolean;
 };
 
 export type CreateCategoryMutationVariables = Exact<{
@@ -110,6 +116,8 @@ export type CreateCategoryMutation = {
             name: string;
             default: boolean;
             order: number;
+            isPrivate: boolean;
+            showWhenLocked: boolean;
         };
     } | null;
 };
@@ -215,6 +223,40 @@ export type UpdateCategoryMetadataMutation = {
     } | null;
 };
 
+export type UpdateCategoryPrivacyMutationVariables = Exact<{
+    input: Types.UpdateCategoryPrivacyInput;
+}>;
+
+export type UpdateCategoryPrivacyMutation = {
+    __typename: 'Mutation';
+    updateCategoryPrivacy: {
+        __typename: 'UpdateCategoryPrivacyPayload';
+        category: { __typename: 'CategoryType'; id: number; isPrivate: boolean; showWhenLocked: boolean };
+    } | null;
+};
+
+export type VerifyPrivateCategoriesPasswordMutationVariables = Exact<{
+    input: Types.VerifyPrivateCategoriesPasswordInput;
+}>;
+
+export type VerifyPrivateCategoriesPasswordMutation = {
+    __typename: 'Mutation';
+    verifyPrivateCategoriesPassword: { __typename: 'VerifyPrivateCategoriesPasswordPayload'; unlocked: boolean } | null;
+};
+
+export type SetPrivateCategoriesPasswordMutationVariables = Exact<{
+    input: Types.SetPrivateCategoriesPasswordInput;
+}>;
+
+export type SetPrivateCategoriesPasswordMutation = {
+    __typename: 'Mutation';
+    setPrivateCategoriesPassword: {
+        __typename: 'SetPrivateCategoriesPasswordPayload';
+        success: boolean;
+        hasPassword: boolean;
+    } | null;
+};
+
 export type GetCategoriesBaseQueryVariables = Exact<{
     after?: string | null | undefined;
     before?: string | null | undefined;
@@ -231,7 +273,15 @@ export type GetCategoriesBaseQuery = {
     categories: {
         __typename: 'CategoryNodeList';
         totalCount: number;
-        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string; default: boolean; order: number }>;
+        nodes: Array<{
+            __typename: 'CategoryType';
+            id: number;
+            name: string;
+            default: boolean;
+            order: number;
+            isPrivate: boolean;
+            showWhenLocked: boolean;
+        }>;
         pageInfo: {
             __typename: 'PageInfo';
             endCursor: string | null;
@@ -264,6 +314,8 @@ export type GetCategoriesLibraryQuery = {
             name: string;
             default: boolean;
             order: number;
+            isPrivate: boolean;
+            showWhenLocked: boolean;
             meta: Array<{ __typename: 'CategoryMetaType'; categoryId: number; key: string; value: string }>;
             mangas: { __typename: 'MangaNodeList'; totalCount: number };
         }>;
@@ -301,6 +353,8 @@ export type GetCategoriesSettingsQuery = {
             name: string;
             default: boolean;
             order: number;
+            isPrivate: boolean;
+            showWhenLocked: boolean;
         }>;
         pageInfo: {
             __typename: 'PageInfo';
@@ -395,6 +449,14 @@ export type GetCategoryMangasQuery = {
         };
     };
 };
+
+export type GetPrivateMangaIdsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPrivateMangaIdsQuery = { __typename: 'Query'; privateMangaIds: Array<number> };
+
+export type GetHasPrivateCategoriesPasswordQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetHasPrivateCategoriesPasswordQuery = { __typename: 'Query'; hasPrivateCategoriesPassword: boolean };
 
 export type ChapterMetaFieldsFragment = {
     __typename: 'ChapterMetaType';
@@ -2134,7 +2196,7 @@ export type UpdateMangaVisibilityMutationVariables = Exact<{
 
 export type UpdateMangaVisibilityMutation = {
     __typename: 'Mutation';
-    updateMangaVisibility?: {
+    updateMangaVisibility: {
         __typename: 'UpdateMangaVisibilityPayload';
         manga: { __typename: 'MangaType'; id: number; hideFromHistory: boolean; hideFromUpdates: boolean };
     } | null;

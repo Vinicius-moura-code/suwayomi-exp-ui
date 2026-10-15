@@ -129,7 +129,7 @@ export const AUTH_MODES_SELECT_VALUES: SelectSettingValue<AuthMode>[] = AUTH_MOD
 
 const WEB_UI_FLAVORS = Object.values(WebUiFlavor);
 const WEB_UI_FLAVOR_TO_TRANSLATION: { [flavor in WebUiFlavor]: SelectSettingValueDisplayInfo } = {
-    [WebUiFlavor.Expui]: {
+    [WebUiFlavor.Expuui]: {
         text: msg`ExpUI`,
         description: msg`Official UI for suwayomi-exp. Served from the server webUI data folder (install via scripts/dev/install-ui).`,
     },

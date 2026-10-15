@@ -101,7 +101,7 @@ export const WebUISettings = () => {
     const webUISettings = data!.settings;
     // ExpUI / Custom: local webUI folder only — no GitHub channel or auto-update
     const isLocalManagedWebUI =
-        webUISettings.webUIFlavor === WebUiFlavor.Custom || webUISettings.webUIFlavor === WebUiFlavor.Expui;
+        webUISettings.webUIFlavor === WebUiFlavor.Custom || webUISettings.webUIFlavor === WebUiFlavor.Expuui;
 
     return (
         <List sx={{ pt: 0 }}>

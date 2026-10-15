@@ -139,3 +139,15 @@ export const GET_CATEGORY_MANGAS = gql`
         }
     }
 `;
+
+export const GET_PRIVATE_MANGA_IDS = gql`
+    query GET_PRIVATE_MANGA_IDS {
+        privateMangaIds
+    }
+`;
+
+export const GET_HAS_PRIVATE_CATEGORIES_PASSWORD = gql`
+    query GET_HAS_PRIVATE_CATEGORIES_PASSWORD {
+        hasPrivateCategoriesPassword
+    }
+`;

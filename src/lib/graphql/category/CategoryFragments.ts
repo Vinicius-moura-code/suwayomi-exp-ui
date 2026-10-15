@@ -23,6 +23,8 @@ export const CATEGORY_BASE_FIELDS = gql`
 
         default
         order
+        isPrivate
+        showWhenLocked
     }
 `;
 
