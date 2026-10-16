@@ -166,6 +166,16 @@ import type {
     GetPrivateMangaIdsQueryVariables,
     GetHasPrivateCategoriesPasswordQuery,
     GetHasPrivateCategoriesPasswordQueryVariables,
+    GetSourcesHealthQuery,
+    GetSourcesHealthQueryVariables,
+    GetSourcesHealthTrendQuery,
+    GetSourcesHealthTrendQueryVariables,
+    GetSourceHealthDetailsQuery,
+    GetSourceHealthDetailsQueryVariables,
+    SetSourceRatingMutation,
+    SetSourceRatingMutationVariables,
+    ResetSourceHealthMutation,
+    ResetSourceHealthMutationVariables,
     UpdateCategoryOrderMutation,
     UpdateCategoryOrderMutationVariables,
     UpdateChapterMetadataMutation,
@@ -262,6 +272,12 @@ import {
     UPDATE_EXTENSIONS,
 } from '@/lib/graphql/extension/ExtensionMutation.ts';
 import { GET_MIGRATABLE_SOURCES, GET_SOURCES_LIST } from '@/lib/graphql/source/SourceQuery.ts';
+import {
+    GET_SOURCE_HEALTH_DETAILS,
+    GET_SOURCES_HEALTH,
+    GET_SOURCES_HEALTH_TREND,
+} from '@/lib/graphql/source/SourceHealthQuery.ts';
+import { RESET_SOURCE_HEALTH, SET_SOURCE_RATING } from '@/lib/graphql/source/SourceHealthMutation.ts';
 import {
     GET_MANGA_TO_MIGRATE_TO_FETCH,
     REFRESH_MANGA,
@@ -1881,6 +1897,70 @@ export class RequestManager {
         options?: QueryHookOptions<GetSourcesListQuery, GetSourcesListQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetSourcesListQuery, GetSourcesListQueryVariables> {
         return this.doRequest(GQLMethod.USE_QUERY, GET_SOURCES_LIST, {}, options);
+    }
+
+    public useGetSourcesHealth(
+        days?: number,
+        options?: QueryHookOptions<GetSourcesHealthQuery, GetSourcesHealthQueryVariables>,
+    ): AbortableApolloUseQueryResponse<GetSourcesHealthQuery, GetSourcesHealthQueryVariables> {
+        return this.doRequest<GetSourcesHealthQuery, GetSourcesHealthQueryVariables>(
+            GQLMethod.USE_QUERY,
+            GET_SOURCES_HEALTH,
+            { days },
+            { fetchPolicy: 'cache-and-network', ...options },
+        );
+    }
+
+    public useGetSourcesHealthTrend(
+        days?: number,
+        options?: QueryHookOptions<GetSourcesHealthTrendQuery, GetSourcesHealthTrendQueryVariables>,
+    ): AbortableApolloUseQueryResponse<GetSourcesHealthTrendQuery, GetSourcesHealthTrendQueryVariables> {
+        return this.doRequest<GetSourcesHealthTrendQuery, GetSourcesHealthTrendQueryVariables>(
+            GQLMethod.USE_QUERY,
+            GET_SOURCES_HEALTH_TREND,
+            { days },
+            { fetchPolicy: 'cache-and-network', ...options },
+        );
+    }
+
+    public useGetSourceHealthDetails(
+        sourceId: string,
+        days?: number,
+        failuresLimit?: number,
+        options?: QueryHookOptions<GetSourceHealthDetailsQuery, GetSourceHealthDetailsQueryVariables>,
+    ): AbortableApolloUseQueryResponse<GetSourceHealthDetailsQuery, GetSourceHealthDetailsQueryVariables> {
+        return this.doRequest<GetSourceHealthDetailsQuery, GetSourceHealthDetailsQueryVariables>(
+            GQLMethod.USE_QUERY,
+            GET_SOURCE_HEALTH_DETAILS,
+            { sourceId, days, failuresLimit },
+            { fetchPolicy: 'cache-and-network', ...options },
+        );
+    }
+
+    public setSourceRating(
+        sourceId: string,
+        rating: number | null,
+        note?: string | null,
+        options?: MutationOptions<SetSourceRatingMutation, SetSourceRatingMutationVariables>,
+    ): AbortableApolloMutationResponse<SetSourceRatingMutation> {
+        return this.doRequest<SetSourceRatingMutation, SetSourceRatingMutationVariables>(
+            GQLMethod.MUTATION,
+            SET_SOURCE_RATING,
+            { input: { sourceId, rating, note } },
+            { refetchQueries: [GET_SOURCES_HEALTH], ...options },
+        );
+    }
+
+    public resetSourceHealth(
+        sourceId: string,
+        options?: MutationOptions<ResetSourceHealthMutation, ResetSourceHealthMutationVariables>,
+    ): AbortableApolloMutationResponse<ResetSourceHealthMutation> {
+        return this.doRequest<ResetSourceHealthMutation, ResetSourceHealthMutationVariables>(
+            GQLMethod.MUTATION,
+            RESET_SOURCE_HEALTH,
+            { input: { sourceId } },
+            { refetchQueries: [GET_SOURCES_HEALTH, GET_SOURCE_HEALTH_DETAILS, GET_SOURCES_HEALTH_TREND], ...options },
+        );
     }
 
     public useGetSource<Data, Variables extends OperationVariables>(

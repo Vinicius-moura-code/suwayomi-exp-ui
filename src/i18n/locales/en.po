@@ -19,9 +19,17 @@ msgstr ""
 msgid "- State: {0}"
 msgstr "- State: {0}"
 
+#. placeholder {0}: usage.chaptersRead
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "{0, plural, one {# chapter read} other {# chapters read}}"
+msgstr "{0, plural, one {# chapter read} other {# chapters read}}"
+
 #. placeholder {0}: selectedChapters.length
-#. placeholder {0}: visibleChapters.length
+#. placeholder {0}: source.usage.chaptersRead
+#. placeholder {0}: usage.chaptersRead
 #: src/features/chapter/components/ChapterList.tsx
+#: src/features/dashboard/components/MostReadSourcesWidget.tsx
+#: src/features/source-health/components/SourceHealthCard.tsx
 msgid "{0, plural, one {# chapter} other {# chapters}}"
 msgstr "{0, plural, one {# chapter} other {# chapters}}"
 
@@ -44,6 +52,11 @@ msgstr "{0, plural, one {# manga} other {# manga}}"
 #: src/features/settings/screens/ServerSettings.tsx
 msgid "{0, plural, one {# minute} other {# minutes}}"
 msgstr "{0, plural, one {# minute} other {# minutes}}"
+
+#. placeholder {0}: summary.attempts
+#: src/features/source-health/components/SourceHealthSummary.tsx
+msgid "{0, plural, one {# request to the sources} other {# requests to the sources}}"
+msgstr "{0, plural, one {# request to the sources} other {# requests to the sources}}"
 
 #. placeholder {0}: autoScroll.value
 #. placeholder {0}: serverSettings.flareSolverrTimeout
@@ -134,14 +147,27 @@ msgstr "{0} / {1}"
 msgid "{0} / {1}{2}"
 msgstr "{0} / {1}{2}"
 
+#. placeholder {0}: usage.mangasRead
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "{0} manga"
+msgstr "{0} manga"
+
 #. placeholder {0}: updateStatus.progress
 #: src/features/app-updates/components/WebUIUpdateChecker.tsx
 msgid "{0}% | Updating…"
 msgstr "{0}% | Updating…"
 
+#: src/features/dashboard/components/SourceActivityWidget.tsx
+msgid "{attempts, plural, one {# request} other {# requests}}"
+msgstr "{attempts, plural, one {# request} other {# requests}}"
+
 #: src/features/navigation-bar/NavigationBar.constants.ts
 msgid "{availableUpdates, plural, one {# update available} other {# updates available}}"
 msgstr "{availableUpdates, plural, one {# update available} other {# updates available}}"
+
+#: src/features/source-health/components/SourceHealthSummary.tsx
+msgid "{averageDelivery} delivered on average"
+msgstr "{averageDelivery} delivered on average"
 
 #: src/features/library/screens/LibrarySettings.tsx
 msgid "{categoryCount, plural, one {# category} other {# categories}}"
@@ -304,6 +330,14 @@ msgstr "{currentAutoUpdateIntervalHours}h"
 msgid "{currentDownloadAheadLimit, plural, one {# Chapter} other {# Chapters}}"
 msgstr "{currentDownloadAheadLimit, plural, one {# Chapter} other {# Chapters}}"
 
+#: src/features/source-health/components/SourceHealthTrend.tsx
+msgid "{day}: {attempts} requests, {failures} failed"
+msgstr "{day}: {attempts} requests, {failures} failed"
+
+#: src/features/source-health/components/SourceHealthWindowToggle.tsx
+msgid "{days, plural, one {# day} other {# days}}"
+msgstr "{days, plural, one {# day} other {# days}}"
+
 #: src/features/extension/store/screens/ExtensionStores.tsx
 msgid "{extensionCount, plural, one {# extension} other {# extensions}}"
 msgstr "{extensionCount, plural, one {# extension} other {# extensions}}"
@@ -311,6 +345,10 @@ msgstr "{extensionCount, plural, one {# extension} other {# extensions}}"
 #: src/features/browse/screens/BrowseSettings.tsx
 msgid "{extensionStoreCount, plural, one {# extension store} other {# extension stores}}"
 msgstr "{extensionStoreCount, plural, one {# extension store} other {# extension stores}}"
+
+#: src/features/dashboard/components/SourceActivityWidget.tsx
+msgid "{failureRate} worked"
+msgstr "{failureRate} worked"
 
 #: src/features/extension/store/screens/ExtensionStores.tsx
 msgid "{installedExtensionCount, plural, one {# installed} other {# installed}}"
@@ -445,6 +483,10 @@ msgstr "Age rating"
 msgid "All"
 msgstr "All"
 
+#: src/features/dashboard/components/SourcesNeedingAttentionWidget.tsx
+msgid "All the sources you use are doing fine"
+msgstr "All the sources you use are doing fine"
+
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Allow deleting bookmarked chapters"
 msgstr "Allow deleting bookmarked chapters"
@@ -481,6 +523,7 @@ msgstr "Are you sure you want to abort the migration?"
 #: src/features/extension/store/screens/ExtensionStores.tsx
 #: src/features/manga/hooks/useManageMangaLibraryState.tsx
 #: src/features/manga/services/Mangas.ts
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
 #: src/features/source/browse/components/SourceOptions.tsx
 msgid "Are you sure?"
 msgstr "Are you sure?"
@@ -646,6 +689,10 @@ msgstr "Binary file size"
 msgid "Black"
 msgstr "Black"
 
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Blocked"
+msgstr "Blocked"
+
 #: src/features/reader/filters/settings/components/ReaderSettingRGBA.tsx
 msgid "Blue"
 msgstr "Blue"
@@ -710,6 +757,10 @@ msgstr "Bundled"
 #: src/features/chapter/Chapter.constants.ts
 msgid "By chapter number"
 msgstr "By chapter number"
+
+#: src/features/dashboard/components/MostReadSourcesWidget.tsx
+msgid "By chapters read in this period"
+msgstr "By chapters read in this period"
 
 #: src/features/chapter/Chapter.constants.ts
 msgid "By date fetched"
@@ -864,6 +915,7 @@ msgid "Chapter transition warning"
 msgstr "Chapter transition warning"
 
 #: src/features/backup/Backup.constants.ts
+#: src/features/source-health/services/SourceHealth.ts
 msgid "Chapters"
 msgstr "Chapters"
 
@@ -919,6 +971,7 @@ msgstr "Client data"
 #: src/base/components/feedback/SnackbarWithDescription.tsx
 #: src/features/app-updates/components/VersionUpdateInfoDialog.tsx
 #: src/features/migration/components/migration-entry/MigrationDestinationEntry.tsx
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
 msgid "Close"
 msgstr "Close"
 
@@ -977,6 +1030,10 @@ msgstr "Connected as {currentUsername} to {currentServerAddress}"
 #: src/features/settings/components/koreaderSync/KoreaderSyncSettings.tsx
 msgid "Connected as {initialUsername} to {initialServerAddress}"
 msgstr "Connected as {initialUsername} to {initialServerAddress}"
+
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Connection failed"
+msgstr "Connection failed"
 
 #: src/features/migration/components/MigrationContinueButton.tsx
 msgid "Continue"
@@ -1158,6 +1215,10 @@ msgstr "Could not remove non library manga from categories"
 msgid "Could not remove the download from the queue."
 msgstr "Could not remove the download from the queue."
 
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Could not reset the measurements"
+msgstr "Could not reset the measurements"
+
 #: src/features/backup/screens/Backup.tsx
 msgid "Could not restore backup"
 msgstr "Could not restore backup"
@@ -1183,6 +1244,10 @@ msgstr "Could not save the default search settings to the server"
 #: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
 msgid "Could not save the password"
 msgstr "Could not save the password"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Could not save the rating"
+msgstr "Could not save the rating"
 
 #: src/features/reader/services/ReaderService.ts
 msgid "Could not save the reader settings to the server"
@@ -1333,6 +1398,11 @@ msgstr "Dark"
 msgid "Darken"
 msgstr "Darken"
 
+#: src/features/dashboard/screens/Dashboard.tsx
+#: src/features/navigation-bar/NavigationBar.constants.ts
+msgid "Dashboard"
+msgstr "Dashboard"
+
 #: src/features/settings/screens/ServerSettings.tsx
 msgid "Database"
 msgstr "Database"
@@ -1417,6 +1487,18 @@ msgstr "Deleted theme \"{0}\""
 msgid "Deleting theme \"{0}\"…"
 msgstr "Deleting theme \"{0}\"…"
 
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Delivered"
+msgstr "Delivered"
+
+#: src/features/source-health/components/SourceHealthCard.tsx
+msgid "Delivers"
+msgstr "Delivers"
+
+#: src/features/source-health/components/SourceHealthIndicator.tsx
+msgid "Delivers {rate} of the time, typically in {load} (last {windowDays} days)"
+msgstr "Delivers {rate} of the time, typically in {load} (last {windowDays} days)"
+
 #: src/features/migration/Migration.constants.ts
 #: src/features/settings/screens/ServerSettings.tsx
 msgid "Descending"
@@ -1436,6 +1518,10 @@ msgstr "Desktop"
 msgid "Destination - {0}"
 msgstr "Destination - {0}"
 
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Details"
+msgstr "Details"
+
 #: src/features/device/screens/DeviceSetting.tsx
 #: src/features/settings/screens/Settings.tsx
 msgid "Device"
@@ -1444,6 +1530,10 @@ msgstr "Device"
 #: src/features/device/screens/DeviceSetting.tsx
 msgid "Devices"
 msgstr "Devices"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Did it deliver?"
+msgstr "Did it deliver?"
 
 #: src/features/settings/Settings.constants.ts
 msgid "Disable authentication"
@@ -1654,6 +1744,7 @@ msgstr "Entry \"{id}\" not found"
 #: src/base/components/downloads/DownloadStateIndicator.tsx
 #: src/base/components/feedback/SnackbarWithDescription.tsx
 #: src/features/settings/Settings.constants.ts
+#: src/features/source-health/services/SourceHealth.ts
 msgid "Error"
 msgstr "Error"
 
@@ -1776,6 +1867,14 @@ msgstr "Failed to disconnect from KOReader Sync server."
 #: src/features/tracker/screens/TrackingSettings.tsx
 msgid "Failed to save changes"
 msgstr "Failed to save changes"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Failures"
+msgstr "Failures"
+
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Fair"
+msgstr "Fair"
 
 #: src/features/settings/Settings.constants.ts
 msgid ""
@@ -1927,6 +2026,10 @@ msgstr "Grayscale"
 msgid "Green"
 msgstr "Green"
 
+#: src/features/dashboard/components/SourceActivityWidget.tsx
+msgid "Green: worked, red: failed"
+msgstr "Green: worked, red: failed"
+
 #: src/features/settings/components/globalUpdate/GlobalUpdateSettingsInterval.tsx
 #: src/features/settings/components/webUI/WebUIUpdateIntervalSetting.tsx
 msgid "h"
@@ -1973,6 +2076,10 @@ msgstr "Hide from Updates"
 #: src/features/history/screens/HistorySettings.tsx
 msgid "Hide history"
 msgstr "Hide history"
+
+#: src/features/source-health/screens/SourceHealthScreen.tsx
+msgid "Hide sources without enough data"
+msgstr "Hide sources without enough data"
 
 #: src/features/settings/screens/ServerSettings.tsx
 msgid "Hikari connection pool"
@@ -2059,6 +2166,7 @@ msgstr "Image serve processing"
 
 #: src/features/settings/screens/ImagesSettings.tsx
 #: src/features/settings/screens/Settings.tsx
+#: src/features/source-health/services/SourceHealth.ts
 msgid "Images"
 msgstr "Images"
 
@@ -2239,6 +2347,14 @@ msgstr "Language with code: {code}"
 msgid "Large"
 msgstr "Large"
 
+#: src/features/source-health/components/SourceHealthSummary.tsx
+msgid "Last {windowDays} days"
+msgstr "Last {windowDays} days"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "last read {lastRead}"
+msgstr "last read {lastRead}"
+
 #: src/features/downloads/components/DeleteChaptersWhileReadingSetting.tsx
 msgid "Last read chapter"
 msgstr "Last read chapter"
@@ -2260,6 +2376,10 @@ msgstr "Last used"
 #: src/features/source/browse/screens/SourceMangas.tsx
 msgid "Latest"
 msgstr "Latest"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Latest failures"
+msgstr "Latest failures"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
 msgid "Latest fetched chapter"
@@ -2340,6 +2460,10 @@ msgstr "Links"
 msgid "List"
 msgstr "List"
 
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Listing"
+msgstr "Listing"
+
 #: src/features/theme/components/ThemePreview.tsx
 msgid "Loading theme fonts…"
 msgstr "Loading theme fonts…"
@@ -2347,6 +2471,10 @@ msgstr "Loading theme fonts…"
 #: src/base/components/settings/SelectSetting.tsx
 msgid "Loading…"
 msgstr "Loading…"
+
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Local connection"
+msgstr "Local connection"
 
 #: src/features/browse/sources/components/SourceCard.tsx
 #: src/features/manga/components/details/MangaDetails.tsx
@@ -2621,6 +2749,10 @@ msgstr "Modern"
 msgid "More"
 msgstr "More"
 
+#: src/features/dashboard/components/MostReadSourcesWidget.tsx
+msgid "Most read sources"
+msgstr "Most read sources"
+
 #: src/features/theme/Themes.ts
 msgid "Mountain Sunset"
 msgstr "Mountain Sunset"
@@ -2638,6 +2770,14 @@ msgstr "Multiply"
 #: src/features/theme/components/CreateThemeDialog.tsx
 msgid "Name"
 msgstr "Name"
+
+#: src/features/dashboard/components/SourcesNeedingAttentionWidget.tsx
+msgid "Needs attention"
+msgstr "Needs attention"
+
+#: src/features/source-health/components/SourceHealthSummary.tsx
+msgid "Needs attention: {worstSources}"
+msgstr "Needs attention: {worstSources}"
 
 #: src/features/backup/Backup.utils.ts
 #: src/features/settings/screens/ServerSettings.tsx
@@ -2669,6 +2809,10 @@ msgstr "Next page"
 #: src/features/reader/viewer/components/ReaderTransitionPage.tsx
 msgid "Next:"
 msgstr "Next:"
+
+#: src/features/dashboard/components/MostReadSourcesWidget.tsx
+msgid "No chapter was read in this period"
+msgstr "No chapter was read in this period"
 
 #: src/features/chapter/components/ChapterList.tsx
 msgid "No chapters found"
@@ -2706,6 +2850,10 @@ msgstr "No pages found"
 msgid "No password set"
 msgstr "No password set"
 
+#: src/features/source-health/screens/SourceHealthScreen.tsx
+msgid "No source to show yet"
+msgstr "No source to show yet"
+
 #: src/features/migration/components/MigrationDestinationSourceList.tsx
 msgid "No sources available to migrate to"
 msgstr "No sources available to migrate to"
@@ -2727,6 +2875,22 @@ msgstr "No sources installed"
 msgid "None"
 msgstr "None"
 
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Not enough data"
+msgstr "Not enough data"
+
+#: src/features/source-health/components/SourceHealthIndicator.tsx
+msgid "Not enough usage in the last {windowDays} days to judge this source"
+msgstr "Not enough usage in the last {windowDays} days to judge this source"
+
+#: src/features/dashboard/components/SourcesNeedingAttentionWidget.tsx
+msgid "Not enough usage yet to judge the sources"
+msgstr "Not enough usage yet to judge the sources"
+
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Not found"
+msgstr "Not found"
+
 #: src/features/tracker/Tracker.constants.ts
 msgid "Not yet published"
 msgstr "Not yet published"
@@ -2734,6 +2898,18 @@ msgstr "Not yet published"
 #: src/features/tracker/Tracker.constants.ts
 msgid "Not yet released"
 msgstr "Not yet released"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Note"
+msgstr "Note"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Nothing was measured yet. Browse or read from this source and it shows up here."
+msgstr "Nothing was measured yet. Browse or read from this source and it shows up here."
+
+#: src/features/dashboard/components/SourceActivityWidget.tsx
+msgid "Nothing was requested from the sources in this period"
+msgstr "Nothing was requested from the sources in this period"
 
 #: src/features/tracker/Tracker.constants.ts
 msgid "Novel"
@@ -2895,6 +3071,10 @@ msgstr "Page"
 msgid "Page gap"
 msgstr "Page gap"
 
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Pages"
+msgstr "Pages"
+
 #: src/features/browse/screens/BrowseSettings.tsx
 msgid "Parallel source requests"
 msgstr "Parallel source requests"
@@ -3037,6 +3217,10 @@ msgstr "Queued"
 msgid "Quick settings"
 msgstr "Quick settings"
 
+#: src/features/source-health/components/SourceHealthCard.tsx
+msgid "Read"
+msgstr "Read"
+
 #: src/features/reader/settings/screens/GlobalReaderSettings.tsx
 #: src/features/settings/screens/Settings.tsx
 msgid "Reader"
@@ -3089,6 +3273,10 @@ msgstr "Refresh"
 msgid "Releasing"
 msgstr "Releasing"
 
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Reliable"
+msgstr "Reliable"
+
 #: src/features/manga/components/MangaToolbarMenu.tsx
 msgid "Reload data from source"
 msgstr "Reload data from source"
@@ -3134,6 +3322,10 @@ msgstr "Remove non library manga from categories"
 msgid "Remove password"
 msgstr "Remove password"
 
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Remove rating"
+msgstr "Remove rating"
+
 #: src/features/manga/Manga.constants.ts
 msgid "Remove selected from the library"
 msgstr "Remove selected from the library"
@@ -3142,12 +3334,24 @@ msgstr "Remove selected from the library"
 msgid "Removed non library manga from categories"
 msgstr "Removed non library manga from categories"
 
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Requests"
+msgstr "Requests"
+
+#: src/features/dashboard/components/SourceActivityWidget.tsx
+msgid "Requests per day"
+msgstr "Requests per day"
+
 #: src/base/components/buttons/ResetButton.tsx
 #: src/base/components/settings/CheckboxListSetting.tsx
 #: src/features/reader/hotkeys/settings/components/RecordHotkey.tsx
 #: src/features/source/browse/components/SourceOptions.tsx
 msgid "Reset"
 msgstr "Reset"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Reset measurements"
+msgstr "Reset measurements"
 
 #: src/base/components/settings/DateSetting.tsx
 #: src/base/components/settings/NumberSetting.tsx
@@ -3191,6 +3395,10 @@ msgstr "Retry"
 msgid "Retry errored pages"
 msgstr "Retry errored pages"
 
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Returned nothing"
+msgstr "Returned nothing"
+
 #: src/features/reader/overlay/progress-bar/settings/components/ReaderSettingProgressBarPosition.tsx
 #: src/features/reader/settings/general/components/ReaderSettingSafeAreaInset.tsx
 msgid "Right"
@@ -3227,6 +3435,10 @@ msgstr "Save current search"
 #: src/features/theme/components/CreateThemeDialog.tsx
 msgid "Save dynamic color theme"
 msgstr "Save dynamic color theme"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Save rating"
+msgstr "Save rating"
 
 #: src/features/source/browse/components/SourceOptions.tsx
 msgid "Save search"
@@ -3395,6 +3607,10 @@ msgstr "Server address"
 #: src/features/settings/screens/ServerSettings.tsx
 msgid "Server bindings"
 msgstr "Server bindings"
+
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Server error"
+msgstr "Server error"
 
 #: src/features/backup/Backup.constants.ts
 msgid "Server settings"
@@ -3569,6 +3785,10 @@ msgstr "Skip filtered chapters"
 msgid "Skip updating entries"
 msgstr "Skip updating entries"
 
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Slowest"
+msgstr "Slowest"
+
 #: src/features/reader/settings/behaviour/components/ReaderSettingScrollAmount.tsx
 msgid "Small"
 msgstr "Small"
@@ -3618,9 +3838,30 @@ msgstr ""
 msgid "Sort"
 msgstr "Sort"
 
+#: src/features/source-health/screens/SourceHealthScreen.tsx
+msgid "Sort by name"
+msgstr "Sort by name"
+
+#: src/features/source-health/screens/SourceHealthScreen.tsx
+msgid "Sort by reliability"
+msgstr "Sort by reliability"
+
+#: src/features/source-health/screens/SourceHealthScreen.tsx
+msgid "Sort by speed"
+msgstr "Sort by speed"
+
+#: src/features/source-health/screens/SourceHealthScreen.tsx
+msgid "Sort by usage"
+msgstr "Sort by usage"
+
+#: src/features/source-health/screens/SourceHealthScreen.tsx
+msgid "Sort by your rating"
+msgstr "Sort by your rating"
+
 #: src/features/browse/screens/Browse.tsx
 #: src/features/browse/screens/BrowseSettings.tsx
 #: src/features/manga/components/details/MangaDetails.tsx
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
 #: src/features/source/browse/screens/SourceMangas.tsx
 msgid "Source"
 msgstr "Source"
@@ -3633,6 +3874,12 @@ msgstr "Source Configuration"
 msgid "Source entry - {sourceTitle}"
 msgstr "Source entry - {sourceTitle}"
 
+#: src/features/browse/sources/Sources.tsx
+#: src/features/dashboard/screens/Dashboard.tsx
+#: src/features/source-health/screens/SourceHealthScreen.tsx
+msgid "Source ranking"
+msgstr "Source ranking"
+
 #: src/features/chapter/components/ChapterOptions.tsx
 msgid "Source title"
 msgstr "Source title"
@@ -3640,6 +3887,14 @@ msgstr "Source title"
 #: src/features/browse/screens/BrowseSettings.tsx
 msgid "Sources"
 msgstr "Sources"
+
+#: src/features/source-health/screens/SourceHealthScreen.tsx
+msgid "Sources show up here once you browse or read from them. Nothing is measured for sources you don't use."
+msgstr "Sources show up here once you browse or read from them. Nothing is measured for sources you don't use."
+
+#: src/features/dashboard/components/SourcesNeedingAttentionWidget.tsx
+msgid "Sources that fail to deliver or are too slow"
+msgstr "Sources that fail to deliver or are too slow"
 
 #: src/features/settings/Settings.constants.ts
 msgid "Stable"
@@ -3696,6 +3951,10 @@ msgstr "Static navigation"
 #: src/features/tracker/components/cards/TrackerMangaCard.tsx
 msgid "Status"
 msgstr "Status"
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Step"
+msgstr "Step"
 
 #: src/features/downloads/screens/DownloadQueue.tsx
 msgid "Stop"
@@ -3917,6 +4176,10 @@ msgstr "This category is private"
 msgid "This does not prevent unofficial or potentially incorrectly flagged extensions from surfacing NSFW (18+) content within the app."
 msgstr "This does not prevent unofficial or potentially incorrectly flagged extensions from surfacing NSFW (18+) content within the app."
 
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "This forgets everything measured about \"{name}\" (your rating is kept). Use it when the source came back from an outage."
+msgstr "This forgets everything measured about \"{name}\" (your rating is kept). Use it when the source came back from an outage."
+
 #: src/features/settings/screens/ServerSettings.tsx
 msgid "This icon will be shown on the system that is running the server"
 msgstr "This icon will be shown on the system that is running the server"
@@ -3932,6 +4195,14 @@ msgstr "This will delete the saved search \"{savedSearch}\""
 #: src/features/tracker/components/cards/TrackerActiveCard.tsx
 msgid "This will remove the tracking locally."
 msgstr "This will remove the tracking locally."
+
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Thumbnails"
+msgstr "Thumbnails"
+
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Timed out"
+msgstr "Timed out"
 
 #: src/features/reader/settings/behaviour/components/ReaderSettingScrollAmount.tsx
 msgid "Tiny"
@@ -4017,6 +4288,14 @@ msgstr "Tree Frog Green"
 msgid "Type"
 msgstr "Type"
 
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Typical"
+msgstr "Typical"
+
+#: src/features/source-health/components/SourceHealthCard.tsx
+msgid "Typical load"
+msgstr "Typical load"
+
 #: src/features/settings/Settings.constants.ts
 msgid "UI Login"
 msgstr "UI Login"
@@ -4026,6 +4305,7 @@ msgstr "UI Login"
 #: src/features/browse/screens/BrowseSettings.tsx
 #: src/features/browse/sources/Sources.tsx
 #: src/features/chapter/components/ChapterList.tsx
+#: src/features/dashboard/screens/Dashboard.tsx
 #: src/features/device/screens/DeviceSetting.tsx
 #: src/features/downloads/screens/DownloadQueue.tsx
 #: src/features/downloads/screens/DownloadSettings.tsx
@@ -4047,6 +4327,7 @@ msgstr "UI Login"
 #: src/features/settings/screens/ImageProcessingSetting.tsx
 #: src/features/settings/screens/ServerSettings.tsx
 #: src/features/settings/screens/WebUISettings.tsx
+#: src/features/source-health/screens/SourceHealthScreen.tsx
 #: src/features/source/browse/screens/SourceMangas.tsx
 #: src/features/source/configuration/screens/SourceConfigure.tsx
 #: src/features/theme/components/CreateThemeDialog.tsx
@@ -4120,6 +4401,10 @@ msgstr "Unread badges"
 msgid "Unread chapters"
 msgstr "Unread chapters"
 
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Unreliable"
+msgstr "Unreliable"
+
 #: src/features/tracker/components/cards/TrackerActiveCard.tsx
 msgid "Untracked manga"
 msgstr "Untracked manga"
@@ -4188,6 +4473,10 @@ msgstr "Uploading"
 msgid "URL"
 msgstr "URL"
 
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Usage"
+msgstr "Usage"
+
 #: src/features/settings/Settings.constants.ts
 msgid ""
 "Use a custom WebUI.\n"
@@ -4249,6 +4538,10 @@ msgstr "VUI"
 #: src/base/components/feedback/SnackbarWithDescription.tsx
 msgid "Warning"
 msgstr "Warning"
+
+#: src/features/source-health/components/SourceHealthCard.tsx
+msgid "Weakest step: {weakestStageLabel}"
+msgstr "Weakest step: {weakestStageLabel}"
 
 #: src/features/reader/settings/ReaderSettings.constants.tsx
 msgid "Webtoon"
@@ -4322,6 +4615,10 @@ msgstr "With \"Completed\" status"
 msgid "With unread chapter(s)"
 msgstr "With unread chapter(s)"
 
+#: src/features/source-health/services/SourceHealth.ts
+msgid "Worked"
+msgstr "Worked"
+
 #: src/features/category/components/PrivateCategoriesPasswordDialog.tsx
 #: src/features/category/components/PrivateCategoriesUnlockDialog.tsx
 msgid "Wrong password"
@@ -4388,3 +4685,7 @@ msgstr "Your library is empty"
 #: src/features/settings/Settings.constants.ts
 msgid "Your library will be accessible. Use this only on private networks or when otherwise securing access."
 msgstr "Your library will be accessible. Use this only on private networks or when otherwise securing access."
+
+#: src/features/source-health/components/SourceHealthDetailDialog.tsx
+msgid "Your rating"
+msgstr "Your rating"

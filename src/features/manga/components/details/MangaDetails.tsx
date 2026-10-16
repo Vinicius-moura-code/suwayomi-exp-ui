@@ -27,6 +27,7 @@ import { FlexWrapButton } from '@/base/components/buttons/FlexWrapButton.tsx';
 import { TrackMangaButton } from '@/features/manga/components/TrackMangaButton.tsx';
 import { useManageMangaLibraryState } from '@/features/manga/hooks/useManageMangaLibraryState.tsx';
 import { Metadata as BaseMetadata } from '@/base/components/texts/Metadata.tsx';
+import { SourceHealthIndicator } from '@/features/source-health/components/SourceHealthIndicator.tsx';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import type { MangaType, SourceType } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { useMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
@@ -285,6 +286,7 @@ export const MangaDetails = ({
                         )}
                         <Metadata title={t`Status`} value={t(MANGA_STATUS_TO_TRANSLATION[manga.status])} />
                         <Metadata title={t`Source`} value={getSourceName(manga.source)} />
+                        <SourceHealthIndicator sourceId={manga.sourceId} />
                     </MetadataContainer>
                 </ThumbnailMetadataWrapper>
                 <MangaButtonsContainer>

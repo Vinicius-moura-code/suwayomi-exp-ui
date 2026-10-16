@@ -1051,6 +1051,7 @@ export type MutationKeySpecifier = (
     | 'removeExtensionStore'
     | 'reorderChapterDownload'
     | 'resetSettings'
+    | 'resetSourceHealth'
     | 'resetWebUIUpdateStatus'
     | 'restoreBackup'
     | 'setCategoryMeta'
@@ -1065,6 +1066,7 @@ export type MutationKeySpecifier = (
     | 'setSettings'
     | 'setSourceMeta'
     | 'setSourceMetas'
+    | 'setSourceRating'
     | 'startDownloader'
     | 'startSync'
     | 'stopDownloader'
@@ -1140,6 +1142,7 @@ export type MutationFieldPolicy = {
     removeExtensionStore?: FieldPolicy<any> | FieldReadFunction<any>;
     reorderChapterDownload?: FieldPolicy<any> | FieldReadFunction<any>;
     resetSettings?: FieldPolicy<any> | FieldReadFunction<any>;
+    resetSourceHealth?: FieldPolicy<any> | FieldReadFunction<any>;
     resetWebUIUpdateStatus?: FieldPolicy<any> | FieldReadFunction<any>;
     restoreBackup?: FieldPolicy<any> | FieldReadFunction<any>;
     setCategoryMeta?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -1154,6 +1157,7 @@ export type MutationFieldPolicy = {
     setSettings?: FieldPolicy<any> | FieldReadFunction<any>;
     setSourceMeta?: FieldPolicy<any> | FieldReadFunction<any>;
     setSourceMetas?: FieldPolicy<any> | FieldReadFunction<any>;
+    setSourceRating?: FieldPolicy<any> | FieldReadFunction<any>;
     startDownloader?: FieldPolicy<any> | FieldReadFunction<any>;
     startSync?: FieldPolicy<any> | FieldReadFunction<any>;
     stopDownloader?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -1451,7 +1455,12 @@ export type QueryKeySpecifier = (
     | 'searchTracker'
     | 'settings'
     | 'source'
+    | 'sourceHealth'
+    | 'sourceHealthFailures'
+    | 'sourceHealthTrend'
     | 'sources'
+    | 'sourcesHealth'
+    | 'sourcesHealthTrend'
     | 'trackRecord'
     | 'trackRecords'
     | 'tracker'
@@ -1491,7 +1500,12 @@ export type QueryFieldPolicy = {
     searchTracker?: FieldPolicy<any> | FieldReadFunction<any>;
     settings?: FieldPolicy<any> | FieldReadFunction<any>;
     source?: FieldPolicy<any> | FieldReadFunction<any>;
+    sourceHealth?: FieldPolicy<any> | FieldReadFunction<any>;
+    sourceHealthFailures?: FieldPolicy<any> | FieldReadFunction<any>;
+    sourceHealthTrend?: FieldPolicy<any> | FieldReadFunction<any>;
     sources?: FieldPolicy<any> | FieldReadFunction<any>;
+    sourcesHealth?: FieldPolicy<any> | FieldReadFunction<any>;
+    sourcesHealthTrend?: FieldPolicy<any> | FieldReadFunction<any>;
     trackRecord?: FieldPolicy<any> | FieldReadFunction<any>;
     trackRecords?: FieldPolicy<any> | FieldReadFunction<any>;
     tracker?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -1526,6 +1540,15 @@ export type ResetSettingsPayloadKeySpecifier = ('clientMutationId' | 'settings' 
 export type ResetSettingsPayloadFieldPolicy = {
     clientMutationId?: FieldPolicy<any> | FieldReadFunction<any>;
     settings?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type ResetSourceHealthPayloadKeySpecifier = (
+    | 'clientMutationId'
+    | 'sourceHealth'
+    | ResetSourceHealthPayloadKeySpecifier
+)[];
+export type ResetSourceHealthPayloadFieldPolicy = {
+    clientMutationId?: FieldPolicy<any> | FieldReadFunction<any>;
+    sourceHealth?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type RestoreBackupPayloadKeySpecifier = (
     | 'clientMutationId'
@@ -1641,6 +1664,15 @@ export type SetSourceMetasPayloadFieldPolicy = {
     clientMutationId?: FieldPolicy<any> | FieldReadFunction<any>;
     metas?: FieldPolicy<any> | FieldReadFunction<any>;
     sources?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type SetSourceRatingPayloadKeySpecifier = (
+    | 'clientMutationId'
+    | 'sourceHealth'
+    | SetSourceRatingPayloadKeySpecifier
+)[];
+export type SetSourceRatingPayloadFieldPolicy = {
+    clientMutationId?: FieldPolicy<any> | FieldReadFunction<any>;
+    sourceHealth?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type SettingsKeySpecifier = (
     | 'authMode'
@@ -2103,6 +2135,107 @@ export type SourceEdgeKeySpecifier = ('cursor' | 'node' | SourceEdgeKeySpecifier
 export type SourceEdgeFieldPolicy = {
     cursor?: FieldPolicy<any> | FieldReadFunction<any>;
     node?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type SourceHealthDayTypeKeySpecifier = ('attempts' | 'day' | 'failures' | SourceHealthDayTypeKeySpecifier)[];
+export type SourceHealthDayTypeFieldPolicy = {
+    attempts?: FieldPolicy<any> | FieldReadFunction<any>;
+    day?: FieldPolicy<any> | FieldReadFunction<any>;
+    failures?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type SourceHealthFailureTypeKeySpecifier = (
+    | 'id'
+    | 'mangaId'
+    | 'mangaTitle'
+    | 'message'
+    | 'occurredAt'
+    | 'outcome'
+    | 'sourceId'
+    | 'stage'
+    | SourceHealthFailureTypeKeySpecifier
+)[];
+export type SourceHealthFailureTypeFieldPolicy = {
+    id?: FieldPolicy<any> | FieldReadFunction<any>;
+    mangaId?: FieldPolicy<any> | FieldReadFunction<any>;
+    mangaTitle?: FieldPolicy<any> | FieldReadFunction<any>;
+    message?: FieldPolicy<any> | FieldReadFunction<any>;
+    occurredAt?: FieldPolicy<any> | FieldReadFunction<any>;
+    outcome?: FieldPolicy<any> | FieldReadFunction<any>;
+    sourceId?: FieldPolicy<any> | FieldReadFunction<any>;
+    stage?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type SourceHealthOutcomeCountTypeKeySpecifier = (
+    | 'count'
+    | 'outcome'
+    | SourceHealthOutcomeCountTypeKeySpecifier
+)[];
+export type SourceHealthOutcomeCountTypeFieldPolicy = {
+    count?: FieldPolicy<any> | FieldReadFunction<any>;
+    outcome?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type SourceHealthStageTypeKeySpecifier = (
+    | 'attempts'
+    | 'deliveryRate'
+    | 'failures'
+    | 'failuresByOutcome'
+    | 'p50Ms'
+    | 'p95Ms'
+    | 'stage'
+    | 'successes'
+    | SourceHealthStageTypeKeySpecifier
+)[];
+export type SourceHealthStageTypeFieldPolicy = {
+    attempts?: FieldPolicy<any> | FieldReadFunction<any>;
+    deliveryRate?: FieldPolicy<any> | FieldReadFunction<any>;
+    failures?: FieldPolicy<any> | FieldReadFunction<any>;
+    failuresByOutcome?: FieldPolicy<any> | FieldReadFunction<any>;
+    p50Ms?: FieldPolicy<any> | FieldReadFunction<any>;
+    p95Ms?: FieldPolicy<any> | FieldReadFunction<any>;
+    stage?: FieldPolicy<any> | FieldReadFunction<any>;
+    successes?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type SourceHealthTypeKeySpecifier = (
+    | 'attempts'
+    | 'deliveryRate'
+    | 'iconUrl'
+    | 'lang'
+    | 'name'
+    | 'rating'
+    | 'ratingNote'
+    | 'sourceId'
+    | 'stages'
+    | 'typicalLoadMs'
+    | 'usage'
+    | 'verdict'
+    | 'weakestStage'
+    | 'windowDays'
+    | SourceHealthTypeKeySpecifier
+)[];
+export type SourceHealthTypeFieldPolicy = {
+    attempts?: FieldPolicy<any> | FieldReadFunction<any>;
+    deliveryRate?: FieldPolicy<any> | FieldReadFunction<any>;
+    iconUrl?: FieldPolicy<any> | FieldReadFunction<any>;
+    lang?: FieldPolicy<any> | FieldReadFunction<any>;
+    name?: FieldPolicy<any> | FieldReadFunction<any>;
+    rating?: FieldPolicy<any> | FieldReadFunction<any>;
+    ratingNote?: FieldPolicy<any> | FieldReadFunction<any>;
+    sourceId?: FieldPolicy<any> | FieldReadFunction<any>;
+    stages?: FieldPolicy<any> | FieldReadFunction<any>;
+    typicalLoadMs?: FieldPolicy<any> | FieldReadFunction<any>;
+    usage?: FieldPolicy<any> | FieldReadFunction<any>;
+    verdict?: FieldPolicy<any> | FieldReadFunction<any>;
+    weakestStage?: FieldPolicy<any> | FieldReadFunction<any>;
+    windowDays?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type SourceHealthUsageTypeKeySpecifier = (
+    | 'chaptersRead'
+    | 'lastReadAt'
+    | 'mangasRead'
+    | SourceHealthUsageTypeKeySpecifier
+)[];
+export type SourceHealthUsageTypeFieldPolicy = {
+    chaptersRead?: FieldPolicy<any> | FieldReadFunction<any>;
+    lastReadAt?: FieldPolicy<any> | FieldReadFunction<any>;
+    mangasRead?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type SourceMetaTypeKeySpecifier = ('key' | 'source' | 'sourceId' | 'value' | SourceMetaTypeKeySpecifier)[];
 export type SourceMetaTypeFieldPolicy = {
@@ -3152,6 +3285,13 @@ export type StrictTypedTypePolicies = {
         keyFields?: false | ResetSettingsPayloadKeySpecifier | (() => undefined | ResetSettingsPayloadKeySpecifier);
         fields?: ResetSettingsPayloadFieldPolicy;
     };
+    ResetSourceHealthPayload?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+        keyFields?:
+            | false
+            | ResetSourceHealthPayloadKeySpecifier
+            | (() => undefined | ResetSourceHealthPayloadKeySpecifier);
+        fields?: ResetSourceHealthPayloadFieldPolicy;
+    };
     RestoreBackupPayload?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
         keyFields?: false | RestoreBackupPayloadKeySpecifier | (() => undefined | RestoreBackupPayloadKeySpecifier);
         fields?: RestoreBackupPayloadFieldPolicy;
@@ -3222,6 +3362,10 @@ export type StrictTypedTypePolicies = {
         keyFields?: false | SetSourceMetasPayloadKeySpecifier | (() => undefined | SetSourceMetasPayloadKeySpecifier);
         fields?: SetSourceMetasPayloadFieldPolicy;
     };
+    SetSourceRatingPayload?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+        keyFields?: false | SetSourceRatingPayloadKeySpecifier | (() => undefined | SetSourceRatingPayloadKeySpecifier);
+        fields?: SetSourceRatingPayloadFieldPolicy;
+    };
     Settings?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
         keyFields?: false | SettingsKeySpecifier | (() => undefined | SettingsKeySpecifier);
         fields?: SettingsFieldPolicy;
@@ -3269,6 +3413,36 @@ export type StrictTypedTypePolicies = {
     SourceEdge?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
         keyFields?: false | SourceEdgeKeySpecifier | (() => undefined | SourceEdgeKeySpecifier);
         fields?: SourceEdgeFieldPolicy;
+    };
+    SourceHealthDayType?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+        keyFields?: false | SourceHealthDayTypeKeySpecifier | (() => undefined | SourceHealthDayTypeKeySpecifier);
+        fields?: SourceHealthDayTypeFieldPolicy;
+    };
+    SourceHealthFailureType?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+        keyFields?:
+            | false
+            | SourceHealthFailureTypeKeySpecifier
+            | (() => undefined | SourceHealthFailureTypeKeySpecifier);
+        fields?: SourceHealthFailureTypeFieldPolicy;
+    };
+    SourceHealthOutcomeCountType?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+        keyFields?:
+            | false
+            | SourceHealthOutcomeCountTypeKeySpecifier
+            | (() => undefined | SourceHealthOutcomeCountTypeKeySpecifier);
+        fields?: SourceHealthOutcomeCountTypeFieldPolicy;
+    };
+    SourceHealthStageType?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+        keyFields?: false | SourceHealthStageTypeKeySpecifier | (() => undefined | SourceHealthStageTypeKeySpecifier);
+        fields?: SourceHealthStageTypeFieldPolicy;
+    };
+    SourceHealthType?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+        keyFields?: false | SourceHealthTypeKeySpecifier | (() => undefined | SourceHealthTypeKeySpecifier);
+        fields?: SourceHealthTypeFieldPolicy;
+    };
+    SourceHealthUsageType?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+        keyFields?: false | SourceHealthUsageTypeKeySpecifier | (() => undefined | SourceHealthUsageTypeKeySpecifier);
+        fields?: SourceHealthUsageTypeFieldPolicy;
     };
     SourceMetaType?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
         keyFields?: false | SourceMetaTypeKeySpecifier | (() => undefined | SourceMetaTypeKeySpecifier);

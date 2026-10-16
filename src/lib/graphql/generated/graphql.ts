@@ -3427,6 +3427,206 @@ export type SourceSettingFieldsFragment = {
     >;
 };
 
+export type SourceHealthFieldsFragment = {
+    __typename: 'SourceHealthType';
+    sourceId: string;
+    name: string;
+    lang: string;
+    iconUrl: string | null;
+    windowDays: number;
+    verdict: Types.SourceHealthVerdict;
+    deliveryRate: number | null;
+    typicalLoadMs: number | null;
+    weakestStage: Types.SourceHealthStage | null;
+    attempts: number;
+    rating: number | null;
+    ratingNote: string | null;
+    usage: { __typename: 'SourceHealthUsageType'; chaptersRead: number; mangasRead: number; lastReadAt: string | null };
+    stages: Array<{
+        __typename: 'SourceHealthStageType';
+        stage: Types.SourceHealthStage;
+        attempts: number;
+        successes: number;
+        failures: number;
+        deliveryRate: number | null;
+        p50Ms: number | null;
+        p95Ms: number | null;
+        failuresByOutcome: Array<{
+            __typename: 'SourceHealthOutcomeCountType';
+            outcome: Types.SourceHealthOutcome;
+            count: number;
+        }>;
+    }>;
+};
+
+export type SetSourceRatingMutationVariables = Exact<{
+    input: Types.SetSourceRatingInput;
+}>;
+
+export type SetSourceRatingMutation = {
+    __typename: 'Mutation';
+    setSourceRating: {
+        __typename: 'SetSourceRatingPayload';
+        sourceHealth: {
+            __typename: 'SourceHealthType';
+            sourceId: string;
+            name: string;
+            lang: string;
+            iconUrl: string | null;
+            windowDays: number;
+            verdict: Types.SourceHealthVerdict;
+            deliveryRate: number | null;
+            typicalLoadMs: number | null;
+            weakestStage: Types.SourceHealthStage | null;
+            attempts: number;
+            rating: number | null;
+            ratingNote: string | null;
+            usage: {
+                __typename: 'SourceHealthUsageType';
+                chaptersRead: number;
+                mangasRead: number;
+                lastReadAt: string | null;
+            };
+            stages: Array<{
+                __typename: 'SourceHealthStageType';
+                stage: Types.SourceHealthStage;
+                attempts: number;
+                successes: number;
+                failures: number;
+                deliveryRate: number | null;
+                p50Ms: number | null;
+                p95Ms: number | null;
+                failuresByOutcome: Array<{
+                    __typename: 'SourceHealthOutcomeCountType';
+                    outcome: Types.SourceHealthOutcome;
+                    count: number;
+                }>;
+            }>;
+        } | null;
+    };
+};
+
+export type ResetSourceHealthMutationVariables = Exact<{
+    input: Types.ResetSourceHealthInput;
+}>;
+
+export type ResetSourceHealthMutation = {
+    __typename: 'Mutation';
+    resetSourceHealth: {
+        __typename: 'ResetSourceHealthPayload';
+        sourceHealth: {
+            __typename: 'SourceHealthType';
+            sourceId: string;
+            name: string;
+            lang: string;
+            iconUrl: string | null;
+            windowDays: number;
+            verdict: Types.SourceHealthVerdict;
+            deliveryRate: number | null;
+            typicalLoadMs: number | null;
+            weakestStage: Types.SourceHealthStage | null;
+            attempts: number;
+            rating: number | null;
+            ratingNote: string | null;
+            usage: {
+                __typename: 'SourceHealthUsageType';
+                chaptersRead: number;
+                mangasRead: number;
+                lastReadAt: string | null;
+            };
+            stages: Array<{
+                __typename: 'SourceHealthStageType';
+                stage: Types.SourceHealthStage;
+                attempts: number;
+                successes: number;
+                failures: number;
+                deliveryRate: number | null;
+                p50Ms: number | null;
+                p95Ms: number | null;
+                failuresByOutcome: Array<{
+                    __typename: 'SourceHealthOutcomeCountType';
+                    outcome: Types.SourceHealthOutcome;
+                    count: number;
+                }>;
+            }>;
+        } | null;
+    };
+};
+
+export type GetSourcesHealthQueryVariables = Exact<{
+    days?: number | null | undefined;
+}>;
+
+export type GetSourcesHealthQuery = {
+    __typename: 'Query';
+    sourcesHealth: Array<{
+        __typename: 'SourceHealthType';
+        sourceId: string;
+        name: string;
+        lang: string;
+        iconUrl: string | null;
+        windowDays: number;
+        verdict: Types.SourceHealthVerdict;
+        deliveryRate: number | null;
+        typicalLoadMs: number | null;
+        weakestStage: Types.SourceHealthStage | null;
+        attempts: number;
+        rating: number | null;
+        ratingNote: string | null;
+        usage: {
+            __typename: 'SourceHealthUsageType';
+            chaptersRead: number;
+            mangasRead: number;
+            lastReadAt: string | null;
+        };
+        stages: Array<{
+            __typename: 'SourceHealthStageType';
+            stage: Types.SourceHealthStage;
+            attempts: number;
+            successes: number;
+            failures: number;
+            deliveryRate: number | null;
+            p50Ms: number | null;
+            p95Ms: number | null;
+            failuresByOutcome: Array<{
+                __typename: 'SourceHealthOutcomeCountType';
+                outcome: Types.SourceHealthOutcome;
+                count: number;
+            }>;
+        }>;
+    }>;
+};
+
+export type GetSourceHealthDetailsQueryVariables = Exact<{
+    sourceId: string;
+    days?: number | null | undefined;
+    failuresLimit?: number | null | undefined;
+}>;
+
+export type GetSourceHealthDetailsQuery = {
+    __typename: 'Query';
+    sourceHealthTrend: Array<{ __typename: 'SourceHealthDayType'; day: string; attempts: number; failures: number }>;
+    sourceHealthFailures: Array<{
+        __typename: 'SourceHealthFailureType';
+        id: number;
+        mangaId: number | null;
+        mangaTitle: string | null;
+        stage: Types.SourceHealthStage;
+        outcome: Types.SourceHealthOutcome;
+        message: string;
+        occurredAt: string;
+    }>;
+};
+
+export type GetSourcesHealthTrendQueryVariables = Exact<{
+    days?: number | null | undefined;
+}>;
+
+export type GetSourcesHealthTrendQuery = {
+    __typename: 'Query';
+    sourcesHealthTrend: Array<{ __typename: 'SourceHealthDayType'; day: string; attempts: number; failures: number }>;
+};
+
 export type GetSourceMangasFetchMutationVariables = Exact<{
     input: Types.FetchSourceMangaInput;
 }>;

@@ -9,6 +9,7 @@
 import { useCallback, useMemo } from 'react';
 import IconButton from '@mui/material/IconButton';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import { useNavigate } from '@/lib/router';
 import Typography from '@mui/material/Typography';
 import { useLingui } from '@lingui/react/macro';
@@ -109,6 +110,11 @@ export function Sources({ tabsMenuHeight }: { tabsMenuHeight: number }) {
             <CustomTooltip title={t`Global Search`}>
                 <IconButton onClick={() => navigate(AppRoutes.sources.children.searchAll.path())} color="inherit">
                     <TravelExploreIcon />
+                </IconButton>
+            </CustomTooltip>
+            <CustomTooltip title={t`Source ranking`}>
+                <IconButton onClick={() => navigate(AppRoutes.sourceHealth.path)} color="inherit">
+                    <LeaderboardIcon />
                 </IconButton>
             </CustomTooltip>
             <SourceLanguageSelect

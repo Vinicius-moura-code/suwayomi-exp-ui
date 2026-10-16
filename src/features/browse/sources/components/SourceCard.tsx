@@ -31,6 +31,7 @@ import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { languageCodeToName } from '@/base/utils/Languages.ts';
 import { SourceContentType } from '@/features/source/Source.types.ts';
 import { isNsfw } from '@/features/extension/Extensions.utils.ts';
+import { SourceHealthIndicator } from '@/features/source-health/components/SourceHealthIndicator.tsx';
 
 interface IProps {
     source: GetSourcesListQuery['sources']['nodes'][number];
@@ -110,6 +111,7 @@ export const SourceCard: React.FC<IProps> = (props: IProps) => {
                         {showSourceRepo && extensionStore && (
                             <Typography variant="caption">{extensionStore.name}</Typography>
                         )}
+                        <SourceHealthIndicator sourceId={id} />
                     </Stack>
                 </CardActionArea>
                 {supportsLatest && (

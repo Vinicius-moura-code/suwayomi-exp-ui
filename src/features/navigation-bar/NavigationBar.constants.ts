@@ -14,6 +14,8 @@ import HistoryIcon from '@mui/icons-material/History';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import ExploreIcon from '@mui/icons-material/Explore';
 import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import GetAppOutlinedIcon from '@mui/icons-material/GetAppOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -89,6 +91,14 @@ const NAVIGATION_BAR_BASE_ITEMS = [
 ] as const satisfies RestrictedNavBarItem<'both'>[];
 
 const NAVIGATION_BAR_DESKTOP_ITEMS = [
+    {
+        path: AppRoutes.dashboard.path,
+        title: msg`Dashboard`,
+        SelectedIconComponent: DashboardIcon,
+        IconComponent: DashboardOutlinedIcon,
+        show: 'desktop',
+        moreGroup: NavBarItemMoreGroup.HIDDEN_ITEM,
+    },
     {
         path: AppRoutes.downloads.path,
         title: msg`Downloads`,

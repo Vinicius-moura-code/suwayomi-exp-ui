@@ -399,7 +399,8 @@
             },
         },
         {
-            "files": ["**/*.config.ts", "**/*.config.js"],
+            // Next.js App Router requires default exports for route files (page, layout, ...)
+            "files": ["**/*.config.ts", "**/*.config.js", "src/app/**/*.tsx"],
             "rules": {
                 "import/no-default-export": "off",
             },

@@ -38,6 +38,7 @@ import { translateExtensionLanguage } from '@/features/extension/Extensions.util
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { Sources } from '@/features/source/services/Sources.ts';
+import { SourceHealthIndicator } from '@/features/source-health/components/SourceHealthIndicator.tsx';
 import type {
     SourceDisplayNameInfo,
     SourceIdInfo,
@@ -207,6 +208,7 @@ const SourceSearchPreview = React.memo(
                         <Box>
                             <Typography variant="h5">{name}</Typography>
                             <Typography variant="caption">{translateExtensionLanguage(lang)}</Typography>
+                            <SourceHealthIndicator sourceId={id} />
                         </Box>
                         <CustomTooltip title={t`Show more`}>
                             <IconButton {...MUIUtil.preventRippleProp()}>

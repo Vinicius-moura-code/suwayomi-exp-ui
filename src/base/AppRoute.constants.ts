@@ -171,6 +171,14 @@ export const AppRoutes = {
         match: 'downloads',
         path: '/downloads',
     },
+    dashboard: {
+        match: 'dashboard',
+        path: '/dashboard',
+    },
+    sourceHealth: {
+        match: 'source-health',
+        path: '/source-health',
+    },
     manga: {
         match: 'manga/:id',
         path: (mangaId: MangaIdInfo['id']) => `/manga/${mangaId}`,

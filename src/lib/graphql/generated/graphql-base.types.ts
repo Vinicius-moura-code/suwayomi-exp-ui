@@ -1536,6 +1536,7 @@ export type Mutation = {
     removeExtensionStore?: Maybe<RemoveExtensionStorePayload>;
     reorderChapterDownload?: Maybe<ReorderChapterDownloadPayload>;
     resetSettings: ResetSettingsPayload;
+    resetSourceHealth: ResetSourceHealthPayload;
     resetWebUIUpdateStatus?: Maybe<WebUiUpdateStatus>;
     restoreBackup: RestoreBackupPayload;
     setCategoryMeta?: Maybe<SetCategoryMetaPayload>;
@@ -1550,6 +1551,7 @@ export type Mutation = {
     setSettings: SetSettingsPayload;
     setSourceMeta?: Maybe<SetSourceMetaPayload>;
     setSourceMetas?: Maybe<SetSourceMetasPayload>;
+    setSourceRating: SetSourceRatingPayload;
     startDownloader?: Maybe<StartDownloaderPayload>;
     startSync: StartSyncPayload;
     stopDownloader?: Maybe<StopDownloaderPayload>;
@@ -1762,6 +1764,10 @@ export type MutationResetSettingsArgs = {
     input: ResetSettingsInput;
 };
 
+export type MutationResetSourceHealthArgs = {
+    input: ResetSourceHealthInput;
+};
+
 export type MutationRestoreBackupArgs = {
     input: RestoreBackupInput;
 };
@@ -1812,6 +1818,10 @@ export type MutationSetSourceMetaArgs = {
 
 export type MutationSetSourceMetasArgs = {
     input: SetSourceMetasInput;
+};
+
+export type MutationSetSourceRatingArgs = {
+    input: SetSourceRatingInput;
 };
 
 export type MutationStartDownloaderArgs = {
@@ -2239,7 +2249,12 @@ export type Query = {
     searchTracker: SearchTrackerPayload;
     settings: SettingsType;
     source: SourceType;
+    sourceHealth?: Maybe<SourceHealthType>;
+    sourceHealthFailures: Array<SourceHealthFailureType>;
+    sourceHealthTrend: Array<SourceHealthDayType>;
     sources: SourceNodeList;
+    sourcesHealth: Array<SourceHealthType>;
+    sourcesHealthTrend: Array<SourceHealthDayType>;
     trackRecord: TrackRecordType;
     trackRecords: TrackRecordNodeList;
     tracker: TrackerType;
@@ -2362,6 +2377,22 @@ export type QuerySourceArgs = {
     id: Scalars['LongString']['input'];
 };
 
+export type QuerySourceHealthArgs = {
+    days?: InputMaybe<Scalars['Int']['input']>;
+    sourceId: Scalars['LongString']['input'];
+};
+
+export type QuerySourceHealthFailuresArgs = {
+    limit?: InputMaybe<Scalars['Int']['input']>;
+    mangaId?: InputMaybe<Scalars['Int']['input']>;
+    sourceId: Scalars['LongString']['input'];
+};
+
+export type QuerySourceHealthTrendArgs = {
+    days?: InputMaybe<Scalars['Int']['input']>;
+    sourceId: Scalars['LongString']['input'];
+};
+
 export type QuerySourcesArgs = {
     after?: InputMaybe<Scalars['Cursor']['input']>;
     before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2371,6 +2402,14 @@ export type QuerySourcesArgs = {
     last?: InputMaybe<Scalars['Int']['input']>;
     offset?: InputMaybe<Scalars['Int']['input']>;
     order?: InputMaybe<Array<SourceOrderInput>>;
+};
+
+export type QuerySourcesHealthArgs = {
+    days?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type QuerySourcesHealthTrendArgs = {
+    days?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type QueryTrackRecordArgs = {
@@ -2448,6 +2487,17 @@ export type ResetSettingsPayload = {
     __typename?: 'ResetSettingsPayload';
     clientMutationId?: Maybe<Scalars['String']['output']>;
     settings: SettingsType;
+};
+
+export type ResetSourceHealthInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    sourceId: Scalars['LongString']['input'];
+};
+
+export type ResetSourceHealthPayload = {
+    __typename?: 'ResetSourceHealthPayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    sourceHealth?: Maybe<SourceHealthType>;
 };
 
 export type RestoreBackupInput = {
@@ -2641,6 +2691,19 @@ export type SetSourceMetasPayload = {
     clientMutationId?: Maybe<Scalars['String']['output']>;
     metas: Array<SourceMetaType>;
     sources: Array<SourceType>;
+};
+
+export type SetSourceRatingInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    note?: InputMaybe<Scalars['String']['input']>;
+    rating?: InputMaybe<Scalars['Int']['input']>;
+    sourceId: Scalars['LongString']['input'];
+};
+
+export type SetSourceRatingPayload = {
+    __typename?: 'SetSourceRatingPayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    sourceHealth?: Maybe<SourceHealthType>;
 };
 
 export type Settings = {
@@ -2957,6 +3020,96 @@ export type SourceFilterInput = {
     not?: InputMaybe<SourceFilterInput>;
     or?: InputMaybe<Array<SourceFilterInput>>;
 };
+
+export type SourceHealthDayType = {
+    __typename?: 'SourceHealthDayType';
+    attempts: Scalars['Int']['output'];
+    day: Scalars['String']['output'];
+    failures: Scalars['Int']['output'];
+};
+
+export type SourceHealthFailureType = {
+    __typename?: 'SourceHealthFailureType';
+    id: Scalars['Int']['output'];
+    mangaId?: Maybe<Scalars['Int']['output']>;
+    mangaTitle?: Maybe<Scalars['String']['output']>;
+    message: Scalars['String']['output'];
+    occurredAt: Scalars['LongString']['output'];
+    outcome: SourceHealthOutcome;
+    sourceId: Scalars['LongString']['output'];
+    stage: SourceHealthStage;
+};
+
+export enum SourceHealthOutcome {
+    Blocked = 'BLOCKED',
+    Empty = 'EMPTY',
+    Error = 'ERROR',
+    LocalNetwork = 'LOCAL_NETWORK',
+    Network = 'NETWORK',
+    NotFound = 'NOT_FOUND',
+    Ok = 'OK',
+    ServerError = 'SERVER_ERROR',
+    Timeout = 'TIMEOUT',
+}
+
+export type SourceHealthOutcomeCountType = {
+    __typename?: 'SourceHealthOutcomeCountType';
+    count: Scalars['Int']['output'];
+    outcome: SourceHealthOutcome;
+};
+
+export enum SourceHealthStage {
+    Chapters = 'CHAPTERS',
+    Details = 'DETAILS',
+    Image = 'IMAGE',
+    Listing = 'LISTING',
+    Pages = 'PAGES',
+    Thumbnail = 'THUMBNAIL',
+}
+
+export type SourceHealthStageType = {
+    __typename?: 'SourceHealthStageType';
+    attempts: Scalars['Int']['output'];
+    deliveryRate?: Maybe<Scalars['Float']['output']>;
+    failures: Scalars['Int']['output'];
+    failuresByOutcome: Array<SourceHealthOutcomeCountType>;
+    p50Ms?: Maybe<Scalars['Int']['output']>;
+    p95Ms?: Maybe<Scalars['Int']['output']>;
+    stage: SourceHealthStage;
+    successes: Scalars['Int']['output'];
+};
+
+export type SourceHealthType = {
+    __typename?: 'SourceHealthType';
+    attempts: Scalars['Int']['output'];
+    deliveryRate?: Maybe<Scalars['Float']['output']>;
+    iconUrl?: Maybe<Scalars['String']['output']>;
+    lang: Scalars['String']['output'];
+    name: Scalars['String']['output'];
+    rating?: Maybe<Scalars['Int']['output']>;
+    ratingNote?: Maybe<Scalars['String']['output']>;
+    sourceId: Scalars['LongString']['output'];
+    stages: Array<SourceHealthStageType>;
+    typicalLoadMs?: Maybe<Scalars['Int']['output']>;
+    usage: SourceHealthUsageType;
+    verdict: SourceHealthVerdict;
+    weakestStage?: Maybe<SourceHealthStage>;
+    windowDays: Scalars['Int']['output'];
+};
+
+export type SourceHealthUsageType = {
+    __typename?: 'SourceHealthUsageType';
+    chaptersRead: Scalars['Int']['output'];
+    lastReadAt?: Maybe<Scalars['LongString']['output']>;
+    mangasRead: Scalars['Int']['output'];
+};
+
+export enum SourceHealthVerdict {
+    Fair = 'FAIR',
+    Good = 'GOOD',
+    InsufficientData = 'INSUFFICIENT_DATA',
+    Poor = 'POOR',
+}
 
 export type SourceMetaType = MetaType & {
     __typename?: 'SourceMetaType';
